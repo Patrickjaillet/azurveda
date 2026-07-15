@@ -107,14 +107,14 @@ void PackString::Free()
 
 unsigned int PackString::length( const char *_pString)
 {
-	register int length = 1;
+	int length = 1;
 	while( *(_pString++) != 0 ) length++;
 	return( length );
 }
 
 const char *  PackString::strcopy(char *_pStringToFill,const char *_pSourceString)
 {
-	register char p;
+	char p;
 	do
 	{	p = *(_pSourceString++);
 		*(_pStringToFill++) = p;

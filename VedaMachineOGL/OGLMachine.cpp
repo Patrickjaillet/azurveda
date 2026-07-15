@@ -300,8 +300,8 @@ void	OGLMachine::OGLInternalViewPort::ResetRootPixelSize( unsigned int _pixelWid
 void	OGLMachine::OGLInternalViewPort::ResetPixelCoordinates()
 {
 
-	register OGLInternalViewPort *pOGLFather = (OGLInternalViewPort *)m_pClippingFatherViewPort;
-	register OGLInternalViewPort *pOGLRoot = (OGLInternalViewPort *)m_pRootViewPort;
+	OGLInternalViewPort *pOGLFather = (OGLInternalViewPort *)m_pClippingFatherViewPort;
+	OGLInternalViewPort *pOGLRoot = (OGLInternalViewPort *)m_pRootViewPort;
 	m_Valid = true;
 
 	if(pOGLFather && !pOGLFather->m_Valid) m_Valid = false;
@@ -353,7 +353,7 @@ void	OGLMachine::OGLInternalViewPort::ResetPixelCoordinates()
 		}
 	}
 
-	register OGLInternalViewPort *pOGLSon = (OGLInternalViewPort *) m_pClippingFirstSonViewPort;
+	OGLInternalViewPort *pOGLSon = (OGLInternalViewPort *) m_pClippingFirstSonViewPort;
 	while(pOGLSon)
 	{
 		((OGLInternalViewPort*)pOGLSon)->ResetPixelCoordinates();

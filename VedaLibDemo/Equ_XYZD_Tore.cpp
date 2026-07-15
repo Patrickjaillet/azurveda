@@ -68,7 +68,7 @@ bool Equ_XYZD_Tore::SetFrameDate( float _date, unsigned int _iTermIndex,float _p
 
 bool Equ_XYZD_Tore::SetYZConstant( float _y,float _z)
 {
-	register float	yd;
+	float	yd;
 	_y -= m_center[1];
 	_z -= m_center[2];
 	yd = m_cosMove * _y - m_sinMove * _z;
@@ -87,7 +87,7 @@ bool Equ_XYZD_Tore::SetYZConstant( float _y,float _z)
 
 float Equ_XYZD_Tore::ComputeByX( float _x)
 {
-    register float   val;
+    float   val;
 	_x -= m_center[0];
 	val=(_x*_x + m_zz) ;
 	val= sqrtf(val);

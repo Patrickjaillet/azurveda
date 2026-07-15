@@ -31,7 +31,7 @@ public:
 
 	static inline float QuickSqrtM(float _vv)
 	{
-		register const float v1p0=1.0f;
+		const float v1p0=1.0f;
 		if(_vv>v1p0) return v1p0;
 		_vv = v1p0-_vv;
 		_vv = _vv*_vv;

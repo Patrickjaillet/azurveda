@@ -1,3 +1,4 @@
+#include <cstdint>
 #include "Object3DMarchCube.h"
 #include "MarchinCubeSpace.h"
 #include "LightModel.h"
@@ -319,7 +320,7 @@ void Object3DMarchCube::CreateShape(float _newShapeTime, unsigned int _shapeInde
 							float fx = startfx;
 							for(signed char xx=bisx ; xx<=binx ; xx++ )
 							{
-								register float fv = pEquationObject->ComputeByX(fx) ;
+								float fv = pEquationObject->ComputeByX(fx) ;
 								if( *(pmc_checkDate) != checkdate_pass1 )
 								{
 									*(pmc_value)	 = fv ;
@@ -392,7 +393,7 @@ void Object3DMarchCube::CreateShape(float _newShapeTime, unsigned int _shapeInde
 							float fx = startfx;
 							for(signed char xx=bisx ; xx<=binx ; xx++ )
 							{
-								register float fv = pEquationObject->ComputeByX(fx) ;
+								float fv = pEquationObject->ComputeByX(fx) ;
 								if( *(pmc_checkDate) != checkdate_pass1 )
 								{
 									*(pmc_value)	 = fv ;
@@ -609,7 +610,7 @@ MarchinCubeSpace::MarchCubeIndex	*pmc_Index = &pmc_Index_s[ index_yz ];
 
 							const unsigned int    *poctcase;
 
-							int	memoryindex =(int)( ((pmc_Index-nxt)-m_nxtnyt) );
+							intptr_t	memoryindex =(intptr_t)( ((pmc_Index-nxt)-m_nxtnyt) );
 							poctcase = &polyTable[kk<<4];
 							int ll = *(poctcase++);
 							if( nbPolyCreated >= maxref )
@@ -692,7 +693,7 @@ endcase:
 
 	if(preparePass4CreatorsIndex)
 	{
-		m_NumberOfCreativeCubes = ((unsigned int)pPass4EdgeCubeIndex-(unsigned int)m_pPass4EdgeCubeIndex)/3 ;
+		m_NumberOfCreativeCubes = static_cast<unsigned int>((pPass4EdgeCubeIndex-m_pPass4EdgeCubeIndex)/3) ;
 		Pass4_AmbientOcclusion();
 	}
 

@@ -6,6 +6,7 @@
 #include "BaseObject.h"
 #include "BaseContext.h"
 #include "PackString.h"
+#include <cstddef>
 #include <stdio.h>
 #endif
 
@@ -59,8 +60,8 @@ unsigned int BaseType::WriteFile(const char * _pFileName)
 		fwrite( pserializedForm, 1, serializedFormSize , ff );
 		fclose( ff );
 	}
-	int vtest = (int)pserializedFormAfter - (int)pserializedForm;
-	if( vtest != serializedFormSize )
+	ptrdiff_t vtest = pserializedFormAfter - pserializedForm;
+	if( static_cast<size_t>(vtest) != serializedFormSize )
 	{
 		vtest++;
 	}

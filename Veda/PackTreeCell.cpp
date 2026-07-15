@@ -31,7 +31,7 @@ void	PackTreeCell::SetObjectThatManagesThis(BaseObject *_pManager)
 	m_pObjectThatManagesThis = _pManager;
 	m_pObjectManaged->SetObjectThatManagesThis( _pManager );
 
-	register PackTreeCell **ppll = &m_pFirstSerializedSubCell ;
+	PackTreeCell **ppll = &m_pFirstSerializedSubCell ;
 	while( *ppll )
 	{
 		(*ppll)->SetObjectThatManagesThis(_pManager);
@@ -44,7 +44,7 @@ PackTreeCell * PackTreeCell::AddSubCellToThisCell( int _indexWhereToInsert )
 #ifdef _ENGINE_EDITABLE_
 	BeginChangeNotification();
 
-		register PackTreeCell *pNewCell = new PackTreeCell(m_CreatorFunction);
+		PackTreeCell *pNewCell = new PackTreeCell(m_CreatorFunction);
 		if( !pNewCell ){ return(0L);  }
 
 		pNewCell->SetObjectThatManagesThis(m_pObjectThatManagesThis);
@@ -60,8 +60,8 @@ PackTreeCell * PackTreeCell::AddSubCellToThisCell( int _indexWhereToInsert )
 		} else
 		{
 
-			register PackTreeCell **ppll = &m_pFirstSerializedSubCell ;
-			register int nn = 0;
+			PackTreeCell **ppll = &m_pFirstSerializedSubCell ;
+			int nn = 0;
 			while( *ppll && nn != _indexWhereToInsert )
 			{
 				ppll = &((*ppll)->m_pNextSerializedBrotherCell) ;
@@ -79,7 +79,7 @@ PackTreeCell * PackTreeCell::AddSubCellToThisCell( int _indexWhereToInsert )
 	EndChangeNotification();
 #else
 
-		register PackTreeCell *pNewCell = new PackTreeCell(m_CreatorFunction);
+		PackTreeCell *pNewCell = new PackTreeCell(m_CreatorFunction);
 		if( !pNewCell ){ return(0L);  }
 
 		pNewCell->SetObjectThatManagesThis(m_pObjectThatManagesThis);
@@ -113,10 +113,10 @@ void PackTreeCell::DeleteSubCells( PackTreeCell *_pSubCellToDelete)
 void PackTreeCell::DeleteSubCellsProtectedRecursive( PackTreeCell *_pSubCellToDelete)
 {
 
-	register PackTreeCell **ppll = &m_pFirstSerializedSubCell ;
+	PackTreeCell **ppll = &m_pFirstSerializedSubCell ;
 	while( *ppll )
 	{
-		register PackTreeCell *pNext = (*ppll)->m_pNextSerializedBrotherCell;
+		PackTreeCell *pNext = (*ppll)->m_pNextSerializedBrotherCell;
 
 		if( *ppll == _pSubCellToDelete )
 		{
@@ -144,7 +144,7 @@ void PackTreeCell::DeleteSubCellsProtectedRecursive( PackTreeCell *_pSubCellToDe
 
 void PackTreeCell::DeleteAllSubCells( void )
 {
-	register PackTreeCell *pSubCell = m_pFirstSerializedSubCell;
+	PackTreeCell *pSubCell = m_pFirstSerializedSubCell;
 	while( pSubCell )
 	{
 		PackTreeCell *pNext = pSubCell->m_pNextSerializedBrotherCell ;
@@ -164,7 +164,7 @@ const unsigned char * PackTreeCell::Serialize_In( const unsigned char * _pDescri
 	DeleteAllSubCells();
 #endif
 
-	register const unsigned char * pChunkEnd = _pDescriptionChunk;
+	const unsigned char * pChunkEnd = _pDescriptionChunk;
 	_pDescriptionChunk = mSerUlong_JumpToNextChunk.Serialize_In(_pDescriptionChunk);
 	pChunkEnd += mSerUlong_JumpToNextChunk.Get();
 
@@ -183,10 +183,10 @@ const unsigned char * PackTreeCell::Serialize_In( const unsigned char * _pDescri
 unsigned int PackTreeCell:: GetSerializedDescriptionSize(void)
 {
 
-	register unsigned int deltaJumpLength,length= 1;
+	unsigned int deltaJumpLength,length= 1;
 
 	length += m_pObjectManaged->GetSerializedDescriptionSize();
-	register PackTreeCell  *pSubCell = m_pFirstSerializedSubCell;
+	PackTreeCell  *pSubCell = m_pFirstSerializedSubCell;
 	while( pSubCell )
 	{
 		length += pSubCell->GetSerializedDescriptionSize();
@@ -219,7 +219,7 @@ unsigned char * PackTreeCell::Serialize_Out(unsigned char * _pDescriptionChunkTo
 	_pDescriptionChunkToFill = mSerUlong_JumpToNextChunk.Serialize_Out( _pDescriptionChunkToFill );
 
 	_pDescriptionChunkToFill = m_pObjectManaged->Serialize_Out( _pDescriptionChunkToFill );
-	register PackTreeCell  *pSubCell = m_pFirstSerializedSubCell;
+	PackTreeCell  *pSubCell = m_pFirstSerializedSubCell;
 	while( pSubCell )
 	{
 		_pDescriptionChunkToFill = pSubCell->Serialize_Out( _pDescriptionChunkToFill );

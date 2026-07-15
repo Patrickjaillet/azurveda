@@ -27,6 +27,7 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/lang/fr/).
 - CI GitHub Actions (`.github/workflows/ci.yml`) : build MSVC x64 + vcpkg, exécution de
   `Example01_SimpleSerialization`, vérification de CHANGELOG.md sur chaque PR,
   incrément automatique du `PATCH` de `VERSION` sur chaque build réussi de `main`.
+- `/W4` activé projet entier (`CMakeLists.txt` racine).
 
 ### Changed
 
@@ -70,6 +71,15 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/lang/fr/).
   - `cmake/GenerateVersion.cmake` : `CMAKE_CURRENT_LIST_DIR`, évalué dans le corps
     d'une fonction, pointait vers le répertoire de l'appelant plutôt que `cmake/`,
     faisant échouer la génération de `Version.h`.
+- Troncatures pointeur → entier 32 bits (bugs 64-bit réels, pas de simples
+  avertissements) corrigées avec `intptr_t`/`uintptr_t`/`ptrdiff_t` :
+  `Veda/BaseType.cpp` et `VedaLibSoundMP3/MP3SoundObject.cpp` (soustractions de
+  pointeurs castées en `int`/`unsigned int`), `VedaLibDemo/MarchinCubeSpace.cpp`
+  (arrondi d'alignement mémoire sur 32 octets via un masque `int` — corrompait
+  entièrement le pointeur en 64-bit), `VedaLibDemo/Object3DMarchCube.cpp` (pointeur
+  stocké dans un `int` puis ré-additionné et recasté), `VedaGUIWindowsMFC/LeftView.cpp`
+  (`NMHDR::idFrom` est `UINT_PTR` dans le SDK Win32, pas `UINT` — la variable locale
+  tronquait le handle de fenêtre avant même le cast `(HWND)`).
 
 ### Removed
 
@@ -77,5 +87,19 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/lang/fr/).
   remplacée par `libjpeg-turbo` via vcpkg.
 - `VedaGUIWindowsMFC/MainFrm_old.cpp`/`.h` (fichiers obsolètes, non référencés par
   aucun `.vcproj`/`CMakeLists.txt`).
+- 134 occurrences du mot-clé `register` (non standard depuis C++17) dans le code
+  AzurVeda (`Veda`, `VedaLibDemo`, `VedaLibImage`, `VedaMachineOGL`,
+  `VedaLibSoundMP3/MP3SoundObject.cpp`). Le code tiers vendu (fork de libmad,
+  `uniminixm`) n'est pas modifié.
+
+### Known issues
+
+- Avec `/W4`, il reste 425 avertissements dans le code AzurVeda (principalement
+  `C4244` conversions avec perte potentielle, `C4100` paramètres non utilisés,
+  `C4189` variables locales non utilisées, `C4996` fonctions CRT dépréciées,
+  `C4018`/`C4389`/`C4245` signé/non signé) et 72 dans le code tiers vendu (non
+  traité, hors périmètre). Aucun n'est une troncature pointeur→entier 32 bits — ces
+  dernières ont toutes été corrigées (voir *Fixed*). `/WX` n'est donc pas encore
+  activé ; voir `roadmap.md` Phase 3.
 
 [Unreleased]: https://github.com/OWNER/AzurVeda/compare/HEAD

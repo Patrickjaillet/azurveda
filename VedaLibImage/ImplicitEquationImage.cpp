@@ -59,9 +59,9 @@ void	ImplicitEquationImage::UpdateToFrame(float _framedate)
 
 void	ImplicitEquationImage::ProtectedDraw(float _framedate)
 {
-	register double fx,fy,fxd,fyd;
-	register unsigned int xx,yy,xl,yl;
-	register unsigned char *pbuffer = m_pBuffer ;
+	double fx,fy,fxd,fyd;
+	unsigned int xx,yy,xl,yl;
+	unsigned char *pbuffer = m_pBuffer ;
 	fx = fy = 0.0;
 	fxd = fyd = 1.0;
 	xl = GetPixelWidth();
@@ -101,11 +101,11 @@ void	ImplicitEquationImage::ProtectedDraw(float _framedate)
 			}
 		} else
 		{
-			register int intval;
+			int intval;
 			const float v0 = PackFloat::m_0p0;
 			const float v1 = PackFloat::m_1p0;
 			const float v255 = PackFloat::m_255p0;
-			register float fval;
+			float fval;
 			for(xx=0 ; xx < xl ; xx++ )
 			{
 

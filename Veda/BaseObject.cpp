@@ -314,7 +314,7 @@ void	BaseObject::SetBaseContext(BaseContext *_pBaseContext)
 {
 	m_pBaseContext = _pBaseContext ;
 
-	register Cell *pCell = GetFirstCell();
+	Cell *pCell = GetFirstCell();
 	while( pCell )
 	{
 

@@ -74,7 +74,7 @@ const unsigned char * PackFloat::Serialize_In( const unsigned char * _pDescripti
 
 unsigned int PackFloat:: GetSerializedDescriptionSize(void)
 {
-	register unsigned int size=0;
+	unsigned int size=0;
 	for(unsigned int ii=0 ; ii<m_NumberOfDimensionManaged ; ii++ )
 	{
 		if( m_value[ii] == m_0p0 ) size++;
@@ -96,7 +96,7 @@ unsigned char * PackFloat::Serialize_Out(unsigned char * _pDescriptionChunkToFil
 		}else
 		{
 
-			register unsigned int bitImage = *(  (unsigned int *)(&(m_value[ii])) );
+			unsigned int bitImage = *(  (unsigned int *)(&(m_value[ii])) );
 
 			*(_pDescriptionChunkToFill++) = bitImage>>24;
 			*(_pDescriptionChunkToFill++) = bitImage>>16;

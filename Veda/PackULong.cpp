@@ -20,10 +20,10 @@ PackULong::~PackULong(void)
 const unsigned char * PackULong::Serialize_In( const unsigned char * _pDescriptionChunk)
 {
 
-	register unsigned int value;
-	register unsigned int nbByte;
-	register unsigned int cc;
-	register unsigned int bitToShift;
+	unsigned int value;
+	unsigned int nbByte;
+	unsigned int cc;
+	unsigned int bitToShift;
 	bitToShift = value = nbByte = 0 ;
 	do
 	{
@@ -43,8 +43,8 @@ const unsigned char * PackULong::Serialize_In( const unsigned char * _pDescripti
 
 unsigned int PackULong:: GetSerializedDescriptionSize(void)
 {
-	register unsigned int value = m_value;
-	register unsigned int nbByte=0;
+	unsigned int value = m_value;
+	unsigned int nbByte=0;
 	do
 	{
 		value>>=7;
@@ -58,9 +58,9 @@ unsigned int PackULong:: GetSerializedDescriptionSize(void)
 
 unsigned char * PackULong::Serialize_Out(unsigned char * _pDescriptionChunkToFill)
 {
-	register unsigned int value = m_value;
-	register unsigned int nbByte=0;
-	register unsigned int cc;
+	unsigned int value = m_value;
+	unsigned int nbByte=0;
+	unsigned int cc;
 	do
 	{
 		cc = value & 127 ;

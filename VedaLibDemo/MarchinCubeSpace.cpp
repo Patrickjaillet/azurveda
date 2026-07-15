@@ -1,3 +1,4 @@
+#include <cstdint>
 #include "MarchinCubeSpace.h"
 #include "PackFloat.h"
 #include "Texture3D.h"
@@ -262,7 +263,7 @@ bool    MarchinCubeSpace::PreGenerateTriangleTables( void )
 			delete [] allocTable1;
 			return false;
 		}
-		allocptr = (unsigned char *)((int)(allocptr+31) & 0xffffffe0 ) ;
+		allocptr = (unsigned char *)(((uintptr_t)(allocptr+31)) & ~(uintptr_t)0x1F) ;
 		m_pCubeTable_Values = (float *)allocptr;
 		m_pCubeTable_ExtraValue = (MarchCubeExtraValue *)&(m_pCubeTable_Values[totalnumberofcube]);
 		m_pCubeTable_CheckDate = (unsigned int *)&(m_pCubeTable_ExtraValue[totalnumberofcube]);

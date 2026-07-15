@@ -32,7 +32,7 @@
 ## Phase 1 — Outillage moderne (~2-3 jours)
 
 - [x] Remplacer les fichiers `.vcproj` (Visual Studio .NET 2003, Format Version 8.00) par des fichiers projet **Visual Studio 2026** (`.vcxproj`) générés via **CMake** (`CMakeLists.txt` par module + racine) — les anciens `.vcproj`/`.sln` sont conservés à titre de référence historique le temps de valider le build CMake sur une vraie machine Windows/VS2026, puis seront supprimés
-- [x] Cibler exclusivement la plateforme **x64**, toolset MSVC le plus récent (équivalent 2026), standard **C++23** (`CMakeLists.txt` échoue si `CMAKE_SIZEOF_VOID_P != 8` ou si le compilateur n'est pas MSVC)
+- [x] Cibler exclusivement la plateforme **x64**, toolset MSVC le plus récent (équivalent 2022), standard **C++23** (`CMakeLists.txt` échoue si `CMAKE_SIZEOF_VOID_P != 8` ou si le compilateur n'est pas MSVC)
 - [x] Introduire **vcpkg** (manifest mode, `vcpkg.json`) pour les dépendances externes : `libjpeg-turbo` remplace la copie vendue d'IJG libjpeg 6b dans `VedaLibImageJPEG` (le module ne conserve que `ImageJPEG.cpp/.h` et `RegisterLibImageJPEG.cpp/.h`). Le décodeur MP3 (GPL2, fork de libmad) et le lecteur XM restent des sources internes tel quel, un remplacement par un paquet vcpkg étant une décision de licence (Phase à part) plutôt qu'un simple choix d'outillage
 - [x] Mettre en place une CI **GitHub Actions** (`windows-latest`, build MSVC + exécution des exemples `Veda/CodeExamples`) — `Example01_SimpleSerialization` (console, sans GPU) est exécuté ; `Example02`/`Example03` (OpenGL + DirectSound) sont seulement compilés, faute de GPU/périphérique audio sur les runners hébergés
 - [x] Faire en sorte que chaque build réussi sur la branche principale mette à jour automatiquement le numéro de version (Phase 0) et échoue si `CHANGELOG.md` n'a pas été modifié dans la même PR
@@ -48,11 +48,11 @@
 
 ## Phase 3 — Portage 64-bit & C++ moderne (~3-5 jours)
 
-- [ ] Corriger les troncatures pointeur → entier 32 bits, héritées d'une époque où `sizeof(void*) == sizeof(int)` (ex. `Veda/BaseType.cpp`, `VedaLibSoundMP3/MP3SoundObject.cpp`, `VedaLibDemo/MarchinCubeSpace.cpp`) en utilisant `intptr_t`/`uintptr_t`/`ptrdiff_t`
-- [ ] Supprimer les ~227 occurrences du mot-clé `register` (non standard depuis C++17)
-- [x] Corriger les `goto` traversant une initialisation de variable (ex. chargeur LWO dans `VedaLib3DEngine/Object3DMesh3D.cpp`) — corrigé en Phase 1 car il s'agissait d'une erreur de compilation bloquante (pas juste un warning), la portée complète du portage 64-bit/C++ moderne (troncatures pointeur, `register`, `/W4 /WX`) reste à faire
-- [ ] Traiter les avertissements `-Wall -Wextra` / `/W4` restants (retours `fread`/`write` ignorés, etc.)
-- [ ] Activer `/W4 /WX` (warnings comme erreurs) une fois le nettoyage terminé, pour éviter toute régression future
+- [x] Corriger les troncatures pointeur → entier 32 bits, héritées d'une époque où `sizeof(void*) == sizeof(int)` en utilisant `intptr_t`/`uintptr_t`/`ptrdiff_t` : `Veda/BaseType.cpp` (soustraction de pointeurs castée en `int`), `VedaLibSoundMP3/MP3SoundObject.cpp` (idem), `VedaLibDemo/MarchinCubeSpace.cpp` (arrondi d'alignement mémoire sur 32 octets via masque `int` — corrompait complètement le pointeur en 64-bit), `VedaLibDemo/Object3DMarchCube.cpp` (pointeur stocké dans un `int` puis ré-additionné/recasté deux fois), `VedaGUIWindowsMFC/LeftView.cpp` (`NMHDR::idFrom` est en réalité `UINT_PTR` dans le SDK Win32, pas `UINT` — la troncature avait lieu dès la lecture du champ, avant le cast `(HWND)` repéré par le compilateur). Validé avec `/W4` : zéro avertissement `C4311`/`C4312`/`C4302` restant dans le code AzurVeda
+- [x] Supprimer les ~227 occurrences du mot-clé `register` (non standard depuis C++17) — 134 occurrences supprimées dans le code AzurVeda (`Veda`, `VedaLibDemo`, `VedaLibImage`, `VedaMachineOGL`, et `MP3SoundObject.cpp`/`RegisterLibSoundMP3.cpp` dans `VedaLibSoundMP3`). Les occurrences restantes sont dans le code tiers vendu (fork de libmad, `uniminixm`), hors périmètre AzurVeda comme établi en Phase 2
+- [x] Corriger les `goto` traversant une initialisation de variable (ex. chargeur LWO dans `VedaLib3DEngine/Object3DMesh3D.cpp`) — corrigé en Phase 1 car il s'agissait d'une erreur de compilation bloquante (pas juste un warning)
+- [x] `/W4` activé projet entier (`CMakeLists.txt` racine). État des lieux après nettoyage des troncatures pointeur et de `register` : **425 avertissements restants dans le code AzurVeda** (principalement `C4244` conversions avec perte potentielle ×170, `C4100` paramètres non utilisés ×118, `C4189` variables locales non utilisées ×42, `C4996` fonctions CRT dépréciées ×15, `C4018`/`C4389`/`C4245` signé/non signé ×29 — aucun n'est une troncature pointeur→int32) + 72 dans le code tiers vendu (non touché, hors périmètre). **Décision utilisateur (2026-07-15)** : ne traiter que les troncatures pointeur explicitement citées par cette phase et s'arrêter là pour l'instant — corriger les 425 avertissements restants un par un est un chantier à part entière (plusieurs heures, risque de changements de comportement sur du code de 2007 jamais retesté), remis à une itération future de cette phase
+- [ ] Activer `/W4 /WX` (warnings comme erreurs) une fois le nettoyage terminé, pour éviter toute régression future — **non activé** : `/W4` reste actif sans `/WX` tant que les 425 avertissements ci-dessus ne sont pas traités (voir point précédent)
 
 ## Phase 4 — Audio moderne (~2-3 jours)
 
@@ -67,7 +67,7 @@
 
 ## Phase 6 — Éditeur MFC (`VedaGUIWindowsMFC`) (~2-4 jours)
 
-- [ ] Installer le composant optionnel "MFC et ATL" pour Visual Studio 2026 et valider la compilation du projet existant
+- [ ] Installer le composant optionnel "MFC et ATL" pour Visual Studio 2022 et valider la compilation du projet existant
 - [ ] Nettoyer/traduire les ressources `.rc` (menus, dialogues, chaînes) en anglais
 - [ ] Mettre à jour le manifeste applicatif (`VedaDemoOGLMfcGui.manifest`) pour cibler explicitement Windows 10/11 (aucune compatibilité legacy)
 - [ ] Prendre une capture d'écran à jour du logiciel pour le `README.md` à chaque changement visuel notable
@@ -91,7 +91,7 @@
 | Phase | Contenu | Effort estimé |
 |---|---|---|
 | 0 | Fondations (Git, versioning, README, CHANGELOG) | 1-2 j |
-| 1 | Outillage (CMake, vcpkg, VS2026, CI) | 2-3 j |
+| 1 | Outillage (CMake, vcpkg, VS2022, CI) | 2-3 j |
 | 2 | Traduction anglais + suppression commentaires | 3-5 j |
 | 3 | Portage 64-bit / C++ moderne | 3-5 j |
 | 4 | Audio moderne (WASAPI/XAudio2) | 2-3 j |

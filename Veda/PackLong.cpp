@@ -20,7 +20,7 @@ PackLong::~PackLong(void)
 const unsigned char * PackLong::Serialize_In( const unsigned char * _pDescriptionChunk)
 {
 	PackULong bitfield;
-	register const unsigned char *pnextchunk = bitfield.Serialize_In(_pDescriptionChunk);
+	const unsigned char *pnextchunk = bitfield.Serialize_In(_pDescriptionChunk);
 
 	m_value = bitfield.Get()>>1;
 	if( bitfield.Get() & 1 ) m_value = - m_value;
@@ -33,7 +33,7 @@ const unsigned char * PackLong::Serialize_In( const unsigned char * _pDescriptio
 unsigned int PackLong:: GetSerializedDescriptionSize(void)
 {
 	PackULong bitfield;
-	register signed int bitfieldvalue = m_value;
+	signed int bitfieldvalue = m_value;
 	if( m_value<0  ) bitfieldvalue = - bitfieldvalue;
 	bitfieldvalue<<=1;
 	if( m_value<0  ) bitfieldvalue |= 1;
@@ -47,7 +47,7 @@ unsigned int PackLong:: GetSerializedDescriptionSize(void)
 unsigned char * PackLong::Serialize_Out(unsigned char * _pDescriptionChunkToFill)
 {
 	PackULong bitfield;
-	register unsigned int bitfieldvalue = (unsigned int)m_value;
+	unsigned int bitfieldvalue = (unsigned int)m_value;
 	if( m_value<0  ) bitfieldvalue = - (int)bitfieldvalue;
 	bitfieldvalue<<=1;
 	if( m_value<0  ) bitfieldvalue |= 1;

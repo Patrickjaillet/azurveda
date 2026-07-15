@@ -32,7 +32,7 @@ bool RGBAImage::CreateInternal(void)
 	int width = GetPixelWidth() ;
 	int height = GetPixelHeight();
 
-	register unsigned char *pbuffer= m_pBuffer ;
+	unsigned char *pbuffer= m_pBuffer ;
 
 	yy = width*height ;
 	for(xx =0 ; xx<yy ; xx++)
@@ -166,8 +166,8 @@ unsigned int	RGBAImage::GetPixelHeight()
 void    RGBAImage::TslToRgb(  unsigned int t,unsigned int  s,unsigned int  l, unsigned char *R )
 {
 
-register int     rr,gg,bb;
-register int     ii,f,p,q,x;
+int     rr,gg,bb;
+int     ii,f,p,q,x;
 
         if ( s == 0 )
         {

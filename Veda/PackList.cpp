@@ -60,7 +60,7 @@ void PackList::DeleteElement( unsigned int _index)
 
 void PackList::DeleteElement( BaseType *_pObWhichCellIsToDestroy)
 {
-	register Cell *pPrevCell,*pAfterCell,*pCell = m_pFirstCell ;
+	Cell *pPrevCell,*pAfterCell,*pCell = m_pFirstCell ;
 
 	while( pCell )
 	{
@@ -102,8 +102,8 @@ const unsigned char * PackList::Serialize_In( const unsigned char * _pDescriptio
 		DeleteAllElements();
 #endif
 
-	register const unsigned char	*pEndOfChunk = _pDescriptionChunk ;
-	register Cell	*pCell;
+	const unsigned char	*pEndOfChunk = _pDescriptionChunk ;
+	Cell	*pCell;
 
 	_pDescriptionChunk = mSerUlong_ChunkLength.Serialize_In(_pDescriptionChunk);
 
@@ -133,8 +133,8 @@ const unsigned char * PackList::Serialize_In( const unsigned char * _pDescriptio
 const unsigned char * PackList::MergeSerialize_In( const unsigned char * _pDescriptionChunk,const char *_pendName)
 {
 
-	register const unsigned char	*pEndOfChunk = _pDescriptionChunk ;
-	register Cell	*pCell;
+	const unsigned char	*pEndOfChunk = _pDescriptionChunk ;
+	Cell	*pCell;
 
 	_pDescriptionChunk = mSerUlong_ChunkLength.Serialize_In(_pDescriptionChunk);
 
@@ -158,9 +158,9 @@ const unsigned char * PackList::MergeSerialize_In( const unsigned char * _pDescr
 unsigned int PackList::GetSerializedDescriptionSize(void)
 {
 
-	register unsigned int deltaJumpLength;
-	register unsigned int length=1;
-	register Cell	*pCell = m_pFirstCell ;
+	unsigned int deltaJumpLength;
+	unsigned int length=1;
+	Cell	*pCell = m_pFirstCell ;
 
 	while( pCell )
 	{
@@ -190,7 +190,7 @@ unsigned int PackList::GetSerializedDescriptionSize(void)
 
 unsigned char * PackList::Serialize_Out(unsigned char * _pDescriptionChunkToFill)
 {
-	register Cell	*pCell = m_pFirstCell ;
+	Cell	*pCell = m_pFirstCell ;
 	_pDescriptionChunkToFill = mSerUlong_ChunkLength.Serialize_Out( _pDescriptionChunkToFill );
 	while( pCell )
 	{

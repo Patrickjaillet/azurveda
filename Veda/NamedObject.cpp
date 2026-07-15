@@ -28,8 +28,8 @@ void  NamedObject::SetName( const char * _pname )
 const unsigned char * NamedObject::Serialize_In( const unsigned char * _pDescriptionChunk)
 {
 
-	register const unsigned char	*pEndOfChunk = _pDescriptionChunk ;
-	register Cell	*pCell = m_pFirstCell ;
+	const unsigned char	*pEndOfChunk = _pDescriptionChunk ;
+	Cell	*pCell = m_pFirstCell ;
 
 	_pDescriptionChunk = mSerUlong_ChunkLength.Serialize_In(_pDescriptionChunk);
 
@@ -49,9 +49,9 @@ const unsigned char * NamedObject::Serialize_In( const unsigned char * _pDescrip
 unsigned int NamedObject::GetSerializedDescriptionSize(void)
 {
 
-	register unsigned int deltaJumpLength;
-	register unsigned int length=1;
-	register Cell	*pCell = m_pFirstCell ;
+	unsigned int deltaJumpLength;
+	unsigned int length=1;
+	Cell	*pCell = m_pFirstCell ;
 
 	while( pCell )
 	{
@@ -81,7 +81,7 @@ unsigned int NamedObject::GetSerializedDescriptionSize(void)
 
 unsigned char * NamedObject::Serialize_Out(unsigned char * _pDescriptionChunkToFill)
 {
-	register Cell	*pCell = m_pFirstCell ;
+	Cell	*pCell = m_pFirstCell ;
 	_pDescriptionChunkToFill = mSerUlong_ChunkLength.Serialize_Out( _pDescriptionChunkToFill );
 	while( pCell )
 	{

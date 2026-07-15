@@ -29,9 +29,9 @@ bool PerlinNoiseImage::CreateInternal(void)
 
 	if( !ProceduralImage::CreateInternal() ) return(false);
 
-	register	unsigned char *pchunkbase=m_pBuffer;
-	register	unsigned int    mask,offset=1,middle,ofx,ofy;
-    register	int             width_height,ll,vv,vv2,force,xx,yy;
+	unsigned char *pchunkbase=m_pBuffer;
+	unsigned int    mask,offset=1,middle,ofx,ofy;
+    int             width_height,ll,vv,vv2,force,xx,yy;
 
     *(pchunkbase) = 128 ;
 	ll =  mask = width_height = GetPixelWidth();

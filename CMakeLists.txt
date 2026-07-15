@@ -25,6 +25,8 @@ set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>DLL")
 # Windows 10/11 only (roadmap.md "Conventions de développement"): 0x0A00 = _WIN32_WINNT_WIN10.
 add_compile_definitions(WINVER=0x0A00 _WIN32_WINNT=0x0A00)
 
+add_compile_options(/W4)
+
 option(AZURVEDA_BUILD_GPL_MODULES "Build the GPL2-licensed modules (VedaLibSoundMP3, VedaLibDemo, VedaGUIWindowsMFC)" ON)
 option(AZURVEDA_BUILD_EXAMPLES "Build the Veda/CodeExamples sample programs" ON)
 option(AZURVEDA_BUILD_MFC_EDITOR "Build VedaGUIWindowsMFC (requires the MFC/ATL optional VS component and AZURVEDA_BUILD_GPL_MODULES)" ON)

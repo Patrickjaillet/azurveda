@@ -40,8 +40,8 @@ ClassNode::~ClassNode(void)
 
 	DestroyAllManagedObjects();
 
-	register ClassNode *pNextSon;
-	register ClassNode *pSon = m_pFirstSonClassNode ;
+	ClassNode *pNextSon;
+	ClassNode *pSon = m_pFirstSonClassNode ;
 
 	m_pFirstSonClassNode = 0L;
 	while( pSon )
@@ -56,8 +56,8 @@ ClassNode::~ClassNode(void)
 void	ClassNode::CloseAllObjects( )
 {
 
-	register BaseObject *pObject;
-	register PackStruct::Cell *pCell = m_BaseObjectList.GetFirstCell();
+	BaseObject *pObject;
+	PackStruct::Cell *pCell = m_BaseObjectList.GetFirstCell();
 	while( pCell )
 	{
 		pObject = (BaseObject *)pCell->GetManagedObject();
@@ -65,7 +65,7 @@ void	ClassNode::CloseAllObjects( )
 		pCell = pCell->GetNextBrotherCell();
 	}
 
-	register ClassNode *pNextSon = m_pFirstSonClassNode ;
+	ClassNode *pNextSon = m_pFirstSonClassNode ;
 	while( pNextSon )
 	{
 		pNextSon->CloseAllObjects();
@@ -79,7 +79,7 @@ const unsigned char * ClassNode::Serialize_In( const unsigned char * _pDescripti
 {
 	NamedObject oObject;
 	unsigned int chunksize;
-	register const unsigned char *pNextChunk = _pDescriptionChunk ;
+	const unsigned char *pNextChunk = _pDescriptionChunk ;
 
 	_pDescriptionChunk = NamedObject::Serialize_In(_pDescriptionChunk);
 
@@ -100,11 +100,11 @@ const unsigned char * ClassNode::Serialize_In( const unsigned char * _pDescripti
 	m_NumberOfObjectInstancied=0;
 #endif
 
-	register PackStruct::Cell *pCell = m_BaseObjectList.GetFirstCell();
+	PackStruct::Cell *pCell = m_BaseObjectList.GetFirstCell();
 	while(pCell)
 	{
 
-		register BaseObject *pOb = (BaseObject *)pCell->GetManagedObject();
+		BaseObject *pOb = (BaseObject *)pCell->GetManagedObject();
 		if(pOb) pOb->SetBaseContext(m_pBaseContext);
 #ifdef _ENGINE_EDITABLE_
 		m_NumberOfObjectInstancied++;
@@ -119,9 +119,9 @@ const unsigned char * ClassNode::Serialize_In( const unsigned char * _pDescripti
 
 		oObject.Serialize_In(_pDescriptionChunk);
 
-		register const char * className =  oObject.GetName() ;
+		const char * className =  oObject.GetName() ;
 
-		register ClassNode *pNextSon = m_pFirstSonClassNode ;
+		ClassNode *pNextSon = m_pFirstSonClassNode ;
 		while( pNextSon )
 		{
 
@@ -150,11 +150,11 @@ const unsigned char * ClassNode::Serialize_In( const unsigned char * _pDescripti
 unsigned int ClassNode:: GetSerializedDescriptionSize(void)
 {
 
-	register unsigned int length = NamedObject::GetSerializedDescriptionSize();
+	unsigned int length = NamedObject::GetSerializedDescriptionSize();
 
 	length += m_BaseObjectList.GetSerializedDescriptionSize();
 
-	register ClassNode *pNextSon = m_pFirstSonClassNode ;
+	ClassNode *pNextSon = m_pFirstSonClassNode ;
 	while( pNextSon )
 	{
 		if( pNextSon->IsUseful() )
@@ -190,7 +190,7 @@ unsigned char * ClassNode::Serialize_Out(unsigned char * _pDescriptionChunkToFil
 
 	_pDescriptionChunkToFill = m_BaseObjectList.Serialize_Out(_pDescriptionChunkToFill);
 
-	register ClassNode *pNextSon = m_pFirstSonClassNode ;
+	ClassNode *pNextSon = m_pFirstSonClassNode ;
 	while( pNextSon )
 	{
 		if( pNextSon->IsUseful() )
@@ -204,8 +204,8 @@ unsigned char * ClassNode::Serialize_Out(unsigned char * _pDescriptionChunkToFil
 
 BaseObject *ClassNode::GetBaseObject( const char *  _ObjectName)
 {
-	register BaseObject *pNextObject=0L;
-	register PackStruct::Cell *pCell = m_BaseObjectList.GetFirstCell();
+	BaseObject *pNextObject=0L;
+	PackStruct::Cell *pCell = m_BaseObjectList.GetFirstCell();
 	while(pCell)
 	{
 		pNextObject = (BaseObject *)pCell->GetManagedObject();
@@ -213,7 +213,7 @@ BaseObject *ClassNode::GetBaseObject( const char *  _ObjectName)
 		pCell = pCell->GetNextBrotherCell();
 	}
 
-	register ClassNode *pNextSon = m_pFirstSonClassNode ;
+	ClassNode *pNextSon = m_pFirstSonClassNode ;
 	while( pNextSon )
 	{
 		pNextObject = pNextSon->GetBaseObject(_ObjectName);
@@ -229,11 +229,11 @@ ClassNode *ClassNode::GetSubClassNodeByDescription( const BaseObject::ClassDescr
 
 	if( _classDescription ==  m_ClassDescription ) return(this);
 
-	register ClassNode *pSon = m_pFirstSonClassNode ;
+	ClassNode *pSon = m_pFirstSonClassNode ;
 	while( pSon )
 	{
 
-		register ClassNode *pclass = pSon->GetSubClassNodeByDescription( _classDescription );
+		ClassNode *pclass = pSon->GetSubClassNodeByDescription( _classDescription );
 		if( pclass ) return( pclass );
 
 		pSon = pSon->m_pNextBrotherClassNode ;
@@ -243,8 +243,8 @@ ClassNode *ClassNode::GetSubClassNodeByDescription( const BaseObject::ClassDescr
 
 void	ClassNode::RegisterClassList( const BaseObject::ClassDescription * const * _pclassDescriptionList )
 {
-	register ClassNode *pPossibleDouble;
-	register ClassNode *pSuperClass;
+	ClassNode *pPossibleDouble;
+	ClassNode *pSuperClass;
 
 	while( *_pclassDescriptionList )
 	{
@@ -254,7 +254,7 @@ void	ClassNode::RegisterClassList( const BaseObject::ClassDescription * const * 
 		if( (!pSuperClass) || (pPossibleDouble) ){ _pclassDescriptionList++; continue; }
 #ifdef _ENGINE_EDITABLE_
 
-		register ClassNode *pSon = pSuperClass->m_pFirstSonClassNode ;
+		ClassNode *pSon = pSuperClass->m_pFirstSonClassNode ;
 		while( pSon )
 		{
 			if(PackString::Compare( pSon->m_ClassDescription->m_ClassName,
@@ -268,7 +268,7 @@ void	ClassNode::RegisterClassList( const BaseObject::ClassDescription * const * 
 		}
 #endif
 
-			register ClassNode *pNewClassNode = new ClassNode( **_pclassDescriptionList );
+			ClassNode *pNewClassNode = new ClassNode( **_pclassDescriptionList );
 
 			pNewClassNode->m_pNextBrotherClassNode = pSuperClass->m_pFirstSonClassNode ;
 			pSuperClass->m_pFirstSonClassNode = pNewClassNode ;
@@ -334,7 +334,7 @@ BaseObject *ClassNode::NewObject( const char *  _ObjectName )
 void	ClassNode::DestroyManagedObject( BaseObject * _objectToDelete )
 {
 
-	register PackStruct::Cell *pCell = m_BaseObjectList.GetFirstCell();
+	PackStruct::Cell *pCell = m_BaseObjectList.GetFirstCell();
 	while( pCell )
 	{
 		if( pCell->GetManagedObject() == _objectToDelete )
@@ -360,14 +360,14 @@ void	ClassNode::DestroyManagedObject( BaseObject * _objectToDelete )
 unsigned int ClassNode::SetObjectsUniqueReferenceIndex( unsigned int _FirstnumberToSet,int _increment )
 {
 
-	register PackStruct::Cell *pCell = m_BaseObjectList.GetFirstCell();
+	PackStruct::Cell *pCell = m_BaseObjectList.GetFirstCell();
 	while( pCell )
 	{
 		((BaseObject *)pCell->GetManagedObject())->SetUniqueReference( _FirstnumberToSet );
 		pCell = pCell->GetNextBrotherCell();
 		_FirstnumberToSet+=_increment;
 	}
-	register ClassNode *pNextSon = m_pFirstSonClassNode ;
+	ClassNode *pNextSon = m_pFirstSonClassNode ;
 	while( pNextSon )
 	{
 		_FirstnumberToSet = pNextSon->SetObjectsUniqueReferenceIndex( _FirstnumberToSet, _increment );
@@ -380,8 +380,8 @@ unsigned int ClassNode::SetObjectsUniqueReferenceIndex( unsigned int _Firstnumbe
 BaseObject *ClassNode::GetBaseObjectBySerializedIndex( unsigned int _index)
 {
 
-	register BaseObject *pObject;
-	register PackStruct::Cell *pCell = m_BaseObjectList.GetFirstCell();
+	BaseObject *pObject;
+	PackStruct::Cell *pCell = m_BaseObjectList.GetFirstCell();
 	while( pCell )
 	{
 		pObject = (BaseObject *)pCell->GetManagedObject();
@@ -389,7 +389,7 @@ BaseObject *ClassNode::GetBaseObjectBySerializedIndex( unsigned int _index)
 		pCell = pCell->GetNextBrotherCell();
 	}
 
-	register ClassNode *pNextSon = m_pFirstSonClassNode ;
+	ClassNode *pNextSon = m_pFirstSonClassNode ;
 	while( pNextSon )
 	{
 		pObject = pNextSon->GetBaseObjectBySerializedIndex( _index );
@@ -417,7 +417,7 @@ void ClassNode::ProtectedDestroyAllObjects()
 {
 	DestroyAllManagedObjects();
 
-	register ClassNode *pSon = m_pFirstSonClassNode ;
+	ClassNode *pSon = m_pFirstSonClassNode ;
 	while( pSon )
 	{
 		pSon->ProtectedDestroyAllObjects();
@@ -431,8 +431,8 @@ void ClassNode::ProtectedDestroyAllObjects()
 void ClassNode::ProtectedDestroyAllIndependantObjects( BaseObject *_pObjectWhichAllOtherShouldDependOn )
 {
 
-	register BaseObject *pObject;
-	register PackStruct::Cell *pNextCell,*pCell = m_BaseObjectList.GetFirstCell();
+	BaseObject *pObject;
+	PackStruct::Cell *pNextCell,*pCell = m_BaseObjectList.GetFirstCell();
 	while( pCell )
 	{
 		pNextCell = pCell->GetNextBrotherCell();
@@ -443,7 +443,7 @@ void ClassNode::ProtectedDestroyAllIndependantObjects( BaseObject *_pObjectWhich
 		pCell = pNextCell;
 	}
 
-	register ClassNode *pNextSon = m_pFirstSonClassNode ;
+	ClassNode *pNextSon = m_pFirstSonClassNode ;
 	while( pNextSon )
 	{
 		pNextSon->ProtectedDestroyAllIndependantObjects( _pObjectWhichAllOtherShouldDependOn );
@@ -457,25 +457,25 @@ const unsigned char * ClassNode::MergeSerialize_In( const unsigned char * _pDesc
 {
 	NamedObject oObject;
 	unsigned int chunksize;
-	register const unsigned char *pNextChunk = _pDescriptionChunk ;
+	const unsigned char *pNextChunk = _pDescriptionChunk ;
 
 	_pDescriptionChunk = NamedObject::Serialize_In(_pDescriptionChunk);
 
-	register PackStruct::Cell *pLastCellBeforeMerge = m_BaseObjectList.GetLastCell();
+	PackStruct::Cell *pLastCellBeforeMerge = m_BaseObjectList.GetLastCell();
 
 	_pDescriptionChunk = m_BaseObjectList.MergeSerialize_In(_pDescriptionChunk);
 
 	chunksize =  GetChunkLength();
 	pNextChunk += chunksize ;
 
-	register PackStruct::Cell *pCell;
+	PackStruct::Cell *pCell;
 	if( pLastCellBeforeMerge ) pCell = pLastCellBeforeMerge->GetNextBrotherCell();
 	else  pCell = m_BaseObjectList.GetFirstCell();
 
 	while(pCell)
 	{
 
-		register BaseObject *pOb = (BaseObject *)pCell->GetManagedObject();
+		BaseObject *pOb = (BaseObject *)pCell->GetManagedObject();
 		if(pOb) pOb->SetBaseContext(m_pBaseContext);
 		m_NumberOfObjectInstancied++;
 
@@ -488,8 +488,8 @@ const unsigned char * ClassNode::MergeSerialize_In( const unsigned char * _pDesc
 
 		oObject.Serialize_In(_pDescriptionChunk);
 
-		register const char * className =  oObject.GetName() ;
-		register ClassNode *pNextSon = m_pFirstSonClassNode ;
+		const char * className =  oObject.GetName() ;
+		ClassNode *pNextSon = m_pFirstSonClassNode ;
 		while( pNextSon )
 		{
 
@@ -514,8 +514,8 @@ const unsigned char * ClassNode::MergeSerialize_In( const unsigned char * _pDesc
 void ClassNode::FlushNames()
 {
 
-	register BaseObject *pObject;
-	register PackStruct::Cell *pCell = m_BaseObjectList.GetFirstCell();
+	BaseObject *pObject;
+	PackStruct::Cell *pCell = m_BaseObjectList.GetFirstCell();
 	while( pCell )
 	{
 		pObject = (BaseObject *)pCell->GetManagedObject();
@@ -523,7 +523,7 @@ void ClassNode::FlushNames()
 		pCell = pCell->GetNextBrotherCell();
 	}
 
-	register ClassNode *pNextSon = m_pFirstSonClassNode ;
+	ClassNode *pNextSon = m_pFirstSonClassNode ;
 	while( pNextSon )
 	{
 		pNextSon->FlushNames();
@@ -538,7 +538,7 @@ bool ClassNode::IsUseful() const
 	PackStruct::Cell *pCell = m_BaseObjectList.GetFirstCell();
 	if( pCell ) return true;
 
-	register ClassNode *pNextSon = m_pFirstSonClassNode ;
+	ClassNode *pNextSon = m_pFirstSonClassNode ;
 	while( pNextSon )
 	{
 		if( pNextSon->IsUseful() ) return true;
@@ -559,7 +559,7 @@ void ClassNode::ProtectedAddSameClasses( BaseContext *_pContextToAddManagement )
 
 	_pContextToAddManagement->RegisterClassList( pclassDescriptionList );
 
-	register ClassNode *pNextSon = m_pFirstSonClassNode ;
+	ClassNode *pNextSon = m_pFirstSonClassNode ;
 	while( pNextSon )
 	{
 		pNextSon->ProtectedAddSameClasses(_pContextToAddManagement);
@@ -578,7 +578,7 @@ void ClassNode::ExportCPPClassDescription( PackString &_fileTextImage ) const
 	_fileTextImage.AddString( m_ClassDescription->m_CPlusPlusClassName );
 	_fileTextImage.AddString(" {public: static const BaseObject::ClassDescription m_Description; };\n");
 
-	register ClassNode *pNextSon = m_pFirstSonClassNode ;
+	ClassNode *pNextSon = m_pFirstSonClassNode ;
 	while( pNextSon )
 	{
 		pNextSon->ExportCPPClassDescription(_fileTextImage);
@@ -598,7 +598,7 @@ void ClassNode::ExportCPPClassDescriptionLine( PackString &_fileTextImage ) cons
 	_fileTextImage.AddString( m_ClassDescription->m_CPlusPlusClassName );
 	_fileTextImage.AddString("::m_Description,\n");
 
-	register ClassNode *pNextSon = m_pFirstSonClassNode ;
+	ClassNode *pNextSon = m_pFirstSonClassNode ;
 	while( pNextSon )
 	{
 		pNextSon->ExportCPPClassDescriptionLine(_fileTextImage);

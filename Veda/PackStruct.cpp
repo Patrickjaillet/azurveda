@@ -22,7 +22,7 @@ PackStruct::~PackStruct(void)
 PackStruct::Cell *PackStruct::AddElement(  int _indexWhereToInsert,BaseType *_pObjectToAdd )
 {
 
-	register Cell *pNewCell = new Cell();
+	Cell *pNewCell = new Cell();
 	if( !pNewCell ) return(0L);
 
 #ifdef _ENGINE_EDITABLE_
@@ -48,8 +48,8 @@ PackStruct::Cell *PackStruct::AddElement(  int _indexWhereToInsert,BaseType *_pO
 	} else
 	{
 
-		register Cell *pPrevCell=0L,*pCell = m_pFirstCell ;
-		register int nn = 0;
+		Cell *pPrevCell=0L,*pCell = m_pFirstCell ;
+		int nn = 0;
 		while( pCell && nn != _indexWhereToInsert )
 		{
 			pPrevCell = pCell;
@@ -86,8 +86,8 @@ PackStruct::Cell *PackStruct::AddElement(  int _indexWhereToInsert,BaseType *_pO
 
 BaseType *PackStruct::Get( unsigned int _index)
 {
-	register unsigned int nn=0;
-	register Cell *pCell = m_pFirstCell;
+	unsigned int nn=0;
+	Cell *pCell = m_pFirstCell;
 	while( pCell )
 	{
 		if( nn == _index ) return( pCell->GetManagedObject() );
@@ -101,8 +101,8 @@ BaseType *PackStruct::Get( unsigned int _index)
 
 void PackStruct::DeleteElement( unsigned int _index)
 {
-	register Cell *pPrevCell,*pAfterCell,*pCell = m_pFirstCell ;
-	register unsigned int nn = 0;
+	Cell *pPrevCell,*pAfterCell,*pCell = m_pFirstCell ;
+	unsigned int nn = 0;
 	while( pCell )
 	{
 		if( nn == _index )
@@ -138,7 +138,7 @@ void PackStruct::DeleteAllElements( void )
 const unsigned char * PackStruct::Serialize_In( const unsigned char * _pDescriptionChunk)
 {
 
-	register Cell	*pCell = m_pFirstCell ;
+	Cell	*pCell = m_pFirstCell ;
 
 	while( pCell )
 	{
@@ -154,8 +154,8 @@ const unsigned char * PackStruct::Serialize_In( const unsigned char * _pDescript
 unsigned int PackStruct:: GetSerializedDescriptionSize(void)
 {
 
-	register unsigned int length=0;
-	register Cell	*pCell = m_pFirstCell ;
+	unsigned int length=0;
+	Cell	*pCell = m_pFirstCell ;
 
 	while( pCell )
 	{
@@ -170,7 +170,7 @@ unsigned int PackStruct:: GetSerializedDescriptionSize(void)
 
 unsigned char * PackStruct::Serialize_Out(unsigned char * _pDescriptionChunkToFill)
 {
-	register Cell	*pCell = m_pFirstCell ;
+	Cell	*pCell = m_pFirstCell ;
 
 	while( pCell )
 	{
@@ -191,7 +191,7 @@ void	PackStruct::SetObjectThatManagesThis(BaseObject *_pManager)
 {
 	m_pObjectThatManagesThis = _pManager;
 
-	register Cell	*pCell = m_pFirstCell ;
+	Cell	*pCell = m_pFirstCell ;
 	while( pCell )
 	{
 		pCell->GetManagedObject()->SetObjectThatManagesThis(_pManager);
@@ -208,7 +208,7 @@ const char	*PackStruct::ValueToString()
 	if( !m_pValueString ) m_pValueString = new PackString;
 	if( !m_pValueString ) return(pEmpty);
 
-	register Cell	*pCell = m_pFirstCell ;
+	Cell	*pCell = m_pFirstCell ;
 	m_pValueString->Set(pEmpty);
 	while( pCell )
 	{

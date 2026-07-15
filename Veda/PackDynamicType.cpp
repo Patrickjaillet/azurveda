@@ -41,7 +41,7 @@ const unsigned char *PackDynamicType::Serialize_In( const unsigned char * _pDesc
 
 unsigned int  PackDynamicType::GetSerializedDescriptionSize(void)
 {
-	register unsigned int	size = mSer_TypeEnum.GetSerializedDescriptionSize();
+	unsigned int	size = mSer_TypeEnum.GetSerializedDescriptionSize();
 
 	if( m_pSelectedType )
 	{

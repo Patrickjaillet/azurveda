@@ -366,7 +366,7 @@ void MP3SoundObject::ProcessSoundInterupt( VirtualMachine::SoundBufferToAddYourS
 		if(m_RunnerVector == 0x00010000)
 		{
 
-			register unsigned int ii = m_nsamplesRunner;
+			unsigned int ii = m_nsamplesRunner;
 			if( lengthToRender>=ii )
 			{	m_nsamplesRunner =0;
 				lengthToRender -= ii;
@@ -379,7 +379,7 @@ void MP3SoundObject::ProcessSoundInterupt( VirtualMachine::SoundBufferToAddYourS
 			{
 				while(ii)
 				{
-					register float value = ((float)(*m_pleft_chRunner++)) * downscale ;
+					float value = ((float)(*m_pleft_chRunner++)) * downscale ;
 					(*pBufferToWrite++) += value;
 					(*pBufferToWrite++) += value;
 					ii--;
@@ -406,12 +406,12 @@ void MP3SoundObject::ProcessSoundInterupt( VirtualMachine::SoundBufferToAddYourS
 			if( lengthToRender<ii ) ii = lengthToRender;
 			lengthToRender -= ii;
 			signed int const *pleft = m_pleft_chRunner;
-			register unsigned int sampleJustDone=(m_RunnerIndex>>16);
+			unsigned int sampleJustDone=(m_RunnerIndex>>16);
 
 			if(m_psynth->pcm.channels ==1)
 			{
-				register float value;
-				register float valuep1;
+				float value;
+				float valuep1;
 				const float aaif = 1.0f/65536.0f;
 				while(ii)
 				{
@@ -427,10 +427,10 @@ void MP3SoundObject::ProcessSoundInterupt( VirtualMachine::SoundBufferToAddYourS
 			} else
 			{
 				signed int const *pright = m_pright_chRunner;
-				register float value;
-				register float valuep1;
+				float value;
+				float valuep1;
 				const float aaif = 1.0f/65536.0f;
-				register float aarate;
+				float aarate;
 				while(ii)
 				{
 					aarate = ((float)(m_RunnerIndex & 0x0000ffff) * aaif ) ;
@@ -462,11 +462,11 @@ void MP3SoundObject::ProcessSoundInterupt( VirtualMachine::SoundBufferToAddYourS
 			if( lengthToRender<ii ) ii = lengthToRender;
 			lengthToRender -= ii;
 			signed int const *pleft = m_pleft_chRunner;
-			register unsigned int sampleJustDone=(m_RunnerIndex>>16);
+			unsigned int sampleJustDone=(m_RunnerIndex>>16);
 
 			if(m_psynth->pcm.channels ==1)
 			{
-				register float value;
+				float value;
 				while(ii)
 				{
 					value = ((float)(pleft[sampleJustDone])) * downscale ;
@@ -513,8 +513,9 @@ bool	MP3SoundObject::FeedStream()
 {
 	if(m_LastFrameIndex>=m_NumberOfFrame) return false;
 
-	unsigned int frameLength = 8+(unsigned int)(m_pFrameReferenceTable[m_LastFrameIndex+1].m_pFrameStart)-
-		(unsigned int)(m_pFrameReferenceTable[m_LastFrameIndex].m_pFrameStart);
+	unsigned int frameLength = static_cast<unsigned int>(8 +
+		(m_pFrameReferenceTable[m_LastFrameIndex+1].m_pFrameStart -
+		 m_pFrameReferenceTable[m_LastFrameIndex].m_pFrameStart));
 
 	mad_stream_buffer(m_pstream,
 		m_pFrameReferenceTable[m_LastFrameIndex].m_pFrameStart,frameLength);

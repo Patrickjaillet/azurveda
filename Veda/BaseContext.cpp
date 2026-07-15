@@ -486,7 +486,7 @@ const unsigned char * BaseContext::MergeSerialize_In( const unsigned char * _pDe
 
 	SetObjectsUniqueReferenceIndex(0,0);
 
-	register PackObjectReference *pRef = m_pFirstObjectReferenceInContextList;
+	PackObjectReference *pRef = m_pFirstObjectReferenceInContextList;
 	while( pRef )
 	{
 		pRef->Set(0UL);
@@ -586,7 +586,7 @@ void BaseContext::ExportAsCPPTableFile(const char *_pfileToExport,const char *_p
 
 		fileText.Set("class BaseObject { public: class ClassDescription; };\n");
 
-		register const ClassNode *pNextSon = m_pFirstSonClassNode ;
+		const ClassNode *pNextSon = m_pFirstSonClassNode ;
 		while( pNextSon )
 		{
 			pNextSon->ExportCPPClassDescription(fileText);
