@@ -41,7 +41,7 @@ public:
 
 #ifdef _ENGINE_EDITABLE_
 
-	typedef enum {
+	enum {
 		tm_Object3DMesh3D_SetAsCube=tm_BaseObject_FirstInheritageToolMethod,
 		tm_Object3DMesh3D_LoadLWO,
 		tm_Object3DMesh3D_FirstInheritageToolMethod,

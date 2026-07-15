@@ -51,27 +51,27 @@ void VirtualEquation::ProcessPreview_CreateLine(VirtualMachine::InternalObject3D
 
 void VirtualEquation::ProcessPreview_DrawEquation(double _frameDate,VirtualMachine::InternalViewPort *_pPreviewViewPort,const PreviewConfiguration *)
 {
-	VirtualMachine::InternalObject3DBuffer	*m_pPreviewLine;
+	VirtualMachine::InternalObject3DBuffer	*pPreviewLine;
 	VirtualMachine::InternalObject3DBuffer	*m_pPreviewLineY;
 	VirtualMachine::InternalObject3DBuffer	*m_pPreviewLineZ;
 	VirtualMachine::InternalObject3DBuffer	*m_pPreviewLineD;
 	VirtualMachine::InternalObject3DBuffer	*m_pGridLine;
 	ProcessPreview_CreateLine(&m_pGridLine,2);
 	if(!m_pGridLine) return;
-	ProcessPreview_CreateLine(&m_pPreviewLine,m_PreviewLinePoints);
+	ProcessPreview_CreateLine(&pPreviewLine,m_PreviewLinePoints);
 	ProcessPreview_CreateLine(&m_pPreviewLineY,m_PreviewLinePoints);
 	ProcessPreview_CreateLine(&m_pPreviewLineZ,m_PreviewLinePoints);
 	ProcessPreview_CreateLine(&m_pPreviewLineD,m_PreviewLinePoints);
-	if(!m_pPreviewLine || !m_pPreviewLineY || !m_pPreviewLineZ || !m_pPreviewLineD )
+	if(!pPreviewLine || !m_pPreviewLineY || !m_pPreviewLineZ || !m_pPreviewLineD )
 	{
 		GetMachine()->DeleteObject3DBuffer(&m_pGridLine);
-		GetMachine()->DeleteObject3DBuffer(&m_pPreviewLine);
+		GetMachine()->DeleteObject3DBuffer(&pPreviewLine);
 		GetMachine()->DeleteObject3DBuffer(&m_pPreviewLineY);
 		GetMachine()->DeleteObject3DBuffer(&m_pPreviewLineZ);
 		GetMachine()->DeleteObject3DBuffer(&m_pPreviewLineD);
 		return;
 	}
-	m_pPreviewLine->SetColor(1.0f,0.0f,0.0f,0.6f);
+	pPreviewLine->SetColor(1.0f,0.0f,0.0f,0.6f);
 	m_pPreviewLineY->SetColor(0.0f,1.0f,0.0f,0.6f);
 	m_pPreviewLineZ->SetColor(0.0f,0.0f,1.0f,0.6f);
 	m_pPreviewLineD->SetColor(0.5f,0.5f,0.5f,0.5f);
@@ -206,7 +206,7 @@ void VirtualEquation::ProcessPreview_DrawEquation(double _frameDate,VirtualMachi
 			pVert->m_z = 0.0f;
 	_pPreviewViewPort->RenderMesh(m_pGridLine);
 
-		pVert = m_pPreviewLine->GetFirstVertex();
+		pVert = pPreviewLine->GetFirstVertex();
 		pVertY = m_pPreviewLineY->GetFirstVertex();
 		pVertZ = m_pPreviewLineZ->GetFirstVertex();
 		pVertD = m_pPreviewLineD->GetFirstVertex();
@@ -240,12 +240,12 @@ void VirtualEquation::ProcessPreview_DrawEquation(double _frameDate,VirtualMachi
 			xds1+=vecx;
 		}
 
-	_pPreviewViewPort->RenderMesh(m_pPreviewLine);
+	_pPreviewViewPort->RenderMesh(pPreviewLine);
 	_pPreviewViewPort->RenderMesh(m_pPreviewLineY);
 	_pPreviewViewPort->RenderMesh(m_pPreviewLineZ);
 	_pPreviewViewPort->RenderMesh(m_pPreviewLineD);
 	GetMachine()->DeleteObject3DBuffer(&m_pGridLine);
-	GetMachine()->DeleteObject3DBuffer(&m_pPreviewLine);
+	GetMachine()->DeleteObject3DBuffer(&pPreviewLine);
 	GetMachine()->DeleteObject3DBuffer(&m_pPreviewLineY);
 	GetMachine()->DeleteObject3DBuffer(&m_pPreviewLineZ);
 	GetMachine()->DeleteObject3DBuffer(&m_pPreviewLineD);

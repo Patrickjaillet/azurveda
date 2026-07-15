@@ -65,20 +65,20 @@ void CDialog_PackFloatByte_Limits::OnOK()
 	if(pVedaOb->GetVectorDimension()>1 )
 	{
 		m_editctrlY.GetWindowText(ctxt);
-		float value = (float)atof(ctxt.GetString());
-		pVedaOb->Set(1,value);
+		float valueY = (float)atof(ctxt.GetString());
+		pVedaOb->Set(1,valueY);
 	}
 	if(pVedaOb->GetVectorDimension()>2 )
 	{
 		m_editctrlZ.GetWindowText(ctxt);
-		float value = (float)atof(ctxt.GetString());
-		pVedaOb->Set(2,value);
+		float valueZ = (float)atof(ctxt.GetString());
+		pVedaOb->Set(2,valueZ);
 	}
 	if(pVedaOb->GetVectorDimension()>3 )
 	{
 		m_editctrlD.GetWindowText(ctxt);
-		float value = (float)atof(ctxt.GetString());
-		pVedaOb->Set(3,value);
+		float valueD = (float)atof(ctxt.GetString());
+		pVedaOb->Set(3,valueD);
 	}
 
 }

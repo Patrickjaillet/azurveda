@@ -19,7 +19,7 @@ public:
 	static PackList_TimeTrack::TimeTrackElement *NewSplineElementX(){ return new SplineElement(PackFloat::vd_X); };
 
 #ifdef _ENGINE_EDITABLE_
-	typedef enum {
+	enum {
 		tm_VEquationSpline_Shift=tm_BaseObject_FirstInheritageToolMethod,
 		tm_VEquationSpline_Scale,
 		tm_VEquationSpline_Optimize,

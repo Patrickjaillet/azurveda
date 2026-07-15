@@ -59,23 +59,23 @@ void CDialog_PackFloat::OnOK()
 	if( dim>PackFloat::vd_X )
 	{
 		m_editCtrlY.GetWindowText(str);
-		float vv = (float)atof( str.GetString() );
-		pPackFloat->Set(1,vv);
+		float vvY = (float)atof( str.GetString() );
+		pPackFloat->Set(1,vvY);
 	}
 	if( dim>PackFloat::vd_XY )
 	{
 
 		m_editCtrlZ.GetWindowText(str);
-		float vv = (float)atof( str.GetString() );
-		pPackFloat->Set(2,vv);
+		float vvZ = (float)atof( str.GetString() );
+		pPackFloat->Set(2,vvZ);
 	}
 
 	if( dim>PackFloat::vd_XYZ )
 	{
 
 		m_editCtrlD.GetWindowText(str);
-		float vv = (float)atof( str.GetString() );
-		pPackFloat->Set(3,vv);
+		float vvD = (float)atof( str.GetString() );
+		pPackFloat->Set(3,vvD);
 	}
 
 }

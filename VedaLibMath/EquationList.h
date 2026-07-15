@@ -20,7 +20,7 @@ public:
 
 	virtual void Compute( float _OutgoingParameterTable[4] , const float _IncomingParameterTable[4] );
 
-	typedef enum  {
+	enum  {
 		eEqu_Var_ResultX=0,
 		eEqu_Var_ResultY,
 		eEqu_Var_ResultZ,
@@ -39,7 +39,7 @@ public:
 		eEqu_Var_v8
 	};
 
-	typedef enum  {
+	enum  {
 		eEquOp_Equal=0,
 		eEquOp_Add,
 		eEquOp_Sub,

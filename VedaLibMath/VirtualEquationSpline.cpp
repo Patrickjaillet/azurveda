@@ -141,23 +141,23 @@ void VirtualEquationSpline::ProcessPreview(double _frameDate,VirtualMachine::Int
 		float time = pSplineElt->GetTimeInSecond();
 		if(time>=xds1 && time<xds2)
 		{
-			VirtualMachine::InternalVertex *pVert = m_pOb->GetFirstVertex();
+			VirtualMachine::InternalVertex *pVertInner = m_pOb->GetFirstVertex();
 			float val =pSplineElt->mSer_Vector.Get();
-		pVert->m_x = time-xwidth;
-		pVert->m_y = -val +ywidth;
-		pVert->m_z = 0.0f;
-		pVert++;
-		pVert->m_x = time+xwidth;
-		pVert->m_y = -val +ywidth;
-		pVert->m_z = 0.0f;
-		pVert++;
-		pVert->m_x = time-xwidth;
-		pVert->m_y = -val -ywidth;
-		pVert->m_z = 0.0f;
-		pVert++;
-		pVert->m_x = time+xwidth;
-		pVert->m_y = -val -ywidth;
-		pVert->m_z = 0.0f;
+		pVertInner->m_x = time-xwidth;
+		pVertInner->m_y = -val +ywidth;
+		pVertInner->m_z = 0.0f;
+		pVertInner++;
+		pVertInner->m_x = time+xwidth;
+		pVertInner->m_y = -val +ywidth;
+		pVertInner->m_z = 0.0f;
+		pVertInner++;
+		pVertInner->m_x = time-xwidth;
+		pVertInner->m_y = -val -ywidth;
+		pVertInner->m_z = 0.0f;
+		pVertInner++;
+		pVertInner->m_x = time+xwidth;
+		pVertInner->m_y = -val -ywidth;
+		pVertInner->m_z = 0.0f;
 
 			_pPreviewViewPort->RenderMesh(m_pOb);
 

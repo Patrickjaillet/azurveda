@@ -205,11 +205,11 @@ void EquationSpline_X::ToolMethod_ImportWaveVolume()
 		lastKeptValue = pVolumeTable[ii];
 		ii++;
 
-		PackList::Cell *pCell=BuildList.AddElement();
-		SplineElement *pSplineElt = (SplineElement *)pCell->GetManagedObject();
+		PackList::Cell *pLoopCell=BuildList.AddElement();
+		SplineElement *pLoopSplineElt = (SplineElement *)pLoopCell->GetManagedObject();
 		double timeSec = ((float)lastKeptIndex)/((float)(1<<UnitperSec));
-		pSplineElt->SetTimeInSecond(timeSec);
-		pSplineElt->mSer_Vector.Set(((float)lastKeptValue)*(1.0f/15.0f));
+		pLoopSplineElt->SetTimeInSecond(timeSec);
+		pLoopSplineElt->mSer_Vector.Set(((float)lastKeptValue)*(1.0f/15.0f));
 
 	}
 	PackList_TimeTrack *pTimeList = GetList();
