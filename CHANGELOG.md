@@ -46,6 +46,15 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/lang/fr/).
   écrit par AzurVeda et donc hors périmètre). Les 158 fichiers qui portaient la
   mention de licence LGPL 2.1 en commentaire d'en-tête conservent une ligne unique
   `// SPDX-License-Identifier: LGPL-2.1-only` à la place de l'ancien bloc Doxygen.
+- `VedaMachineOGLWinDxSound` : remplacement de **DirectSound** par **XAudio2**
+  (2.9, livré avec Windows 10/11, aucune lib supplémentaire à lier). Le modèle
+  « circular buffer » DirectSound (lock/unlock d'une région active en lecture) est
+  remplacé par la soumission de buffers en rotation (4 buffers de 1024 frames,
+  profondeur de file cible 3), pilotée par le même thread de notification (poll
+  20 ms) qu'auparavant, désormais basé sur `IXAudio2SourceVoice::GetState()` plutôt
+  que sur `GetCurrentPosition()`. Les décodeurs (MP3, XM) et toute l'interface
+  publique de `VirtualMachine` liée au son sont strictement inchangés — seule la
+  couche de sortie change, conformément à `roadmap.md` Phase 4.
 
 ### Fixed
 
@@ -91,6 +100,8 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/lang/fr/).
   AzurVeda (`Veda`, `VedaLibDemo`, `VedaLibImage`, `VedaMachineOGL`,
   `VedaLibSoundMP3/MP3SoundObject.cpp`). Le code tiers vendu (fork de libmad,
   `uniminixm`) n'est pas modifié.
+- `dsound.lib`/`dxguid.lib` retirés de `VedaMachineOGLWinDxSound/CMakeLists.txt`
+  (remplacement DirectSound → XAudio2), remplacés par `ole32`.
 
 ### Known issues
 
@@ -101,5 +112,10 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/lang/fr/).
   traité, hors périmètre). Aucun n'est une troncature pointeur→entier 32 bits — ces
   dernières ont toutes été corrigées (voir *Fixed*). `/WX` n'est donc pas encore
   activé ; voir `roadmap.md` Phase 3.
+- Le portage DirectSound → XAudio2 (`VedaMachineOGLWinDxSound`) compile et
+  s'exécute sans crash (`Example02`/`Example03` testés 8s sans erreur), mais
+  **n'a pas été validé à l'oreille** (pas de test audio audible possible dans cet
+  environnement automatisé) ni testé sur Windows 11 (développé/testé uniquement
+  sur Windows 10 Entreprise LTSC 10.0.17763). Voir `roadmap.md` Phase 4.
 
 [Unreleased]: https://github.com/OWNER/AzurVeda/compare/HEAD

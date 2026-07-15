@@ -6,8 +6,9 @@
 #include "OGLMachine.h"
 #include <windows.h>
 
-typedef struct IDirectSound8                *LPDIRECTSOUND8;
-typedef struct IDirectSoundBuffer           *LPDIRECTSOUNDBUFFER;
+struct IXAudio2;
+struct IXAudio2MasteringVoice;
+struct IXAudio2SourceVoice;
 
 class OGLMachineWinDxSound : public OGLMachine
 {
@@ -24,7 +25,7 @@ public:
 
 	virtual void	ProcessInterface();
 
-	static	void	UpdateCircularSoundBuffer();
+	static	void	UpdateSoundBuffers();
 
 	static DWORD WINAPI NotificationProc( LPVOID lpParameter );
 #ifdef _ENGINE_EDITABLE_
@@ -121,27 +122,32 @@ protected:
 
 	bool			m_AskSwitchScreen;
 
-	class	MiniDirectSound
+	#define	m_dwPrimaryChannels		2
+
+	static const unsigned int	m_NumSoundBuffers = 4;
+	static const unsigned int	m_SoundQueueDepth = 3;
+	static const unsigned int	m_FramesPerSoundBuffer = 1024;
+
+	class	MiniXAudio2Sound
 	{ public:
-		LPDIRECTSOUND8			m_pDS;
-		LPDIRECTSOUNDBUFFER		m_pSoundBuffer;
+		IXAudio2				*m_pXAudio2;
+		IXAudio2MasteringVoice	*m_pMasteringVoice;
+		IXAudio2SourceVoice	*m_pSourceVoice;
+		short					m_PCMBuffer[m_NumSoundBuffers][m_FramesPerSoundBuffer*m_dwPrimaryChannels];
+		unsigned int			m_NextBufferToFill;
 	};
-	static	MiniDirectSound		*m_pSoundManager;
+	static	MiniXAudio2Sound	*m_pSoundManager;
 	static	unsigned int		m_NumberOfMachine;
 	static	HANDLE				m_dwNotifyThreadID;
 	static	volatile BOOL		m_ThreadIsAlive;
 
-	static	DWORD	m_dwDSBufferSize;
-
-	#define	m_dwPrimaryChannels		2
+	static	DWORD	m_dwSoundBufferSize;
 
 	static	DWORD	m_dwPrimaryFreq;
 
 	static double	m_d32InvPrimaryFreq;
 
 	#define	m_nBlockAlign	((16/8) * m_dwPrimaryChannels)
-
-	static	DWORD	m_dwNextWriteOffset;
 
 	static float	* volatile m_pStaticSoundBuffer;
 

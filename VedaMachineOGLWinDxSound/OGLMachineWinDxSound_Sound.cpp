@@ -7,19 +7,17 @@
 #include <stdlib.h>
 #define STRICT
 #include <mmsystem.h>
-#include <dsound.h>
+#include <xaudio2.h>
 
-OGLMachineWinDxSound::MiniDirectSound		*OGLMachineWinDxSound::m_pSoundManager=NULL;
+OGLMachineWinDxSound::MiniXAudio2Sound		*OGLMachineWinDxSound::m_pSoundManager=NULL;
 unsigned int		OGLMachineWinDxSound::m_NumberOfMachine=0L;
 HANDLE				OGLMachineWinDxSound::m_dwNotifyThreadID=0;
 
 OGLMachineWinDxSound	*OGLMachineWinDxSound::m_pFirstMachine=0L;
 
-DWORD	OGLMachineWinDxSound::m_dwDSBufferSize;
+DWORD	OGLMachineWinDxSound::m_dwSoundBufferSize;
 
 DWORD	OGLMachineWinDxSound::m_dwPrimaryFreq;
-
-DWORD	OGLMachineWinDxSound::m_dwNextWriteOffset=0L;
 
 double	OGLMachineWinDxSound::m_d32InvPrimaryFreq;
 
@@ -37,9 +35,7 @@ volatile bool	OGLMachineWinDxSound::m_MachineIsLockedForSoundUpdate=false;
 
 void	OGLMachineWinDxSound::SoundInit(HWND _window)
 {
-	HRESULT		hr;
-
-	m_dwDSBufferSize	= 1024*16;
+	m_dwSoundBufferSize	= m_NumSoundBuffers * m_FramesPerSoundBuffer * m_nBlockAlign;
 	m_dwPrimaryFreq		=  44100 ;
 
 	m_d32InvPrimaryFreq = 4294967296.0/((double)m_dwPrimaryFreq);
@@ -48,18 +44,23 @@ void	OGLMachineWinDxSound::SoundInit(HWND _window)
 	{
 		if(m_pStaticSoundBuffer == NULL)
 		{
-			m_pStaticSoundBuffer = new float[ m_dwPrimaryChannels *m_dwDSBufferSize ];
-			m_pStaticSoundBuffer2 = new float[ m_dwPrimaryChannels *m_dwDSBufferSize ];
+			m_pStaticSoundBuffer = new float[ m_dwPrimaryChannels *m_FramesPerSoundBuffer ];
+			m_pStaticSoundBuffer2 = new float[ m_dwPrimaryChannels *m_FramesPerSoundBuffer ];
 		}
 		if(m_pStaticSoundBuffer == NULL ||
 			m_pStaticSoundBuffer2 == NULL) return;
 
-		LPDIRECTSOUND8	pDS;
-		hr = DirectSoundCreate8(NULL, &pDS, NULL);
-		if( FAILED(hr) ) return;
+		if( FAILED(CoInitializeEx(NULL, COINIT_MULTITHREADED)) ) return;
 
-		hr = pDS->SetCooperativeLevel(_window,
-			DSSCL_PRIORITY) ;
+		IXAudio2 *pXAudio2 = NULL;
+		if( FAILED(XAudio2Create(&pXAudio2, 0, XAUDIO2_DEFAULT_PROCESSOR)) ) return;
+
+		IXAudio2MasteringVoice *pMasteringVoice = NULL;
+		if( FAILED(pXAudio2->CreateMasteringVoice(&pMasteringVoice)) )
+		{
+			pXAudio2->Release();
+			return;
+		}
 
 		WAVEFORMATEX	wfx;
 		ZeroMemory( &wfx, sizeof(WAVEFORMATEX) );
@@ -70,59 +71,27 @@ void	OGLMachineWinDxSound::SoundInit(HWND _window)
 		wfx.nBlockAlign		= (WORD) m_nBlockAlign ;
 		wfx.nAvgBytesPerSec = m_dwPrimaryFreq * m_nBlockAlign;
 
-		DSBUFFERDESC dsbd;
-		ZeroMemory(&dsbd, sizeof(DSBUFFERDESC));
-		dsbd.dwSize			= sizeof(DSBUFFERDESC);
+		IXAudio2SourceVoice		*pSourceVoice = NULL;
+		if( FAILED(pXAudio2->CreateSourceVoice(&pSourceVoice, &wfx)) )
 		{
-
-			LPDIRECTSOUNDBUFFER pDSBPrimary = NULL;
-
-			dsbd.dwFlags		= DSBCAPS_PRIMARYBUFFER;
-			dsbd.dwBufferBytes	= 0;
-			dsbd.lpwfxFormat	= NULL;
-
-			hr = pDS->CreateSoundBuffer(&dsbd, &pDSBPrimary, NULL);
-			if( FAILED(hr) ) return;
-
-			pDSBPrimary->SetFormat(&wfx);
-
-			if( pDSBPrimary ) pDSBPrimary->Release();
-		}
-		LPDIRECTSOUNDBUFFER		pSoundBuffer;
-
-		dsbd.dwFlags		=
-								 DSBCAPS_GLOBALFOCUS |  DSBCAPS_GETCURRENTPOSITION2;
-		dsbd.dwBufferBytes	=  m_dwDSBufferSize;
-		dsbd.lpwfxFormat	= &wfx;
-		hr = pDS->CreateSoundBuffer(&dsbd, &pSoundBuffer, NULL);
-		if( FAILED(hr) )
-		{
-			pDS->Release();
+			pXAudio2->Release();
 			return;
 		}
 
-		m_pSoundManager = new MiniDirectSound;
-		m_pSoundManager->m_pDS = pDS ;
-		m_pSoundManager->m_pSoundBuffer = pSoundBuffer;
+		pSourceVoice->Start(0);
+
+		m_pSoundManager = new MiniXAudio2Sound;
+		m_pSoundManager->m_pXAudio2			= pXAudio2 ;
+		m_pSoundManager->m_pMasteringVoice		= pMasteringVoice;
+		m_pSoundManager->m_pSourceVoice		= pSourceVoice;
+		m_pSoundManager->m_NextBufferToFill	= 0;
+		for( unsigned int bb=0; bb<m_NumSoundBuffers ; bb++)
+		{
+			ZeroMemory(m_pSoundManager->m_PCMBuffer[bb], sizeof(m_pSoundManager->m_PCMBuffer[bb]));
+		}
 	}
 
 	m_NumberOfMachine++;
-
-	LPDIRECTSOUNDBUFFER		pSoundBuffer = m_pSoundManager->m_pSoundBuffer;
-	VOID* pDSLockedBuffer = NULL;
-	DWORD dwDSLockedBufferSize = 0;
-
-	if (FAILED(hr = pSoundBuffer->Lock(0, m_dwDSBufferSize, &pDSLockedBuffer,
-								&dwDSLockedBufferSize, NULL, NULL, 0L))) return;
-	short *pbuf = (short *)pDSLockedBuffer;
-	for( unsigned int ii=0; ii<dwDSLockedBufferSize/m_nBlockAlign ; ii++)
-	{
-		*(pbuf++) = 0;
-		*(pbuf++) = 0;
-	}
-
-	pSoundBuffer->Unlock( pDSLockedBuffer, dwDSLockedBufferSize, NULL, 0 );
-	pSoundBuffer->Play(0,0, DSBPLAY_LOOPING );
 
 	if(m_dwNotifyThreadID ==0)
 	{
@@ -144,13 +113,14 @@ void	OGLMachineWinDxSound::SoundExit()
 		m_ThreadIsAlive = FALSE;
 		Sleep(100);
 #endif
-		MiniDirectSound		*pToDestroy = m_pSoundManager;
+		MiniXAudio2Sound		*pToDestroy = m_pSoundManager;
 		m_pSoundManager = NULL;
-			pToDestroy->m_pSoundBuffer->Stop();
-			pToDestroy->m_pSoundBuffer->Release();
-
-			pToDestroy->m_pDS->Release();
+			pToDestroy->m_pSourceVoice->Stop();
+			pToDestroy->m_pSourceVoice->DestroyVoice();
+			pToDestroy->m_pMasteringVoice->DestroyVoice();
+			pToDestroy->m_pXAudio2->Release();
 			delete pToDestroy;
+		CoUninitialize();
 		if(m_pStaticSoundBuffer != NULL)
 		{
 			delete [] m_pStaticSoundBuffer;
@@ -165,44 +135,19 @@ void	OGLMachineWinDxSound::SoundExit()
 	}
 
 }
-void	OGLMachineWinDxSound::UpdateCircularSoundBuffer()
+void	OGLMachineWinDxSound::UpdateSoundBuffers()
 {
-	VOID* pDSLockedBuffer,*pDSLockedBuffer2;
-	DWORD dwDSLockedBufferSize,dwDSLockedBufferSize2;
-	DWORD	currentplayPos,sizeToWrite;
-	unsigned int ii;
-
 	if( m_pSoundManager == NULL) return;
 
-	LPDIRECTSOUNDBUFFER		pSoundBuffer = m_pSoundManager->m_pSoundBuffer;
+	IXAudio2SourceVoice		*pSourceVoice = m_pSoundManager->m_pSourceVoice;
 
-	pSoundBuffer->GetCurrentPosition( &currentplayPos ,NULL );
+	XAUDIO2_VOICE_STATE state;
+	pSourceVoice->GetState(&state);
 
-	if(m_dwNextWriteOffset<currentplayPos)
+	while( state.BuffersQueued < m_SoundQueueDepth )
 	{
-		sizeToWrite = currentplayPos-m_dwNextWriteOffset;
-	} else
-	{
-		sizeToWrite = m_dwDSBufferSize-m_dwNextWriteOffset;
-		sizeToWrite += currentplayPos;
-	}
-
-    while (DS_OK != pSoundBuffer->Lock(m_dwNextWriteOffset,sizeToWrite,
-								&pDSLockedBuffer,&dwDSLockedBufferSize,
-								&pDSLockedBuffer2,&dwDSLockedBufferSize2,
-								 0L))
-	{
-		pSoundBuffer->Restore();
-		pSoundBuffer->Play(0, 0, DSBPLAY_LOOPING);
-	}
-
-	m_dwNextWriteOffset += sizeToWrite;
-	if(m_dwNextWriteOffset>=m_dwDSBufferSize ) m_dwNextWriteOffset -= m_dwDSBufferSize;
-
-	dwDSLockedBufferSize /=m_nBlockAlign;
-	dwDSLockedBufferSize2 /=m_nBlockAlign;
-
-	sizeToWrite = dwDSLockedBufferSize + dwDSLockedBufferSize2 ;
+		const unsigned int sizeToWrite = m_FramesPerSoundBuffer;
+		unsigned int ii;
 
 		float	*pfl = m_pStaticSoundBuffer;
 
@@ -217,7 +162,7 @@ void	OGLMachineWinDxSound::UpdateCircularSoundBuffer()
 
 		VirtualMachine::SoundBufferToAddYourSignal	soundBufferToAddYourSignal;
 		soundBufferToAddYourSignal.m_pSoundBuffer	= pfl ;
-		soundBufferToAddYourSignal.m_LengthToRender = (unsigned int) sizeToWrite ;
+		soundBufferToAddYourSignal.m_LengthToRender = sizeToWrite ;
 		soundBufferToAddYourSignal.m_PlayFrequency	= (float) m_dwPrimaryFreq ;
 
 		OGLMachineWinDxSound	*pMachine =m_pFirstMachine;
@@ -252,49 +197,46 @@ void	OGLMachineWinDxSound::UpdateCircularSoundBuffer()
 			pMachine = pMachine->m_pNextMachine ;
 		}
 
-		short *pbuf = (short *)pDSLockedBuffer;
+		unsigned int bufIndex = m_pSoundManager->m_NextBufferToFill;
+		short *pbuf = m_pSoundManager->m_PCMBuffer[bufIndex];
 		float vv;
 		float	vm=-1.0f;
 		float	vp=1.0f;
 		float	v16m1 = 32767.0f;
 
-		for( ii=0; ii<dwDSLockedBufferSize ; ii++)
+		for( ii=0; ii<sizeToWrite ; ii++)
 		{
 			vv = *(pfl++);
 			if( vv<vm ) vv = vm; else if(vv>vp) vv=vp;
-			*(pbuf++) = (WORD) (vv*v16m1);
+			*(pbuf++) = (short) (vv*v16m1);
 			vv = *(pfl++);
 			if( vv<vm ) vv = vm; else if(vv>vp) vv=vp;
-			*(pbuf++) = (WORD) (vv*v16m1);
+			*(pbuf++) = (short) (vv*v16m1);
 		}
 
-		if(pDSLockedBuffer2)
-		{
-			short *pbuf = (short *)pDSLockedBuffer2;
-			for( ii=0; ii<dwDSLockedBufferSize2 ; ii++)
-			{
-				vv = *(pfl++);
-				if( vv<vm ) vv = vm; else if(vv>vp) vv=vp;
-				*(pbuf++) = (WORD) (vv*v16m1);
-				vv = *(pfl++);
-				if( vv<vm ) vv = vm; else if(vv>vp) vv=vp;
-				*(pbuf++) = (WORD) (vv*v16m1);
-			}
+		XAUDIO2_BUFFER xbuf;
+		ZeroMemory(&xbuf, sizeof(xbuf));
+		xbuf.AudioBytes = sizeToWrite * m_nBlockAlign;
+		xbuf.pAudioData = (const BYTE *)m_pSoundManager->m_PCMBuffer[bufIndex];
+		pSourceVoice->SubmitSourceBuffer(&xbuf);
 
-		}
-
-		pSoundBuffer->Unlock( pDSLockedBuffer, dwDSLockedBufferSize, pDSLockedBuffer2, dwDSLockedBufferSize2 );
+		m_pSoundManager->m_NextBufferToFill = (bufIndex+1) % m_NumSoundBuffers;
 
 		pfl = m_pStaticSoundBuffer2 ;
 		m_pStaticSoundBuffer2 = m_pStaticSoundBuffer;
 		m_pStaticSoundBuffer = pfl;
 		m_LastSoundBufferLength = sizeToWrite;
 
+		pSourceVoice->GetState(&state);
+	}
+
 }
 DWORD WINAPI OGLMachineWinDxSound::NotificationProc( LPVOID lpParameter )
 {
 
 	HWND hDlg = (HWND) lpParameter;
+
+	CoInitializeEx(NULL, COINIT_MULTITHREADED);
 
 	unsigned int	traceNbLock = 0;
 	while( m_ThreadIsAlive )
@@ -304,17 +246,18 @@ DWORD WINAPI OGLMachineWinDxSound::NotificationProc( LPVOID lpParameter )
 				if( !m_MachineIsLockedForSoundManagement)
 				{
 					m_MachineIsLockedForSoundUpdate = true;
-					if(!m_MachineIsLockedForSoundManagement ) UpdateCircularSoundBuffer();
+					if(!m_MachineIsLockedForSoundManagement ) UpdateSoundBuffers();
 				} else
 				{
 					traceNbLock++;
 				}
 				m_MachineIsLockedForSoundUpdate = false;
 		#else
-					UpdateCircularSoundBuffer();
+					UpdateSoundBuffers();
 		#endif
 
 	}
+	CoUninitialize();
 	return 0;
 }
 #ifdef _ENGINE_EDITABLE_
