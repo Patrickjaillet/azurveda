@@ -17,7 +17,7 @@ BEGIN_MESSAGE_MAP(XSplitterWndFixed, CSplitterWnd)
 	ON_WM_SETCURSOR()
 END_MESSAGE_MAP()
 
-void XSplitterWndFixed::OnMoving(UINT fwSide, LPRECT pRect)
+void XSplitterWndFixed::OnMoving(UINT , LPRECT )
 {
 
 }
@@ -34,19 +34,19 @@ void XSplitterWndFixed::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBa
 	CSplitterWnd::OnHScroll(nSBCode, nPos, pScrollBar);
 }
 
-BOOL XSplitterWndFixed::DoScroll(CView* pViewFrom, UINT nScrollCode, BOOL bDoScroll)
+BOOL XSplitterWndFixed::DoScroll(CView* , UINT , BOOL )
 {
 
 	return TRUE;
 }
 
-BOOL XSplitterWndFixed::DoScrollBy(CView* pViewFrom, CSize sizeScroll,	BOOL bDoScroll)
+BOOL XSplitterWndFixed::DoScrollBy(CView* , CSize ,	BOOL )
 {
 
 	return TRUE;
 }
 
-BOOL XSplitterWndFixed::OnNotify(WPARAM wParam, LPARAM lParam, LRESULT* pResult)
+BOOL XSplitterWndFixed::OnNotify(WPARAM , LPARAM , LRESULT* )
 {
 
 	return TRUE;

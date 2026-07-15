@@ -25,6 +25,11 @@ set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>DLL")
 # Windows 10/11 only (roadmap.md "Conventions de développement"): 0x0A00 = _WIN32_WINNT_WIN10.
 add_compile_definitions(WINVER=0x0A00 _WIN32_WINNT=0x0A00)
 
+# The codebase uses plain fopen/sprintf/strncpy throughout; the _s replacements have
+# different signatures/error semantics, so blanket-rewriting every call site without a
+# test rig risks introducing real bugs. Standard practice for this kind of legacy port.
+add_compile_definitions(_CRT_SECURE_NO_WARNINGS)
+
 add_compile_options(/W4)
 
 option(AZURVEDA_BUILD_GPL_MODULES "Build the GPL2-licensed modules (VedaLibSoundMP3, VedaLibDemo, VedaGUIWindowsMFC)" ON)

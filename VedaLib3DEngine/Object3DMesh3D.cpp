@@ -122,7 +122,7 @@ bool Object3DMesh3D::CreateInternal(void)
 	return true;
 }
 
-void Object3DMesh3D::CreateShape(float _newShapeTime, unsigned int _shapeIndex )
+void Object3DMesh3D::CreateShape(float , unsigned int  )
 {
 	VirtualMachine::InternalObject3DBuffer *p3DBuffer =  m_pObject3DBufferTable->m_pObject3DBuffer;
 

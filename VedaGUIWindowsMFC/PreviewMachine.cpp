@@ -26,7 +26,7 @@ CPreviewMachine::~CPreviewMachine(void)
 
 }
 
-VirtualMachine::eVMResult	CPreviewMachine::InitViewPort(  InternalViewPort **_ppViewPortOut  )
+VirtualMachine::eVMResult	CPreviewMachine::InitViewPort(  InternalViewPort **  )
 {
 	SetContext();
 

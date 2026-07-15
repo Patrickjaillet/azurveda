@@ -90,7 +90,7 @@ if (AfxGetMainWnd()->MessageBox("This Function Destroy all objects that are not 
 	pOb->GetContext()->DestroyAllIndependantObjects( pOb );
 }
 
-void CDialog_AbstractPackSerializable::OnRButtonDown(UINT nFlags, CPoint point)
+void CDialog_AbstractPackSerializable::OnRButtonDown(UINT , CPoint )
 {
 
 	if( !m_pDoc ) return;
@@ -148,9 +148,9 @@ bool	CDialog_AbstractPackSerializable::IsFocused()
 }
 
 void CDialog_AbstractPackSerializable::ChangeValueOfManagedObjectWithCursor(
-					VirtualMachine::InternalViewPort *_pClickedViewPort,
-					unsigned int _validityBits,
-					float _x,float _y,float _z,double _time )
+					VirtualMachine::InternalViewPort *,
+					unsigned int ,
+					float ,float ,float ,double  )
 {
 
 	return;
@@ -164,10 +164,10 @@ void	CDialog_AbstractPackSerializable::CActionFocusableDialog::
 }
 
 void	CDialog_AbstractPackSerializable::CActionFocusableDialog::ManageViewPortClickAction(  VirtualMachine::InternalViewPort *_pClickedViewPort,
-												InterfacePrefObject::PreviewEdited::InterfacePreviewConfiguration *_pPreviewConfToModify,
+												InterfacePrefObject::PreviewEdited::InterfacePreviewConfiguration *,
 									float _xClic,float _yClic,double _previewtimesec,
 									unsigned int _mouseButton,
-									unsigned int _mouseButtonEvent
+									unsigned int 
 										)
 {
 	unsigned int validBits=0;

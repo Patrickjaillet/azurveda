@@ -161,7 +161,7 @@ void CDialog_PackLong_WithLimits::OnEnKillfocusEdit1()
 void CDialog_PackLong_WithLimits::ChangeValueOfManagedObjectWithCursor(
 	VirtualMachine::InternalViewPort *_pClickedViewPort,
 	unsigned int _validityBits,
-	float _x,float _y,float _z,double _time )
+	float _x,float _y,float _z,double  )
 {
 	PackLong_WithLimits *pVedaLong =(PackLong_WithLimits *) m_pObjectToManage;
 	if( !pVedaLong ) return;

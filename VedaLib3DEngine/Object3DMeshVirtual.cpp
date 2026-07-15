@@ -245,7 +245,7 @@ void Object3DMeshVirtual::CreateInternal_FreezeStaticShape(void)
 	}
 }
 
-void Object3DMeshVirtual::CreateShape(float _newShapeTime, unsigned int _shapeIndex )
+void Object3DMeshVirtual::CreateShape(float , unsigned int  )
 {
 
 }

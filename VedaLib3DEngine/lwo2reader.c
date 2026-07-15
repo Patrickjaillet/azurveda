@@ -1019,6 +1019,7 @@ lwo2_error Read_SRFS_LWOB(  sLwoObject *lwo,
                     int offset,
                     int endOffset  )
 {
+    (void)curlayer;
     int ii,ofs;
     struct LwTexture *txt;
 
@@ -1405,6 +1406,7 @@ lwo2_error Read_BLOK_LWO2SURF(  sLwoObject *lwo,
                         struct LwTexture *buildme ,
                         struct LwTexture *father )
 {
+    (void)father;
     int ii;
     unsigned int    chan=0;
     int endOffsetL2;

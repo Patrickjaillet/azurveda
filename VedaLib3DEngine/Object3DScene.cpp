@@ -44,8 +44,8 @@ BaseType *Object3DScene::NewChannelModifier()
 void	Object3DScene::RenderObject( double _frameDate,
 								   VirtualMachine::InternalViewPort *_pViewPort,
 									const float _rgba[4],
-									unsigned int _shapeIndex,
-									ShapeModifierList *_pModifierList )
+									unsigned int ,
+									ShapeModifierList * )
 {
 
 	ProcessObject( &mSer_ObjectTree,_pViewPort,_rgba,_frameDate );

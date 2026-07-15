@@ -317,9 +317,9 @@ void	Object3DText::PackDynamicTextShadeIn::ComputeShade(LetterState &_lstate,dou
 
 void	Object3DText::RenderObject( double _frameDate,
 								   VirtualMachine::InternalViewPort *_pViewPort,
-									const float _rgba[4],
-									unsigned int _shapeIndex,
-									ShapeModifierList *_pModifierList )
+									const float [4],
+									unsigned int ,
+									ShapeModifierList * )
 {
 	unsigned int ii;
 	Object3DFontVirtual	*pFont = (Object3DFontVirtual *)mSer_AlphabetRef.GetObjectPointer();

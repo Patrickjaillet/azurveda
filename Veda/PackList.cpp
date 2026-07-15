@@ -18,7 +18,7 @@ PackList::~PackList(void)
 #endif
 #ifdef _ENGINE_EDITABLE_
 
-PackStruct::Cell *PackList::AddElement(  int _indexWhereToInsert,BaseType *_uselessAlwaysNullSetToOverideMethod )
+PackStruct::Cell *PackList::AddElement(  int _indexWhereToInsert,BaseType * )
 {
 
 	BaseType *_pObjectToAdd = m_CreatorFunc();
@@ -130,7 +130,7 @@ const unsigned char * PackList::Serialize_In( const unsigned char * _pDescriptio
 }
 #ifdef _ENGINE_EDITABLE_
 
-const unsigned char * PackList::MergeSerialize_In( const unsigned char * _pDescriptionChunk,const char *_pendName)
+const unsigned char * PackList::MergeSerialize_In( const unsigned char * _pDescriptionChunk,const char *)
 {
 
 	const unsigned char	*pEndOfChunk = _pDescriptionChunk ;

@@ -85,7 +85,7 @@ bool Create3DObject(VirtualMachine *pMachine,VirtualMachine::InternalObject3DBuf
 	return true;
 }
 
-void Draw3DObject( double _frameDate,
+void Draw3DObject( double ,
 						VirtualMachine *pMachine,
 						VirtualMachine::InternalObject3DBuffer *p3DObject,
 						float sinusposition1,float sinusposition2)

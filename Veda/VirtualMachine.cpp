@@ -57,7 +57,7 @@ void	VirtualMachine::ShutTheFuckUp()
 }
 #endif
 
-void	VirtualMachine::SetMachineTitle(const char *_pMachineTitle)
+void	VirtualMachine::SetMachineTitle(const char *)
 {
 
 }

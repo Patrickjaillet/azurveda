@@ -17,7 +17,7 @@ void	Object3DMultiplier::RenderObject( double _frameDate,
 										 VirtualMachine::InternalViewPort *_pViewPort,
 										const float _rgba[4],
 										 unsigned int _shapeIndex,
-										 ShapeModifierList *_pModifierList)
+										 ShapeModifierList *)
 {
 
 	Object3DVirtual *pShape = (Object3DVirtual *)m_ShapeReference.GetObjectPointer();

@@ -26,7 +26,7 @@ Object3DVirtual::ShapeModifierList::ShapeModifierList() : PackList(NewShapeModif
 
 #ifdef _ENGINE_EDITABLE_
 
-void Object3DVirtual::ProcessPreview(double _frameDate,VirtualMachine::InternalViewPort *_pPreviewViewPort,const PreviewConfiguration *_pPreviewConfiguration)
+void Object3DVirtual::ProcessPreview(double ,VirtualMachine::InternalViewPort *_pPreviewViewPort,const PreviewConfiguration *_pPreviewConfiguration)
 {
 	float xx,yy,zz;
 	float rotX,rotY,rotZ;

@@ -49,7 +49,7 @@ void VirtualEquation::ProcessPreview_CreateLine(VirtualMachine::InternalObject3D
 #endif
 #ifdef _ENGINE_EDITABLE_
 
-void VirtualEquation::ProcessPreview_DrawEquation(double _frameDate,VirtualMachine::InternalViewPort *_pPreviewViewPort,const PreviewConfiguration *_pPreviewConfiguration)
+void VirtualEquation::ProcessPreview_DrawEquation(double _frameDate,VirtualMachine::InternalViewPort *_pPreviewViewPort,const PreviewConfiguration *)
 {
 	VirtualMachine::InternalObject3DBuffer	*m_pPreviewLine;
 	VirtualMachine::InternalObject3DBuffer	*m_pPreviewLineY;

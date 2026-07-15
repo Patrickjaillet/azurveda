@@ -567,11 +567,11 @@ void	CVedaDemoOGLMfcGuiDoc::CActionFocusable::NotifySetActionFocusable(bool _isA
 }
 
 void	CVedaDemoOGLMfcGuiDoc::CActionFocusable::ManageViewPortClickAction(
-					VirtualMachine::InternalViewPort *_pClickedViewPort,
-					InterfacePrefObject::PreviewEdited::InterfacePreviewConfiguration *_pPreviewConfToModify,
-					float _xClic,float _yClic,double _previewtimesec,
-					unsigned int _mouseButton,
-					unsigned int _mouseButtonEvent
+					VirtualMachine::InternalViewPort *,
+					InterfacePrefObject::PreviewEdited::InterfacePreviewConfiguration *,
+					float ,float ,double ,
+					unsigned int ,
+					unsigned int 
 						)
 {
 

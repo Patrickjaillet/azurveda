@@ -199,7 +199,7 @@ inline void    Object3DMarchCube::CreateOneVertex_Z_Normal( const float *_pCubeV
 	_pvtx->m_nz = nz1 * vv ;
 }
 
-void Object3DMarchCube::CreateShape(float _newShapeTime, unsigned int _shapeIndex)
+void Object3DMarchCube::CreateShape(float _newShapeTime, unsigned int )
 {
 	MarchinCubeSpace *pcubespace = (MarchinCubeSpace *) mSer_MarchinCubeSpaceRef.GetObjectPointer() ;
 

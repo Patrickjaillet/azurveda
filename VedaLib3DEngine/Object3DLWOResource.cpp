@@ -186,7 +186,7 @@ void	Object3DLWOResource::RenderObject( double _frameDate,
 						VirtualMachine::InternalViewPort *_pViewPort,
 						const float _rgba[4],
 						unsigned int _shapeIndex,
-						ShapeModifierList *_pModifierList )
+						ShapeModifierList * )
 {
 	unsigned int ii;
 	if(_shapeIndex>=m_NbLayer) return;

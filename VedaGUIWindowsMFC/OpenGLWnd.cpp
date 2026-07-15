@@ -112,7 +112,7 @@ BEGIN_MESSAGE_MAP(COpenGLWnd, CView)
 	ON_WM_MBUTTONDOWN()
 END_MESSAGE_MAP()
 
-void COpenGLWnd::OnDraw(CDC* pDC)
+void COpenGLWnd::OnDraw(CDC* )
 {
 	if( !m_initied ) return;
 	SetContext();
@@ -222,7 +222,7 @@ void COpenGLWnd::OnDestroy()
 	CView::OnDestroy();
 }
 
-BOOL COpenGLWnd::OnEraseBkgnd(CDC* pDC)
+BOOL COpenGLWnd::OnEraseBkgnd(CDC* )
 {
 	return TRUE;
 }

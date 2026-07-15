@@ -325,7 +325,7 @@ void	BaseObject::SetBaseContext(BaseContext *_pBaseContext)
 
 #ifdef _ENGINE_EDITABLE_
 
-void BaseObject::ProcessPreview(double _frameDate,VirtualMachine::InternalViewPort *_pPreviewViewPort,const PreviewConfiguration *_pPreviewConfiguration)
+void BaseObject::ProcessPreview(double ,VirtualMachine::InternalViewPort *,const PreviewConfiguration *)
 {
 }
 #endif
@@ -381,7 +381,7 @@ VirtualMachine	*BaseObject::GetMachine()
 
 #ifdef _ENGINE_EDITABLE_
 
-void BaseObject::ExecuteToolMethod( unsigned int _MethodIDToExecute )
+void BaseObject::ExecuteToolMethod( unsigned int  )
 {
 }
 #endif

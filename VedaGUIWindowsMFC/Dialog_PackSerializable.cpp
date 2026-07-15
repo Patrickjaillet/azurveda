@@ -175,7 +175,7 @@ void CDialog_PackSerializable::OnDestroy()
 	DestroyAllDialogs();
 	CDialog_AbstractPackSerializable::OnDestroy();
 }
-void CDialog_PackSerializable::SetMemberName(	const char *_pMemberName )
+void CDialog_PackSerializable::SetMemberName(	const char * )
 {
 
 }

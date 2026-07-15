@@ -141,7 +141,7 @@ void	CLeftView::InsertClassNode( const ClassNode *_pClassNode, HTREEITEM _father
 	GetTreeCtrl().Expand( item, TVE_EXPAND   );
 }
 
-void CLeftView::OnUpdate(CView* , LPARAM lHint, CObject* pHint)
+void CLeftView::OnUpdate(CView* , LPARAM , CObject* )
 {
 	CVedaDemoOGLMfcGuiDoc *pdoc = GetDocument();
 	if(!pdoc) return;
@@ -226,7 +226,7 @@ void CLeftView::OnUpdate(CView* , LPARAM lHint, CObject* pHint)
 	}
 }
 
-void CLeftView::OnNMRclick(NMHDR *pNMHDR, LRESULT *pResult)
+void CLeftView::OnNMRclick(NMHDR *, LRESULT *pResult)
 {
 
 	CPoint pt;
@@ -426,7 +426,7 @@ void CLeftView::OnEditPrevious()
 	if( !pdoc ) return;
 	pdoc->OnEditPrevious();
 }
-BOOL CLeftView::OnToolTipNotify( UINT id, NMHDR * pNMHDR, LRESULT * pResult )
+BOOL CLeftView::OnToolTipNotify( UINT , NMHDR * pNMHDR, LRESULT *  )
 {
     TOOLTIPTEXT *pTTT = (TOOLTIPTEXT *)pNMHDR;
     UINT_PTR nID =pNMHDR->idFrom;

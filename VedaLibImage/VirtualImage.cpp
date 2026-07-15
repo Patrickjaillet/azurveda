@@ -45,7 +45,7 @@ void VirtualImage::CloseInternal(void)
 }
 #endif
 
-void	VirtualImage::UpdateToFrame(float _framedate)
+void	VirtualImage::UpdateToFrame(float )
 {
 
 }

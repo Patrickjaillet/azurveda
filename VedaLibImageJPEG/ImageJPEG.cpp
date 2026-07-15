@@ -212,17 +212,17 @@ METHODDEF(boolean) fill_input_buffer (j_decompress_ptr cinfo)
   return TRUE;
 }
 METHODDEF(void)
-init_source (j_decompress_ptr cinfo)
+init_source (j_decompress_ptr )
 {
 
 }
 METHODDEF(void)
-skip_input_data (j_decompress_ptr cinfo, long num_bytes)
+skip_input_data (j_decompress_ptr , long )
 {
 
 }
 METHODDEF(void)
-term_source (j_decompress_ptr cinfo)
+term_source (j_decompress_ptr )
 {
 
 }

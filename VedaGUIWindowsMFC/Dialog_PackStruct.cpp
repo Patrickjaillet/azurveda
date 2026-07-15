@@ -171,7 +171,7 @@ BOOL CDialog_PackStruct::OnInitDialog()
 	return TRUE;
 
 }
-void CDialog_PackStruct::SetMemberName(	const char *_pMemberName )
+void CDialog_PackStruct::SetMemberName(	const char * )
 {
 
 }

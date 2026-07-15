@@ -137,7 +137,7 @@ void CFormViewBaseObject::ShapeGUIForBaseObject( BaseObject *_pBaseObject)
 
 }
 
-void CFormViewBaseObject::OnUpdate(CView* , LPARAM lHint, CObject* pHint)
+void CFormViewBaseObject::OnUpdate(CView* , LPARAM , CObject* )
 {
 	if(!m_initied) return;
 	if(m_ForbidUpdateRecursion)
@@ -248,7 +248,7 @@ void CFormViewBaseObject::OnBnClickedPreviewob()
 
 }
 
-void CFormViewBaseObject::OnRButtonDown(UINT nFlags, CPoint point)
+void CFormViewBaseObject::OnRButtonDown(UINT , CPoint )
 {
 
 	CVedaDemoOGLMfcGuiDoc *pdoc = (CVedaDemoOGLMfcGuiDoc *)GetDocument();

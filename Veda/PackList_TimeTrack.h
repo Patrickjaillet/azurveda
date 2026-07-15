@@ -41,7 +41,7 @@ public:
 		#ifdef _ENGINE_EDITABLE_
 
 			inline	void	SetListThatManageItAsACell(
-						PackList_TimeTrack	*_pList,
+						PackList_TimeTrack	*,
 						PackStruct::Cell			*_pCell
 			){
 				m_pCellThatManageIt = _pCell ;

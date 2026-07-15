@@ -296,7 +296,7 @@ void MP3SoundObject::CloseInternal(void)
 }
 #endif
 
-void MP3SoundObject::ProcessMedia( double _frameDate,VirtualMachine::InternalViewPort *_pViewPort )
+void MP3SoundObject::ProcessMedia( double ,VirtualMachine::InternalViewPort * )
 {
 
 }
@@ -498,7 +498,7 @@ void MP3SoundObject::ProcessSoundInterupt( VirtualMachine::SoundBufferToAddYourS
 }
 #ifdef _ENGINE_EDITABLE_
 
-void MP3SoundObject::ProcessPreview(double _frameDate,VirtualMachine::InternalViewPort *_pPreviewViewPort,const PreviewConfiguration *_pPreviewConfiguration)
+void MP3SoundObject::ProcessPreview(double ,VirtualMachine::InternalViewPort *_pPreviewViewPort,const PreviewConfiguration *)
 {
 
 	float	*pSoundBuffer=0L;

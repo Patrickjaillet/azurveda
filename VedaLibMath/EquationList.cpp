@@ -84,7 +84,7 @@ void EquationList::Compute( float _OutgoingParameterTable[4] , const float _Inco
 
 }
 
-float	EquationList::Op_Equal(float _Affect,float _With)
+float	EquationList::Op_Equal(float ,float _With)
 {
 	return(_With);
 }
@@ -104,15 +104,15 @@ float	EquationList::Op_Div(float _Affect,float _With)
 {
 	return(_Affect/_With);
 }
-float	EquationList::Op_Sin(float _Affect,float _With)
+float	EquationList::Op_Sin(float ,float _With)
 {
 	return(sinf(_With * PackFloat::m_Pi));
 }
-float	EquationList::Op_Cos(float _Affect,float _With)
+float	EquationList::Op_Cos(float ,float _With)
 {
 	return(cosf(_With * PackFloat::m_Pi ));
 }
-float	EquationList::Op_Sqrt(float _Affect,float _With)
+float	EquationList::Op_Sqrt(float ,float _With)
 {
 	return(sqrtf(_With));
 }

@@ -63,7 +63,7 @@ bool Object3DGrid::CreateInternal(void)
 	return true;
 }
 
-void Object3DGrid::CreateShape(float _newShapeTime, unsigned int _shapeIndex )
+void Object3DGrid::CreateShape(float , unsigned int  )
 {
 	VirtualMachine::InternalObject3DBuffer *p3DBuffer =  m_pObject3DBufferTable->m_pObject3DBuffer;
 	m_pObject3DBufferTable->m_ActiveNumberOfVertex = p3DBuffer->GetMaximumNumberOfVertexes();

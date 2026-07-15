@@ -302,7 +302,7 @@ void MediaTimePattern::ProcessPreview(double _frameDate,VirtualMachine::Internal
 #endif
 #ifdef _ENGINE_EDITABLE_
 
-void MediaTimePattern::ProcessPreview_DrawTracks(double _frameDate,VirtualMachine::InternalViewPort *_pPreviewViewPort,const PreviewConfiguration *_pPreviewConfiguration)
+void MediaTimePattern::ProcessPreview_DrawTracks(double _frameDate,VirtualMachine::InternalViewPort *_pPreviewViewPort,const PreviewConfiguration *)
 {
 
 	if( !m_pPreviewSquareObject  ) return;

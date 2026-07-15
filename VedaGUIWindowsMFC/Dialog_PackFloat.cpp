@@ -191,7 +191,7 @@ BOOL CDialog_PackFloat::OnInitDialog()
 }
 
 void  CDialog_PackFloat::ChangeValueOfManagedObjectWithCursor(
-						VirtualMachine::InternalViewPort *_pClickedViewPort,
+						VirtualMachine::InternalViewPort *,
 						unsigned int _validityBits,
 						float _x,float _y,float _z,double _time )
 {

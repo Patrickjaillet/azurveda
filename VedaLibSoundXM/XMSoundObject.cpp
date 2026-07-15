@@ -218,7 +218,7 @@ void XMSoundObject::ProcessSoundInterupt( VirtualMachine::SoundBufferToAddYourSi
 }
 #ifdef _ENGINE_EDITABLE_
 
-void XMSoundObject::ProcessPreview(double _frameDate,VirtualMachine::InternalViewPort *_pPreviewViewPort,const PreviewConfiguration *_pPreviewConfiguration)
+void XMSoundObject::ProcessPreview(double ,VirtualMachine::InternalViewPort *_pPreviewViewPort,const PreviewConfiguration *)
 {
 
 	float	*pSoundBuffer=0L;

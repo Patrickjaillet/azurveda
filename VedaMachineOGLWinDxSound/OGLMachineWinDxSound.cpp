@@ -477,7 +477,7 @@ void	OGLMachineWinDxSound::ProcessInterface()
 
 #ifdef _ENGINE_EDITABLE_
 
-bool	OGLMachineWinDxSound::FileRequester(const char *_pDisplayString,char *_pResultFileName, unsigned int _nameMaxLength )
+bool	OGLMachineWinDxSound::FileRequester(const char *,char *_pResultFileName, unsigned int _nameMaxLength )
 {
 
 	OPENFILENAME ofn;
@@ -503,7 +503,7 @@ bool	OGLMachineWinDxSound::FileRequester(const char *_pDisplayString,char *_pRes
 #endif
 #ifdef _ENGINE_EDITABLE_
 
-const char *OGLMachineWinDxSound::LoadFile(const char *_pFilePath,unsigned int _pFileStart,unsigned int &_LoadByteLength, unsigned int _maximumSizeLoad)
+const char *OGLMachineWinDxSound::LoadFile(const char *,unsigned int ,unsigned int &, unsigned int )
 {
 
 	return 0L;
@@ -511,7 +511,7 @@ const char *OGLMachineWinDxSound::LoadFile(const char *_pFilePath,unsigned int _
 #endif
 #ifdef _ENGINE_EDITABLE_
 
-bool OGLMachineWinDxSound::SaveFile(const char *_pFilePath,const char *_chunkToWrite,unsigned int _ChunkLength,bool _append)
+bool OGLMachineWinDxSound::SaveFile(const char *,const char *,unsigned int ,bool )
 {
 	return false;
 }

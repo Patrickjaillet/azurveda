@@ -23,7 +23,7 @@ void VirtualMedia::ProcessMediaOnDefaultViewport( double _frameDate )
 	ProcessMedia(_frameDate,pViewPort);
 }
 
-void VirtualMedia::ProcessMedia( double _frameDate,VirtualMachine::InternalViewPort *_pViewPort )
+void VirtualMedia::ProcessMedia( double ,VirtualMachine::InternalViewPort * )
 {
 
 }
@@ -36,7 +36,7 @@ void	VirtualMedia::StartPreview()
 #endif
 #ifdef _ENGINE_EDITABLE_
 
-void VirtualMedia::ProcessPreview(double _frameDate,VirtualMachine::InternalViewPort *_pPreviewViewPort,const PreviewConfiguration *_pPreviewConfiguration)
+void VirtualMedia::ProcessPreview(double _frameDate,VirtualMachine::InternalViewPort *_pPreviewViewPort,const PreviewConfiguration *)
 {
 	ProcessMedia(_frameDate,_pPreviewViewPort);
 }
@@ -49,7 +49,7 @@ void	VirtualMedia::EndPreview()
 }
 #endif
 
-void VirtualMedia::ProcessSoundInterupt(  VirtualMachine::SoundBufferToAddYourSignal &_SoundBufferToAddYourSignal )
+void VirtualMedia::ProcessSoundInterupt(  VirtualMachine::SoundBufferToAddYourSignal & )
 {
 
 }

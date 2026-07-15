@@ -428,7 +428,7 @@ void	CPreviewManagerView::CActionFocusable_Main::NotifySetActionFocusable(bool _
 
 void	CPreviewManagerView::CActionFocusable_Move::ManageViewPortClickAction(  VirtualMachine::InternalViewPort *_pClickedViewPort,
 												InterfacePrefObject::PreviewEdited::InterfacePreviewConfiguration *_pPreviewConfToModify,
-										float _xClic,float _yClic,double _previewtimesec,
+										float _xClic,float _yClic,double ,
 										unsigned int _mouseButton,
 										unsigned int _mouseButtonEvent
 											)
@@ -465,7 +465,7 @@ void	CPreviewManagerView::CActionFocusable_Move::ManageViewPortClickAction(  Vir
 
 void	CPreviewManagerView::CActionFocusable_Rotate::ManageViewPortClickAction(  VirtualMachine::InternalViewPort *_pClickedViewPort,
 												InterfacePrefObject::PreviewEdited::InterfacePreviewConfiguration *_pPreviewConfToModify,
-										float _xClic,float _yClic,double _previewtimesec,
+										float _xClic,float _yClic,double ,
 										unsigned int _mouseButton,
 										unsigned int _mouseButtonEvent
 											)
@@ -502,7 +502,7 @@ void	CPreviewManagerView::CActionFocusable_Rotate::ManageViewPortClickAction(  V
 
 void	CPreviewManagerView::CActionFocusable_VPMove::ManageViewPortClickAction(  VirtualMachine::InternalViewPort *_pClickedViewPort,
 												InterfacePrefObject::PreviewEdited::InterfacePreviewConfiguration *_pPreviewConfToModify,
-										float _xClic,float _yClic,double _previewtimesec,
+										float _xClic,float _yClic,double ,
 										unsigned int _mouseButton,
 										unsigned int _mouseButtonEvent
 											)
@@ -580,11 +580,11 @@ void	CPreviewManagerView::CActionFocusable_VPMove::ManageViewPortClickAction(  V
 	m_LastYClick = _yClic;
 }
 
-void	CPreviewManagerView::CActionFocusable_VPReset::ManageViewPortClickAction(  VirtualMachine::InternalViewPort *_pClickedViewPort,
+void	CPreviewManagerView::CActionFocusable_VPReset::ManageViewPortClickAction(  VirtualMachine::InternalViewPort *,
 												InterfacePrefObject::PreviewEdited::InterfacePreviewConfiguration *_pPreviewConfToModify,
-										float _xClic,float _yClic,double _previewtimesec,
-										unsigned int _mouseButton,
-										unsigned int _mouseButtonEvent
+										float ,float ,double ,
+										unsigned int ,
+										unsigned int
 											)
 {
 		_pPreviewConfToModify->SetViewportScale( 0.0f,0.0f,1.0f,1.0f ) ;

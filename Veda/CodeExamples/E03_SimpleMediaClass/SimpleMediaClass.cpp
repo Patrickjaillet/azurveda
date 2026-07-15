@@ -77,7 +77,7 @@ void miniMedia::CloseInternal(void)
 
 }
 
-void miniMedia::ProcessMedia( double _frameDate,VirtualMachine::InternalViewPort *_pViewPort )
+void miniMedia::ProcessMedia( double ,VirtualMachine::InternalViewPort *_pViewPort )
 {
 
 	_pViewPort->Clear(0.1f,0.1f,0.1f);
