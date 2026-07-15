@@ -3,18 +3,6 @@
 #include "EquationList.h"
 #include <math.h>
 
-#ifndef	sinf
-#define	sinf	sin
-#endif
-
-#ifndef	cosf
-#define	cosf	cos
-#endif
-
-#ifndef	sqrtf
-#define	sqrtf	sqrt
-#endif
-
 BASEOBJECT_DECLARE_CLASS( "Ls", EquationList, VirtualEquation,"Equation by list","ListEqu.","Build a \"value =Func(X,Y,Z,Time)\" equation with operators." );
 
 EquationList::EquationList() : VirtualEquation()

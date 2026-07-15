@@ -5,9 +5,6 @@
 #include "Object3DVirtual.h"
 #include "PackFloat.h"
 #include <math.h>
-#ifndef atan2f
-#define atan2f atan2
-#endif
 BASEOBJECT_DECLARE_CLASS( "3dv", Media3DView, VirtualMedia,"Media 3D View","3DView","Render a camera view of a 3D Object or Scene." );
 
 Media3DView::Media3DView() : VirtualMedia()
@@ -52,7 +49,7 @@ void	Media3DView::AtanO1O2( float *po1, float xd,float yd,float zd )
 	ffi = (float)atan2f(xd,zd);
         *(po1++) = ffi ;
 
-        nz = (float)(zd *cos(ffi)) + (xd * sin(ffi));
+        nz = (zd *cosf(ffi)) + (xd * sinf(ffi));
          *(po1) = -(float)atan2f( yd, nz ) ;
 
 }

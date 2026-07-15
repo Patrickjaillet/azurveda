@@ -3,9 +3,6 @@
 #include "ModifierObject3DSinusDisplace.h"
 #include "PackFloat.h"
 #include <math.h>
-#ifndef sinf
-#define	sinf sin
-#endif
 BASEOBJECT_DECLARE_CLASS( "sd", ModifierObject3DSinusDisplace, ModifierObject3DVirtual,"3DModifier Displace Sinus","DisSinus","Modify the vertex position of a dynamic 3D Objects, through 3DObjectScene Shape Modifier List.");
 
 ModifierObject3DSinusDisplace::ModifierObject3DSinusDisplace() : ModifierObject3DVirtual()

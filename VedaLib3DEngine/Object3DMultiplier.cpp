@@ -29,7 +29,7 @@ void	Object3DMultiplier::RenderObject( double _frameDate,
 		return;
 	}
 
-	pParticles->SetFrameDate(_frameDate);
+	pParticles->SetFrameDate((float)_frameDate);
 
 	unsigned int ii;
 	const unsigned int nbparticle = pParticles->GetNumberOfParticle();

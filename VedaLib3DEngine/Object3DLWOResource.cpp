@@ -205,7 +205,7 @@ void	Object3DLWOResource::RenderObject( double _frameDate,
 				(((PackObjectReference *)(pCell->GetManagedObject()))->GetObjectPointer());
 			if(pTexture)
 			{
-				pTexture->UpdateToFrame(_frameDate);
+				pTexture->UpdateToFrame((float)_frameDate);
 				pVMTexture=	pTexture->GetVirtualMachineTexture();
 			}
 			pCell = pCell->GetNextBrotherCell();

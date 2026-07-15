@@ -114,20 +114,20 @@ void Texture3D::ProcessPreview(double _frameDate,VirtualMachine::InternalViewPor
 			pVertexFill->m_ColorRGBA[3]=v1;
 			pVertexFill->m_x = -0.5f + ((float)((xx<<16)/m_MaxNumberOfGridDivisionInWidth))*idiv ;
 			pVertexFill->m_y = -0.5f + ((float)((yy<<16)/m_MaxNumberOfGridDivisionInHeight))*idiv ;
-			pVertexFill->m_z =
+			pVertexFill->m_z = (float)(
 				sin( (pVertexFill->m_x+_frameDate*0.2f)*8.0f)*
-				cos( (pVertexFill->m_y-_frameDate*0.3f)*8.0f )*0.3f*objectRotAxeZ;
+				cos( (pVertexFill->m_y-_frameDate*0.3f)*8.0f )*0.3f*objectRotAxeZ);
 			pVertexFill->m_u = -1.0f + ((float)((xx<<16)/m_MaxNumberOfGridDivisionInWidth))*idiv*3.0f ;
 			pVertexFill->m_v = -1.0f + ((float)((yy<<16)/m_MaxNumberOfGridDivisionInHeight))*idiv*3.0f ;
 			float nx,ny,nz,nn;
-			nx = -sin( (pVertexFill->m_x-0.01f+_frameDate*0.2f)*8.0f)*
-				cos( (pVertexFill->m_y-_frameDate*0.3f)*8.0f )*0.3f*objectRotAxeZ;
+			nx = (float)(-sin( (pVertexFill->m_x-0.01f+_frameDate*0.2f)*8.0f)*
+				cos( (pVertexFill->m_y-_frameDate*0.3f)*8.0f )*0.3f*objectRotAxeZ);
 			nx += pVertexFill->m_z;
-			ny = -sin( (pVertexFill->m_x+_frameDate*0.2f)*8.0f)*
-				cos( (pVertexFill->m_y-0.01f-_frameDate*0.3f)*8.0f )*0.3f*objectRotAxeZ;
+			ny = (float)(-sin( (pVertexFill->m_x+_frameDate*0.2f)*8.0f)*
+				cos( (pVertexFill->m_y-0.01f-_frameDate*0.3f)*8.0f )*0.3f*objectRotAxeZ);
 			ny += pVertexFill->m_z;
 			nz = 0.04f;
-			nn = 1.0f/sqrt( nx*nx + ny*ny + nz*nz );
+			nn = (float)(1.0f/sqrt( nx*nx + ny*ny + nz*nz ));
 
 			pVertexFill->m_nx = nx*nn ;
 			pVertexFill->m_ny = ny*nn ;
@@ -160,7 +160,7 @@ void Texture3D::ProcessPreview(double _frameDate,VirtualMachine::InternalViewPor
 	_pPreviewViewPort->Matrix_Rotate( (objectRotAxeX)*2.4f,0.0f,-1.0f,0.0f);
 	_pPreviewViewPort->Matrix_Rotate( (objectRotAxeY)*2.4f,-1.0f,0.0f,0.0f);
 
-	UpdateToFrame(_frameDate);
+	UpdateToFrame((float)_frameDate);
 
 	_pPreviewViewPort->SetFOVLength(0.75f);
 	_pPreviewViewPort->RenderMesh( 	m_pPreviewObject3D, m_pInternalTexture );
