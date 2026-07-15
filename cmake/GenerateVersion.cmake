@@ -1,64 +1,27 @@
-# Generates cmake/Version.h from cmake/Version.h.in at every build.
-#
-# Version source of truth, in priority order:
-#   1. Latest annotated Git tag reachable from HEAD (format vMAJOR.MINOR.PATCH)
-#   2. The VERSION file at the repository root (fallback when no tag exists)
+# Generates cmake/Version.h from cmake/Version.h.in, both at configure time and again
+# on every build (so AZURVEDA_VERSION_GIT_HASH always reflects the commit being built,
+# not just the commit at the last `cmake` configure).
 #
 # Usage (called from the root CMakeLists.txt):
 #   include(cmake/GenerateVersion.cmake)
 #   azurveda_generate_version_header(${CMAKE_BINARY_DIR}/generated/Version.h)
+#   azurveda_add_version_header_target(AzurVedaVersion ${CMAKE_BINARY_DIR}/generated/Version.h)
 
 function(azurveda_generate_version_header OUTPUT_HEADER)
-    find_package(Git QUIET)
+    set(AZURVEDA_SOURCE_DIR "${CMAKE_SOURCE_DIR}")
+    set(AZURVEDA_OUTPUT_HEADER "${OUTPUT_HEADER}")
+    include("${CMAKE_CURRENT_LIST_DIR}/WriteVersionHeader.cmake")
+endfunction()
 
-    set(AZURVEDA_VERSION_GIT_HASH "unknown")
-    set(_git_tag_version "")
-
-    if(Git_FOUND)
-        execute_process(
-            COMMAND ${GIT_EXECUTABLE} describe --tags --match "v[0-9]*.[0-9]*.[0-9]*" --abbrev=0
-            WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
-            OUTPUT_VARIABLE _git_tag_output
-            OUTPUT_STRIP_TRAILING_WHITESPACE
-            RESULT_VARIABLE _git_tag_result
-            ERROR_QUIET
-        )
-        if(_git_tag_result EQUAL 0)
-            string(REGEX REPLACE "^v" "" _git_tag_version "${_git_tag_output}")
-        endif()
-
-        execute_process(
-            COMMAND ${GIT_EXECUTABLE} rev-parse --short HEAD
-            WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
-            OUTPUT_VARIABLE _git_hash_output
-            OUTPUT_STRIP_TRAILING_WHITESPACE
-            RESULT_VARIABLE _git_hash_result
-            ERROR_QUIET
-        )
-        if(_git_hash_result EQUAL 0)
-            set(AZURVEDA_VERSION_GIT_HASH "${_git_hash_output}")
-        endif()
-    endif()
-
-    if(_git_tag_version)
-        set(AZURVEDA_VERSION_STRING "${_git_tag_version}")
-    else()
-        file(READ "${CMAKE_SOURCE_DIR}/VERSION" AZURVEDA_VERSION_STRING)
-        string(STRIP "${AZURVEDA_VERSION_STRING}" AZURVEDA_VERSION_STRING)
-    endif()
-
-    if(NOT AZURVEDA_VERSION_STRING MATCHES "^[0-9]+\\.[0-9]+\\.[0-9]+$")
-        message(FATAL_ERROR "AzurVeda version '${AZURVEDA_VERSION_STRING}' does not match MAJOR.MINOR.PATCH")
-    endif()
-
-    string(REPLACE "." ";" _version_parts "${AZURVEDA_VERSION_STRING}")
-    list(GET _version_parts 0 AZURVEDA_VERSION_MAJOR)
-    list(GET _version_parts 1 AZURVEDA_VERSION_MINOR)
-    list(GET _version_parts 2 AZURVEDA_VERSION_PATCH)
-
-    configure_file(
-        "${CMAKE_SOURCE_DIR}/cmake/Version.h.in"
-        "${OUTPUT_HEADER}"
-        @ONLY
+function(azurveda_add_version_header_target TARGET_NAME OUTPUT_HEADER)
+    add_custom_target(${TARGET_NAME}_UpdateVersionHeader ALL
+        COMMAND ${CMAKE_COMMAND}
+            "-DAZURVEDA_SOURCE_DIR=${CMAKE_SOURCE_DIR}"
+            "-DAZURVEDA_OUTPUT_HEADER=${OUTPUT_HEADER}"
+            -P "${CMAKE_CURRENT_LIST_DIR}/WriteVersionHeader.cmake"
+        BYPRODUCTS "${OUTPUT_HEADER}"
+        COMMENT "Regenerating Version.h from Git/VERSION"
+        VERBATIM
     )
+    add_dependencies(${TARGET_NAME} ${TARGET_NAME}_UpdateVersionHeader)
 endfunction()

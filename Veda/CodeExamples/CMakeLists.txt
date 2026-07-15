@@ -1,0 +1,8 @@
+add_executable(Example01_SimpleSerialization E01_SimpleSerialization/SimpleSerialization.cpp)
+target_link_libraries(Example01_SimpleSerialization PRIVATE Veda)
+
+add_executable(Example02_SimpleMachineUse E02_SimpleMachineUse/SimpleMachineUse.cpp)
+target_link_libraries(Example02_SimpleMachineUse PRIVATE Veda VedaMachineOGL VedaMachineOGLWinDxSound)
+
+add_executable(Example03_SimpleMediaClass E03_SimpleMediaClass/SimpleMediaClass.cpp)
+target_link_libraries(Example03_SimpleMediaClass PRIVATE Veda VedaMachineOGL VedaMachineOGLWinDxSound)

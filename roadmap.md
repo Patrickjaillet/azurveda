@@ -31,11 +31,11 @@
 
 ## Phase 1 — Outillage moderne (~2-3 jours)
 
-- [ ] Remplacer les fichiers `.vcproj` (Visual Studio .NET 2003, Format Version 8.00) par des fichiers projet **Visual Studio 2026** (`.vcxproj`) générés via **CMake** (`CMakeLists.txt` par module + racine)
-- [ ] Cibler exclusivement la plateforme **x64**, toolset MSVC le plus récent (`v145` ou équivalent 2026), standard **C++23**
-- [ ] Introduire **vcpkg** (manifest mode, `vcpkg.json`) pour les dépendances externes (libjpeg, futur backend audio, etc.) plutôt que du code tiers embarqué
-- [ ] Mettre en place une CI **GitHub Actions** (`windows-latest`, build MSVC + exécution des exemples `Veda/CodeExamples`)
-- [ ] Faire en sorte que chaque build réussi sur la branche principale mette à jour automatiquement le numéro de version (Phase 0) et échoue si `CHANGELOG.md` n'a pas été modifié dans la même PR
+- [x] Remplacer les fichiers `.vcproj` (Visual Studio .NET 2003, Format Version 8.00) par des fichiers projet **Visual Studio 2026** (`.vcxproj`) générés via **CMake** (`CMakeLists.txt` par module + racine) — les anciens `.vcproj`/`.sln` sont conservés à titre de référence historique le temps de valider le build CMake sur une vraie machine Windows/VS2026, puis seront supprimés
+- [x] Cibler exclusivement la plateforme **x64**, toolset MSVC le plus récent (équivalent 2026), standard **C++23** (`CMakeLists.txt` échoue si `CMAKE_SIZEOF_VOID_P != 8` ou si le compilateur n'est pas MSVC)
+- [x] Introduire **vcpkg** (manifest mode, `vcpkg.json`) pour les dépendances externes : `libjpeg-turbo` remplace la copie vendue d'IJG libjpeg 6b dans `VedaLibImageJPEG` (le module ne conserve que `ImageJPEG.cpp/.h` et `RegisterLibImageJPEG.cpp/.h`). Le décodeur MP3 (GPL2, fork de libmad) et le lecteur XM restent des sources internes tel quel, un remplacement par un paquet vcpkg étant une décision de licence (Phase à part) plutôt qu'un simple choix d'outillage
+- [x] Mettre en place une CI **GitHub Actions** (`windows-latest`, build MSVC + exécution des exemples `Veda/CodeExamples`) — `Example01_SimpleSerialization` (console, sans GPU) est exécuté ; `Example02`/`Example03` (OpenGL + DirectSound) sont seulement compilés, faute de GPU/périphérique audio sur les runners hébergés
+- [x] Faire en sorte que chaque build réussi sur la branche principale mette à jour automatiquement le numéro de version (Phase 0) et échoue si `CHANGELOG.md` n'a pas été modifié dans la même PR
 
 ## Phase 2 — Traduction en anglais & nettoyage éditorial (~3-5 jours)
 

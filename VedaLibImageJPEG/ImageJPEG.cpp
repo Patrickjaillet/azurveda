@@ -15,7 +15,6 @@ ImageJPEG::ImageJPEG() : VirtualImage()
 
 extern "C" {
 #include <stdio.h>
-#include "jinclude.h"
 #include "jpeglib.h"
 /*
  * <setjmp.h> is used for the optional error recovery mechanism shown in

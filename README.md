@@ -38,22 +38,37 @@ complet et son avancement.
 
 ## Build
 
-> État actuel : le workspace est en cours de migration (voir [roadmap.md](roadmap.md),
-> Phase 1). Tant que la migration CMake/vcpkg n'est pas terminée, le build se fait via
-> les solutions Visual Studio historiques ci-dessous.
+Le build se fait via **CMake + vcpkg** (voir [roadmap.md](roadmap.md), Phase 1). Les
+anciennes solutions Visual Studio .NET 2003 (`VedaWindowsLGPL.sln`, `VedaWindowsGPL.sln`,
+fichiers `.vcproj`) sont conservées à titre de référence le temps de valider le build
+CMake sur une machine réelle, puis seront supprimées.
 
 1. Cloner le dépôt : `git clone <url-du-depot>`
-2. Ouvrir `VedaWindowsLGPL.sln` (modules LGPL uniquement) ou `VedaWindowsGPL.sln`
-   (inclut également `VedaLibSoundMP3` et `VedaGUIWindowsMFC`, sous GPL 2) dans
-   Visual Studio 2026
-3. Compiler la configuration `Release`/`x64`
-
-Une fois la Phase 1 de la roadmap terminée, le build se fera via CMake :
+2. Définir la variable d'environnement `VCPKG_ROOT` pointant vers une installation de
+   [vcpkg](https://github.com/microsoft/vcpkg) (manifest mode — les dépendances de
+   `vcpkg.json`, ex. `libjpeg-turbo`, sont installées automatiquement à la configuration)
+3. Configurer puis builder :
 
 ```
 cmake --preset windows-x64
 cmake --build --preset windows-x64-release
 ```
+
+Options CMake utiles :
+
+| Option | Défaut | Effet |
+|---|---|---|
+| `AZURVEDA_BUILD_GPL_MODULES` | `ON` | Compile `VedaLibSoundMP3`, `VedaLibDemo`, `VedaGUIWindowsMFC` (GPL 2). `OFF` = build LGPL uniquement (preset `windows-x64-lgpl`) |
+| `AZURVEDA_BUILD_MFC_EDITOR` | `ON` | Compile l'éditeur `VedaGUIWindowsMFC` (nécessite le composant optionnel "MFC et ATL" de Visual Studio) |
+| `AZURVEDA_BUILD_EXAMPLES` | `ON` | Compile les exemples `Veda/CodeExamples` |
+
+> Le générateur du preset `windows-x64` (`Visual Studio 18 2026`) est une extrapolation
+> du nommage CMake historique (15=2017, 16=2019, 17=2022) tant que Visual Studio 2026
+> n'était pas sorti au moment de ce portage. Vérifiez avec `cmake --help` sur votre
+> machine et ajustez `CMakePresets.json` si le nom réel diffère.
+
+La CI (`.github/workflows/ci.yml`) utilise un preset séparé (`ci-windows-x64`, générateur
+Ninja) indépendant de la version de l'IDE installée sur le runner.
 
 ## Versionnage
 
