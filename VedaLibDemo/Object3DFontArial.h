@@ -27,7 +27,7 @@ protected:
 	virtual void	CloseInternal(void);
 #endif
 
-	static const signed char m_fontc[];
+	static const unsigned char m_fontc[];
 
 	typedef struct {
 		signed int	m_ShapeIndex;

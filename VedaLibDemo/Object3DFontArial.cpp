@@ -13,7 +13,7 @@ Object3DFontArial::Object3DFontArial() : Object3DFontVirtual()
 	REGISTER_MEMBER(mSer_ShadowList,0L);
 }
 
-const signed char Object3DFontArial::m_fontc[]={
+const unsigned char Object3DFontArial::m_fontc[]={
 
 4,2,   10,64, 50,64, 50,58, 10,58,   0,1,2, 0,2,3,
 29,29,5,89,52,89,63,84,67,70,69,24,45,24,43,31,34,24,16,24,5,28,1,42,1,53,5,65,13,68,38,68,43,
@@ -145,8 +145,8 @@ bool Object3DFontArial::CreateInternal(void)
 	m_pObject3DBufferTable = new Object3DBufferHandler[96];
 
 	Object3DBufferHandler *ptable = m_pObject3DBufferTable;
-	const signed char *pfontc = &(m_fontc[0]);
-	const signed char *pfontend = pfontc+ sizeof(m_fontc);
+	const unsigned char *pfontc = &(m_fontc[0]);
+	const unsigned char *pfontend = pfontc+ sizeof(m_fontc);
 
 	const float   v1d255 = PackFloat::m_1Div255;
 	float ff,fx2;
