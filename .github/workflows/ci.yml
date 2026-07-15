@@ -3,6 +3,7 @@ name: CI
 on:
   push:
     branches: [main]
+    tags: ['v[0-9]+.[0-9]+.[0-9]+']
   pull_request:
     branches: [main]
 
@@ -48,8 +49,12 @@ jobs:
           fi
 
   build:
-    name: Build (MSVC, x64) + run examples
+    name: Build (MSVC, x64, ${{ matrix.configuration }}) + run examples
     runs-on: windows-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        configuration: [Debug, Release]
     steps:
       - uses: actions/checkout@v4
 
@@ -78,8 +83,8 @@ jobs:
       - name: Configure (CMake + vcpkg manifest)
         run: cmake --preset ci-windows-x64
 
-      - name: Build (Release)
-        run: cmake --build --preset ci-windows-x64-release
+      - name: Build (${{ matrix.configuration }})
+        run: cmake --build --preset ci-windows-x64-${{ matrix.configuration == 'Debug' && 'debug' || 'release' }}
 
       - name: Run Example01_SimpleSerialization (console, no GPU/audio device required)
         run: |
@@ -94,6 +99,16 @@ jobs:
           }
         # Example02/03 open an OpenGL/DirectSound device and are not executed here:
         # GitHub-hosted windows-latest runners have no GPU/audio device.
+
+      - name: Upload Release build artifacts
+        if: matrix.configuration == 'Release'
+        uses: actions/upload-artifact@v4
+        with:
+          name: azurveda-release-x64
+          path: |
+            out/build/ci-windows-x64/**/Release/Example*.exe
+          retention-days: 7
+          if-no-files-found: error
 
   version-bump:
     name: Auto-bump PATCH version on main
@@ -120,3 +135,59 @@ jobs:
           git add VERSION
           git commit -m "ci: bump version to ${NEW_VERSION} [skip ci]"
           git push
+
+  release:
+    name: Publish GitHub release
+    needs: build
+    if: startsWith(github.ref, 'refs/tags/v')
+    runs-on: windows-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download Release build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: azurveda-release-x64
+          path: artifact-stage
+
+      - name: Package release zip
+        run: |
+          $stage = Get-ChildItem -Recurse -Filter "Example*.exe" -Path artifact-stage
+          if (-not $stage) { throw "No example executables found in downloaded artifact" }
+          $zipDir = "azurveda-package"
+          New-Item -ItemType Directory -Path $zipDir | Out-Null
+          $stage | Copy-Item -Destination $zipDir
+          Copy-Item docs/screenshot.png "$zipDir/screenshot.png"
+          Copy-Item README.md, CHANGELOG.md, COPYING "$zipDir/"
+          Compress-Archive -Path "$zipDir/*" -DestinationPath "AzurVeda-${{ github.ref_name }}-x64.zip"
+
+      - name: Extract CHANGELOG section for this version
+        run: |
+          $version = "${{ github.ref_name }}" -replace '^v',''
+          $lines = Get-Content CHANGELOG.md
+          $capture = $false
+          $notes = New-Object System.Collections.Generic.List[string]
+          foreach ($line in $lines) {
+            if ($line -match '^## \[') {
+              if ($capture) { break }
+              if ($line -match [regex]::Escape("[$version]")) { $capture = $true }
+              continue
+            }
+            if ($capture) { $notes.Add($line) }
+          }
+          if ($notes.Count -eq 0) {
+            throw "No CHANGELOG.md section found for version $version. Rename the [Unreleased] section to [$version] - YYYY-MM-DD before tagging (see README.md)."
+          }
+          $screenshotUrl = "https://raw.githubusercontent.com/${{ github.repository }}/${{ github.ref_name }}/docs/screenshot.png"
+          @("![VedaGUIWindowsMFC editor]($screenshotUrl)", "") + $notes | Out-File -Encoding utf8 release_notes.md
+
+      - name: Create GitHub release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "${{ github.ref_name }}" `
+            "AzurVeda-${{ github.ref_name }}-x64.zip" `
+            --title "AzurVeda ${{ github.ref_name }}" `
+            --notes-file release_notes.md

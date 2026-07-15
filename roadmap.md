@@ -84,9 +84,10 @@
 
 ## Phase 8 — CI/CD complet (~1-2 jours)
 
-- [ ] Étendre la CI GitHub Actions : build matrice (Debug/Release, x64) sur `windows-latest`
-- [ ] Publier automatiquement les artefacts de build (exécutables + exemples) et le `CHANGELOG.md` extrait à chaque tag de version
-- [ ] Publier une release GitHub avec le screenshot du `README.md` en aperçu
+- [x] Étendre la CI GitHub Actions : build matrice (Debug/Release, x64) sur `windows-latest` — job `build` de `.github/workflows/ci.yml` passé en `strategy.matrix.configuration: [Debug, Release]`, `fail-fast: false` (un échec Debug ne doit pas annuler le Release en cours, et vice versa). Nouveau preset CMake `ci-windows-x64-debug` ajouté dans `CMakePresets.json` (le seul absent : `ci-windows-x64-release` existait déjà). Validé localement sur machine réelle avec le preset `ci-windows-x64` exact utilisé par la CI (`AZURVEDA_BUILD_MFC_EDITOR=OFF`) : build Debug complet, 0 erreur, `Example01_SimpleSerialization` s'exécute correctement
+- [x] Publier automatiquement les artefacts de build (exécutables + exemples) et le `CHANGELOG.md` extrait à chaque tag de version — déclencheur `push: tags: ['v[0-9]+.[0-9]+.[0-9]+']` ajouté à `ci.yml`. Le leg Release du job `build` téléverse les 3 exécutables `Example0{1,2,3}` en artefact de workflow (`actions/upload-artifact`) ; le nouveau job `release` (déclenché uniquement sur tag, après succès de `build`) les télécharge, les empaquette avec `README.md`/`CHANGELOG.md`/`COPYING`/`docs/screenshot.png` dans une archive zip, extrait la section `CHANGELOG.md` correspondant au tag (recherche entre `## [X.Y.Z]` et le prochain `## [`), et échoue explicitement si cette section n'existe pas (rappel : renommer `[Unreleased]` en `[X.Y.Z] - AAAA-MM-JJ` avant de taguer, cf. `README.md`)
+- [x] Publier une release GitHub avec le screenshot du `README.md` en aperçu — les notes de release générées par le job `release` commencent par une image Markdown pointant vers `docs/screenshot.png` via son URL `raw.githubusercontent.com` figée sur le tag, suivie de la section `CHANGELOG.md` extraite ; publiée via `gh release create --notes-file`
+- [x] URL du dépôt GitHub réel (`https://github.com/Patrickjaillet/azurveda`) renseignée : `git remote add origin`, placeholders `OWNER/AzurVeda`/`<repo-url>` remplacés dans `CHANGELOG.md`/`README.md`
 
 ---
 

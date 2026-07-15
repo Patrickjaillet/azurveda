@@ -53,7 +53,7 @@ Visual Studio .NET 2003 solutions (`VedaWindowsLGPL.sln`, `VedaWindowsGPL.sln`,
 `.vcproj` files) are kept for reference until the CMake build has been validated on
 a real machine, and will then be removed.
 
-1. Clone the repository: `git clone <repo-url>`
+1. Clone the repository: `git clone https://github.com/Patrickjaillet/azurveda.git`
 2. Set the `VCPKG_ROOT` environment variable to point to a
    [vcpkg](https://github.com/microsoft/vcpkg) installation (manifest mode — the
    dependencies listed in `vcpkg.json`, e.g. `libjpeg-turbo`, are installed

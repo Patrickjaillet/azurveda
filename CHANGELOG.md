@@ -43,6 +43,15 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/lang/fr/).
 - Étape CI (`.github/workflows/ci.yml`, job `changelog-check`) : si une PR modifie
   des ressources `VedaGUIWindowsMFC/*.rc`/`*.rc2`, `docs/screenshot.png` doit être
   mis à jour dans la même PR, sinon le build échoue.
+- CI : build matrice `Debug`/`Release` (job `build`, `strategy.matrix.configuration`),
+  nouveau preset CMake `ci-windows-x64-debug` dans `CMakePresets.json`.
+- CI : job `release`, déclenché sur push d'un tag `v[0-9]+.[0-9]+.[0-9]+`, qui
+  empaquette les exécutables `Example01/02/03` (+ `README.md`/`CHANGELOG.md`/
+  `COPYING`/`docs/screenshot.png`) dans une archive zip et publie une release
+  GitHub (`gh release create`) dont les notes commencent par le screenshot en
+  aperçu suivi de la section `CHANGELOG.md` correspondant au tag.
+- `git remote origin` pointé vers le dépôt réel
+  (`https://github.com/Patrickjaillet/azurveda`).
 
 ### Changed
 
@@ -96,6 +105,9 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/lang/fr/).
   personnalisées ne peuvent pas déclarer le même `BYPRODUCTS`). `VedaGUIWindowsMFC`
   dépend maintenant directement de la cible `Veda_UpdateVersionHeader` existante
   via `add_dependencies()` plutôt que d'en créer une seconde.
+- Placeholders d'URL de dépôt restants (`https://github.com/OWNER/AzurVeda` dans
+  `CHANGELOG.md`, `<repo-url>` dans `README.md`) remplacés par l'URL réelle du
+  dépôt une fois celle-ci connue.
 - Bugs de compilation réels révélés en validant le build CMake sur une machine
   Windows/MSVC réelle (VS Build Tools 2022 + MFC/ATL, en attendant VS2026) :
   - Littéraux chaîne assignés à des pointeurs `char*`/`LPSTR` non-const, rejetés en
@@ -215,4 +227,4 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/lang/fr/).
   "Untitled" sur une machine en locale anglaise, sans changement de code
   nécessaire.
 
-[Unreleased]: https://github.com/OWNER/AzurVeda/compare/HEAD
+[Unreleased]: https://github.com/Patrickjaillet/azurveda/compare/HEAD
