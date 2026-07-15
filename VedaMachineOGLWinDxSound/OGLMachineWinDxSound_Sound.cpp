@@ -5,7 +5,9 @@
 #include <windows.h>
 #include <math.h>
 #include <stdlib.h>
+#ifndef STRICT
 #define STRICT
+#endif
 #include <mmsystem.h>
 #include <xaudio2.h>
 

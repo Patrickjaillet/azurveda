@@ -120,6 +120,8 @@ public:
 	class	InternalViewPort
 	{	public:
 
+		virtual ~InternalViewPort() {};
+
 		virtual	void	Clear( float _red=0.0f,float _green=0.0f,float _blue=0.0f)=0;
 
 		virtual	void	RenderMesh(

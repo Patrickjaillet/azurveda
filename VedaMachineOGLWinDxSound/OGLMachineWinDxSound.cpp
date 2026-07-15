@@ -130,7 +130,7 @@ VirtualMachine::eVMResult	OGLMachineWinDxSound::InitMachine()
 	ActivateScreen( &m_FullScreen );
 
 	VirtualMachine::eVMResult res= OGLMachine::InitMachine();
-	if(vmr_OK != vmr_OK ) return res;
+	if(res != vmr_OK ) return res;
 
 	pglDefVP->Clear();
 	pglDefVP->SwapBuffer();

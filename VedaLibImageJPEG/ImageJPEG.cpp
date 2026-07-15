@@ -154,7 +154,6 @@ static int CreateInternal_C(const unsigned char *pFileChunk,unsigned int fileSiz
 
 	}
 	delete [] plinebuffer;
-ok:
 	jpeg_finish_decompress(&cinfo);
 	jpeg_destroy_decompress(&cinfo);
 	return(0);
