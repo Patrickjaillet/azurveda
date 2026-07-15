@@ -68,7 +68,7 @@ typedef struct _LwoVertex{
 
     float   U,V;
 
-    struct  LwoPolyToVertex     *FirstDiscontinuousUse;
+    struct  _LwoPolyToVertex     *FirstDiscontinuousUse;
 } sLwoVertex ;
 
 typedef struct _LwoPolyToVertex{
@@ -81,7 +81,7 @@ typedef struct _LwoPolyToVertex{
 
 	int		DiscontinuousMappingOffset;
 
-    struct  LwoPolyToVertex     *NextDiscontinuousUse;
+    struct  _LwoPolyToVertex     *NextDiscontinuousUse;
 } sLwoPolyToVertex;
 
 typedef struct  _LwoPolygon{
