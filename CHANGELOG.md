@@ -34,6 +34,8 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/lang/fr/).
   (`VedaLibSoundMP3/CMakeLists.txt`, `VedaLibSoundXM/CMakeLists.txt`, via
   `set_source_files_properties`), qui n'est pas retenu par le même standard de
   qualité.
+- `docs/screenshot.png` : capture d'écran de `VedaGUIWindowsMFC` référencée dans
+  `README.md`, prise sur la machine de développement réelle.
 
 ### Changed
 
@@ -74,6 +76,9 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/lang/fr/).
   charge nativement le rendu sur une HWND déjà embarquée dans une hiérarchie MFC ;
   voir `roadmap.md` Phase 5 pour la justification détaillée de cette limite de
   périmètre.
+- `README.md` traduit intégralement en anglais (décision utilisateur, 2026-07-15) :
+  c'était un choix éditorial distinct de la traduction Phase 2 (qui ne ciblait que
+  les ressources `.rc` et le code source), pas un oubli.
 
 ### Fixed
 
@@ -138,6 +143,20 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/lang/fr/).
     qu'il s'agit du seul cas de ce pattern dans la base de code.
   - `Veda/BaseType.cpp::WriteFile` : `pserializedFormAfter` n'était jamais affecté
     si `fopen()` échouait, et sa valeur non initialisée était lue juste après.
+- `VedaGUIWindowsMFC/res/VedaDemoOGLMfcGui.manifest` était **orphelin** : jamais
+  référencé depuis `VedaDemoOGLMfcGui.rc` ni depuis l'ancien `.vcproj`/le nouveau
+  `CMakeLists.txt`, donc jamais embarqué dans l'exécutable (seul le manifeste
+  minimal auto-généré par le linker MSVC l'était). Corrigé : `processorArchitecture`
+  `X86` → `amd64` (projet x64 exclusif), ajout d'un bloc `<compatibility>` ne
+  déclarant que le GUID `supportedOS` Windows 10/11, ajout de
+  `<dpiAwareness>PerMonitorV2</dpiAwareness>`, et câblage réel via
+  `target_link_options(... "/MANIFEST:EMBED" "/MANIFESTINPUT:...")` dans
+  `VedaGUIWindowsMFC/CMakeLists.txt`. Vérifié avec `mt.exe -inputresource` sur le
+  binaire compilé.
+- Texte français oublié par la Phase 2, qui ne ciblait que les ressources `.rc` et
+  les commentaires du code source : `VedaGUIWindowsMFC/VedaDemoOGLMfcGui.h`
+  (commentaires + message `#error` en français), `VedaGUIWindowsMFC/VedaDemoOGLMfcGui.reg`
+  (commentaires).
 
 ### Removed
 
@@ -145,6 +164,9 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/lang/fr/).
   remplacée par `libjpeg-turbo` via vcpkg.
 - `VedaGUIWindowsMFC/MainFrm_old.cpp`/`.h` (fichiers obsolètes, non référencés par
   aucun `.vcproj`/`CMakeLists.txt`).
+- `VedaGUIWindowsMFC/ReadMe.txt` : texte AppWizard générique en français, obsolète
+  (référençait des fichiers qui n'existent plus dans le projet, ex.
+  `VedaDemoOGLMfcGuiView.h/.cpp`, `.vcproj`), non référencé ailleurs dans le dépôt.
 - 134 occurrences du mot-clé `register` (non standard depuis C++17) dans le code
   AzurVeda (`Veda`, `VedaLibDemo`, `VedaLibImage`, `VedaMachineOGL`,
   `VedaLibSoundMP3/MP3SoundObject.cpp`). Le code tiers vendu (fork de libmad,
@@ -166,8 +188,17 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/lang/fr/).
   sur Windows 10 Entreprise LTSC 10.0.17763). Voir `roadmap.md` Phase 4.
 - Le portage Win32 brut → GLFW (`VedaMachineOGLWinDxSound`) compile et s'exécute
   sans crash (`Example02`/`Example03`/`VedaGUIWindowsMFC.exe` testés plusieurs
-  secondes sans erreur), mais **le rendu n'a pas pu être vérifié visuellement**
-  dans cet environnement automatisé (pas d'accès interactif à l'écran). Voir
-  `roadmap.md` Phase 5.
+  secondes sans erreur). Une capture d'écran de `VedaGUIWindowsMFC` a depuis été
+  prise avec succès (`docs/screenshot.png`, Phase 6), confirmant qu'un contexte
+  OpenGL réel se crée et s'affiche sans erreur visible, mais **le rendu 3D
+  effectif (mesh, texture) n'a pas été vérifié visuellement** faute de scène de
+  démonstration chargée lors de la capture. Voir `roadmap.md` Phase 5.
+- `docs/screenshot.png` a été pris sur une machine Windows en locale française :
+  le titre de fenêtre affiche "Sans titre" au lieu de "Untitled". Ce texte provient
+  du texte par défaut intégré à la DLL MFC partagée (`_AFXDLL`) dont Windows charge
+  la variante satellite localisée selon la locale système, et non d'une ressource
+  `.rc` d'AzurVeda (déjà entièrement traduite, voir Phase 2) ; il apparaîtrait
+  "Untitled" sur une machine en locale anglaise, sans changement de code
+  nécessaire.
 
 [Unreleased]: https://github.com/OWNER/AzurVeda/compare/HEAD

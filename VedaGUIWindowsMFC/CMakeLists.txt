@@ -36,6 +36,14 @@ target_include_directories(VedaGUIWindowsMFC PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}
 target_compile_definitions(VedaGUIWindowsMFC PRIVATE _AFXDLL)
 target_precompile_headers(VedaGUIWindowsMFC PRIVATE stdafx.h)
 
+# res/VedaDemoOGLMfcGui.manifest declares Windows 10/11-only OS compatibility and
+# per-monitor DPI awareness; merged into the linker-generated default manifest
+# rather than relying on the auto-generated one alone.
+target_link_options(VedaGUIWindowsMFC PRIVATE
+    "/MANIFEST:EMBED"
+    "/MANIFESTINPUT:${CMAKE_CURRENT_SOURCE_DIR}/res/VedaDemoOGLMfcGui.manifest"
+)
+
 target_link_libraries(VedaGUIWindowsMFC PRIVATE
     Veda
     VedaLibMath

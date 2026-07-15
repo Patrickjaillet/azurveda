@@ -2,13 +2,10 @@
 #pragma once
 
 #ifndef __AFXWIN_H__
-	#error inclut 'stdafx.h' avant d'inclure ce fichier pour PCH
+	#error include 'stdafx.h' before including this file for PCH
 #endif
 
-#include "resource.h"       // symboles principaux
-
-// CVedaDemoOGLMfcGuiApp :
-// Consultez VedaDemoOGLMfcGui.cpp pour l'implémentation de cette classe
+#include "resource.h"
 
 class CVedaDemoOGLMfcGuiApp : public CWinApp
 {
