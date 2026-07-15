@@ -4,12 +4,6 @@
 #include "VirtualEquation.h"
 #include "TextLocalized.h"
 #include <math.h>
-#ifndef sqrtf
-#define sqrtf sqrt
-#endif
-#ifndef sinf
-#define sinf sin
-#endif
 BASEOBJECT_DECLARE_CLASS( "Text", Object3DText, Object3DVirtual,"3D Object Text","Text3D"," 3D Scene where Objects are defined by a text and a 3D Object Font." );
 
 Object3DText::Object3DText() : Object3DVirtual()

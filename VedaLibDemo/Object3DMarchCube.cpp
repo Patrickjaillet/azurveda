@@ -6,9 +6,6 @@
 #include "VirtualMachine.h"
 #include "PackFloat.h"
 #include <math.h>
-#ifndef sqrtf
-#define sqrtf sqrt
-#endif
 #ifdef _ENGINE_EDITABLE_
 	#include <time.h>
 #endif
@@ -259,22 +256,22 @@ void Object3DMarchCube::CreateShape(float _newShapeTime, unsigned int )
 			signed char		bisz,binz;
 			bisx	=	(signed char)((boundCube[0]-fxs)/fxd);
 				if( bisx<0 ) bisx =0;
-				else if( bisx>nx ) bisx=nx;
+				else if( bisx>nx ) bisx=(signed char)nx;
 			binx	=	(signed char)((boundCube[1]-fxs)/fxd)+1;
 				if( binx<0 ) binx =0;
-				else if( binx>nx ) binx=nx;
+				else if( binx>nx ) binx=(signed char)nx;
 			bisy	=	(signed char)((boundCube[2]-fxs)/fyd);
 				if( bisy<0 ) bisy =0;
-				else if( bisy>ny ) bisy=ny;
+				else if( bisy>ny ) bisy=(signed char)ny;
 			biny	=	(signed char)((boundCube[3]-fxs)/fyd)+1;
 				if( biny<0 ) biny =0;
-				else if( biny>ny ) biny=ny;
+				else if( biny>ny ) biny=(signed char)ny;
 			bisz	=	(signed char)((boundCube[4]-fxs)/fzd);
 				if( bisz<0 ) bisz =0;
-				else if( bisz>nz ) bisz=nz;
+				else if( bisz>nz ) bisz=(signed char)nz;
 			binz	=	(signed char)((boundCube[5]-fxs)/fzd)+1;
 				if( binz<0 ) binz =0;
-				else if( binz>nz ) binz=nz;
+				else if( binz>nz ) binz=(signed char)nz;
 
 			fz = fxs + (float)bisz * fzd;
 
@@ -461,22 +458,22 @@ while( pCell)
 		signed char		bisz,binz;
 			bisx	=	(signed char)((boundCube[0]-fxs)/fxd);
 				if( bisx<0 ) bisx =0;
-				else if( bisx>nx ) bisx=nx;
+				else if( bisx>nx ) bisx=(signed char)nx;
 			binx	=	(signed char)((boundCube[1]-fxs)/fxd);
 				if( binx<0 ) binx =0;
-				else if( binx>nx ) binx=nx;
+				else if( binx>nx ) binx=(signed char)nx;
 			bisy	=	(signed char)((boundCube[2]-fxs)/fyd);
 				if( bisy<0 ) bisy =0;
-				else if( bisy>ny ) bisy=ny;
+				else if( bisy>ny ) bisy=(signed char)ny;
 			biny	=	(signed char)((boundCube[3]-fxs)/fyd);
 				if( biny<0 ) biny =0;
-				else if( biny>ny ) biny=ny;
+				else if( biny>ny ) biny=(signed char)ny;
 			bisz	=	(signed char)((boundCube[4]-fxs)/fzd);
 				if( bisz<0 ) bisz =0;
-				else if( bisz>nz ) bisz=nz;
+				else if( bisz>nz ) bisz=(signed char)nz;
 			binz	=	(signed char)((boundCube[5]-fxs)/fzd);
 				if( binz<0 ) binz =0;
-				else if( binz>nz ) binz=nz;
+				else if( binz>nz ) binz=(signed char)nz;
 
 		fz = fxs + ((float)bisz) * fzd;
 		const float startfy = fxs + (float)bisy * fyd;
@@ -544,7 +541,7 @@ MarchinCubeSpace::MarchCubeIndex	*pmc_Index = &pmc_Index_s[ index_yz ];
 					if( edgecheck & 1)
 					{
 
-						pmc_Index->m_vx = nbVertexCreated ;
+						pmc_Index->m_vx = (unsigned short)nbVertexCreated ;
 						float divv,ddivp = (pmc_value[1] -pmc_value[0]);
 						FP_INV(divv,ddivp);
 						float rate=  (edgerate-pmc_value[0] ) *divv ;
@@ -561,7 +558,7 @@ MarchinCubeSpace::MarchCubeIndex	*pmc_Index = &pmc_Index_s[ index_yz ];
 					if(edgecheck & 2 )
 					{
 
-						pmc_Index->m_vy = nbVertexCreated ;
+						pmc_Index->m_vy = (unsigned short)nbVertexCreated ;
 						pvtx->m_x = pvtx->m_u = fx;
 						float divv,ddivp = ( pmc_value[nxt]-pmc_value[0]);
 						FP_INV(divv,ddivp);
@@ -577,7 +574,7 @@ MarchinCubeSpace::MarchCubeIndex	*pmc_Index = &pmc_Index_s[ index_yz ];
 					if( edgecheck & 4 )
 					{
 
-						pmc_Index->m_vz = nbVertexCreated ;
+						pmc_Index->m_vz = (unsigned short)nbVertexCreated ;
 						pvtx->m_x = pvtx->m_u = fx;
 						pvtx->m_y = pvtx->m_v = fy;
 						float divv,ddivp = ( pmc_value[m_nxtnyt]-pmc_value[0]);

@@ -1,14 +1,5 @@
 #include "Equ_XYZD_Tore.h"
 #include <math.h>
-#ifndef sqrtf
-#define sqrtf sqrt
-#endif
-#ifndef sinf
-#define sinf sin
-#endif
-#ifndef cosf
-#define cosf cos
-#endif
 BASEOBJECT_DECLARE_CLASS( "tr", Equ_XYZD_Tore, Equ_XYZD_Virtual,"3DMetaShape Torus","EquTore","Equation that define a scalar value of a given space(x,y,z) and time(d), to make a torus. To be used with 3D Object MarchingCube Terms." );
 
 Equ_XYZD_Tore::Equ_XYZD_Tore() : Equ_XYZD_Virtual()

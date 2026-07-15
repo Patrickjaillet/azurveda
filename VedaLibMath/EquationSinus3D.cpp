@@ -2,12 +2,6 @@
 
 #include "EquationSinus3D.h"
 #include <math.h>
-#ifndef sinf
-#define sinf sin
-#endif
-#ifndef cosf
-#define cosf cos
-#endif
 BASEOBJECT_DECLARE_CLASS( "sin3", EquationSinus3D, VirtualEquation,"Equation Sinus 3D x,y,z=f(x,d)","Sinus","Sinus Equation in 3D, with features..." );
 
 EquationSinus3D::EquationSinus3D() : VirtualEquation()

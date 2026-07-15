@@ -6,9 +6,6 @@
 #include "lwo2reader.h"
 
 #include <math.h>
-#ifndef sqrtf
-#define sqrtf sqrt
-#endif
 
 #ifdef _ENGINE_EDITABLE_
 #include <PackResource.h>

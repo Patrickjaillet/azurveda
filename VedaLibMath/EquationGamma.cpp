@@ -2,9 +2,6 @@
 
 #include "EquationGamma.h"
 #include <math.h>
-#ifndef powf
-#define powf pow
-#endif
 BASEOBJECT_DECLARE_CLASS( "Gm", EquationGamma, VirtualEquation,"Equation Gamma x=f(x)","GammaEqu.","Calibration equation. P1=unchanged center, P2=force" );
 
 EquationGamma::EquationGamma() : VirtualEquation()

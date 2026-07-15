@@ -73,9 +73,9 @@ public:
 	inline bool SetLE_UnsignedShort( unsigned short _short, bool _append=true )
 	{
 		char bb;
-		bb = _short;
+		bb = (char)_short;
 		if(!SetBinary( &bb , 1, _append)) return false;
-		bb = _short>>8;
+		bb = (char)(_short>>8);
 		if(!SetBinary( &bb , 1, true)) return false;
 	}
 #endif
@@ -85,13 +85,13 @@ public:
 	{
 		char bb;
 
-		bb = _value;
+		bb = (char)_value;
 		if(!SetBinary( &bb , 1, _append)) return false;
-		bb = _value>>8;
+		bb = (char)(_value>>8);
 		SetBinary( &bb , 1, true);
-		bb = _value>>16;
+		bb = (char)(_value>>16);
 		SetBinary( &bb , 1, true);
-		bb = _value>>24;
+		bb = (char)(_value>>24);
 		if(!SetBinary( &bb , 1, true)) return false;
 	}
 #endif

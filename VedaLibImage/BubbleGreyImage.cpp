@@ -3,9 +3,6 @@
 #include "BubbleGreyImage.h"
 
 #include <math.h>
-#ifndef sqrtf
-#define sqrtf sqrt
-#endif
 
 BASEOBJECT_DECLARE_CLASS( "Bub", BubbleGreyImage, ProceduralImage,"Image Grey Bubble","BubbleImg","Defines a grey image using a bubble algo, with a 2PowerN square size." );
 
