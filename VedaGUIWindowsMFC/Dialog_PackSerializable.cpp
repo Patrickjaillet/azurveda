@@ -1,5 +1,3 @@
-// Dialog_PackSerializable.cpp : fichier d'implémentation
-//
 
 #include "stdafx.h"
 #include "VedaDemoOGLMfcGui.h"
@@ -21,17 +19,14 @@
 #include "Dialog_PackFloatByte_Limits.h"
 #include "Dialog_PackDynamicType.h"
 #include "Dialog_PackResource.h"
-//#include "Dialog_PackFloatXY.h"
-//#include "Dialog_PackFloatXYZ.h"
+
 void CDialog_PackSerializable::Create(CWnd* pParent )
 {
 	CDialog::Create( CDialog_PackSerializable::IDD,pParent);
 }
 
-// Boîte de dialogue CDialog_PackSerializable
-
 IMPLEMENT_DYNAMIC(CDialog_PackSerializable, CDialog)
-CDialog_PackSerializable::CDialog_PackSerializable(CWnd* pParent /*=NULL*/)
+CDialog_PackSerializable::CDialog_PackSerializable(CWnd* pParent )
 	: CDialog_AbstractPackSerializable(CDialog_PackSerializable::IDD, pParent)
 {
 }
@@ -46,32 +41,24 @@ void CDialog_PackSerializable::DoDataExchange(CDataExchange* pDX)
 	CDialog::DoDataExchange(pDX);
 }
 
-
 BEGIN_MESSAGE_MAP(CDialog_PackSerializable, CDialog)
 	ON_WM_DESTROY()
 END_MESSAGE_MAP()
 
-
-// Gestionnaires de messages CDialog_PackSerializable
-
 void CDialog_PackSerializable::OnOK()
 {
-	// TODO : ajoutez ici votre code spécialisé et/ou l'appel de la classe de base
 
-	//CDialog::OnOK();
 }
 
 void CDialog_PackSerializable::OnCancel()
 {
-	// TODO : ajoutez ici votre code spécialisé et/ou l'appel de la classe de base
 
-	//CDialog::OnCancel();
 }
 void	CDialog_PackSerializable::Update(void)
 {
 	BaseType *pVeda =(BaseType *) m_pObjectToManage;
 	if(!pVeda)return;
-	// set the value to the edit ctrl:
+
 	CDialog_AbstractPackSerializable *pDialog;
 	CRect rec(0,0,1,1);
 	POSITION pos = m_CurrentDialogList.GetHeadPosition();
@@ -81,18 +68,14 @@ void	CDialog_PackSerializable::Update(void)
 		pDialog->Update();
 		pDialog->GetClientRect( &rec);
 	}
-	// reset the size if needed:
-	//CRect rc;
-	//GetClientRect(&rc);
-	// reset size of this component:
-	//MoveWindow( rc.left, rc.top,rec.Width() ,rec.Height() );
+
 	Resize(rec.Width(),rec.Height() );
 
 }
 
 void CDialog_PackSerializable::SetPackSerializable( BaseType *_objToManage,
 										CVedaDemoOGLMfcGuiDoc *_pDoc,
-										CView				  *_pView														   
+										CView				  *_pView
 														   )
 {
 	if( _objToManage == m_pObjectToManage ) return;
@@ -101,17 +84,17 @@ void CDialog_PackSerializable::SetPackSerializable( BaseType *_objToManage,
 	DestroyAllDialogs();
 
 	if( _objToManage == NULL ) return;
-	// search proper class:
+
 	CDialog_AbstractPackSerializable *(*_CreatorFunc)(CWnd *)=NULL;
 	CString classID = _objToManage->GetClassID();
 	while( !_CreatorFunc && classID.GetLength()>0 )
 	{
 		_CreatorFunc = (CDialog_AbstractPackSerializable *(*)(CWnd *) )m_PackDialogMap[ classID.GetString() ] ;
-		//if not found, try the upper class:
+
 		int ii;
 		if( (ii = classID.ReverseFind(':')) != -1 )
 			classID = classID.Mid(0,ii-1);
-		else 
+		else
 			classID = "";
 	}
 
@@ -122,13 +105,13 @@ void CDialog_PackSerializable::SetPackSerializable( BaseType *_objToManage,
 	{
 		CDialog_AbstractPackSerializable *pnewDialog = _CreatorFunc(this);
 		if(pnewDialog )
-		{	// 
+		{
 			pnewDialog->Create(this);
-			// set Veda object to edit, and resize:
+
 			pnewDialog->SetPackSerializable(_objToManage, m_pDoc,m_pView );
 			CString labeltext = _objToManage->GetInfoString();
 			labeltext += ":";
-			
+
 			pnewDialog->SetMemberName( labeltext.GetString() );
 
 			pnewDialog->GetClientRect( &rec);
@@ -138,12 +121,11 @@ void CDialog_PackSerializable::SetPackSerializable( BaseType *_objToManage,
 			m_CurrentDialogList.AddHead( pnewDialog );
 		}
 	}
-	// set size 
+
 	CRect rc;
 	GetClientRect(&rc);
-	// reset size of this component:
-	MoveWindow( rc.left, rc.top,maxright ,verticalline );
 
+	MoveWindow( rc.left, rc.top,maxright ,verticalline );
 
 }
 BOOL CDialog_PackSerializable::OnInitDialog()
@@ -165,25 +147,18 @@ BOOL CDialog_PackSerializable::OnInitDialog()
 	RegisterPackDialog( CDialog_PackResource::GetManagedClassName(),CDialog_PackResource::NewInstance );
 	RegisterPackDialog( CDialog_PackStringMultiple::GetManagedClassName(),CDialog_PackStringMultiple::NewInstance );
 
+	return TRUE;
 
-//	RegisterPackDialog( CDialog_PackFloatXY::GetManagedClassName(),CDialog_PackFloatXY::NewInstance );
-//	RegisterPackDialog( CDialog_PackFloatXYZ::GetManagedClassName(),CDialog_PackFloatXYZ::NewInstance );
-
-// Dialog_PackFloatXYZ
-
-	return TRUE;  // return TRUE unless you set the focus to a control
-	// EXCEPTION : les pages de propriétés OCX devraient retourner FALSE
 }
-//! enregistre les gadgets capable d'editer les membres: 
+
 void	CDialog_PackSerializable::RegisterPackDialog( const char *_pSuportedClass,CDialog_AbstractPackSerializable *(*_CreatorFunc)(CWnd *) )
 {
-	//CMapStringToPtr
+
 	m_PackDialogMap.SetAt(_pSuportedClass,(void *)_CreatorFunc);
 
 }
 void	CDialog_PackSerializable::DestroyAllDialogs()
 {
-	//CPtrList
 
 	POSITION pos = m_CurrentDialogList.GetHeadPosition();
 	for (int i=0;i < m_CurrentDialogList.GetCount();i++)
@@ -194,7 +169,6 @@ void	CDialog_PackSerializable::DestroyAllDialogs()
 	}
 	m_CurrentDialogList.RemoveAll();
 
-
 }
 void CDialog_PackSerializable::OnDestroy()
 {
@@ -203,5 +177,5 @@ void CDialog_PackSerializable::OnDestroy()
 }
 void CDialog_PackSerializable::SetMemberName(	const char *_pMemberName )
 {
-	
+
 }

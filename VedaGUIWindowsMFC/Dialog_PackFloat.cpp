@@ -1,12 +1,9 @@
-// Dialog_PackFloat.cpp : fichier d'implémentation
-//
 
 #include "stdafx.h"
 #include "VedaDemoOGLMfcGui.h"
 #include "Dialog_PackFloat.h"
 #include "PackFloat.h"
 #include ".\dialog_packfloat.h"
-
 
 void CDialog_PackFloat::Create(CWnd* pParent )
 {
@@ -19,10 +16,8 @@ CDialog_AbstractPackSerializable *CDialog_PackFloat::NewInstance(CWnd* pParent)
 
 }
 
-// Boîte de dialogue CDialog_PackFloat
-
 IMPLEMENT_DYNAMIC(CDialog_PackFloat, CDialog)
-CDialog_PackFloat::CDialog_PackFloat(CWnd* pParent /*=NULL*/)
+CDialog_PackFloat::CDialog_PackFloat(CWnd* pParent )
 	: CDialog_AbstractPackSerializable(CDialog_PackFloat::IDD, pParent)
 {
 }
@@ -46,17 +41,13 @@ void CDialog_PackFloat::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_EDIT4, m_editCtrlD);
 }
 
-
 BEGIN_MESSAGE_MAP(CDialog_PackFloat, CDialog)
 	ON_STN_CLICKED(IDC_BEDIT_X, OnActionEditClicks)
 END_MESSAGE_MAP()
 
-
-// Gestionnaires de messages CDialog_PackFloat
-
 void CDialog_PackFloat::OnOK()
 {
-	//CDialog::OnOK();
+
 	PackFloat *pPackFloat =(PackFloat *) m_pObjectToManage;
 	if( !pPackFloat ) return;
 	CString str;
@@ -66,14 +57,14 @@ void CDialog_PackFloat::OnOK()
 
 	PackFloat::VectorDimension  dim= pPackFloat->GetVectorDimension();
 	if( dim>PackFloat::vd_X )
-	{	// Y
+	{
 		m_editCtrlY.GetWindowText(str);
 		float vv = (float)atof( str.GetString() );
 		pPackFloat->Set(1,vv);
 	}
 	if( dim>PackFloat::vd_XY )
 	{
-		// XY
+
 		m_editCtrlZ.GetWindowText(str);
 		float vv = (float)atof( str.GetString() );
 		pPackFloat->Set(2,vv);
@@ -81,7 +72,7 @@ void CDialog_PackFloat::OnOK()
 
 	if( dim>PackFloat::vd_XYZ )
 	{
-		// XYZ
+
 		m_editCtrlD.GetWindowText(str);
 		float vv = (float)atof( str.GetString() );
 		pPackFloat->Set(3,vv);
@@ -92,48 +83,46 @@ void CDialog_PackFloat::OnOK()
 void CDialog_PackFloat::OnCancel()
 {
 	OnOK();
-	// TODO : ajoutez ici votre code spécialisé et/ou l'appel de la classe de base
-	//CDialog::OnCancel();
+
 }
 
 void	CDialog_PackFloat::Update(void)
 {
-	// cast AzurVeda type:
+
 	PackFloat *pPackFloat =(PackFloat *) m_pObjectToManage;
-	// are we focused ?
+
 	if( IsFocused() )
 		m_EditBT_X.SetBitmap( (HBITMAP)m_Bm_Focused.m_hObject );
 	else
 		m_EditBT_X.SetBitmap( (HBITMAP)m_Bm_UnFocused.m_hObject );
-	// set the value to the edit ctrl:
+
 	CString str;
 	str.Format( "%f", pPackFloat->Get() );
 	m_editCtrl.SetWindowText( str.GetString() );
 
 	PackFloat::VectorDimension  dim= pPackFloat->GetVectorDimension();
 	if( dim>PackFloat::vd_X )
-	{	// Y
+	{
 		str.Format( "%f", pPackFloat->Get(1) );
 		m_editCtrlY.SetWindowText( str.GetString() );
 	}
 	if( dim>PackFloat::vd_XY )
 	{
-		// XY
+
 		str.Format( "%f", pPackFloat->Get(2) );
 		m_editCtrlZ.SetWindowText( str.GetString() );
 	}
 	if( dim>PackFloat::vd_XYZ )
 	{
-		// XY
+
 		str.Format( "%f", pPackFloat->Get(3) );
 		m_editCtrlD.SetWindowText( str.GetString() );
 	}
 
-	
 }
 void CDialog_PackFloat::SetPackSerializable( BaseType *_objToManage,
 										CVedaDemoOGLMfcGuiDoc *_pDoc,
-										CView				  *_pView														   
+										CView				  *_pView
 														   )
 {
 	CDialog_AbstractPackSerializable::SetPackSerializable(_objToManage,_pDoc,_pView);
@@ -155,7 +144,7 @@ void CDialog_PackFloat::SetPackSerializable( BaseType *_objToManage,
 		default:
 		case PackFloat::vd_X:
 		{
-			//m_EditBT_X.ShowWindow( SW_SHOW );
+
 		}
 		break;
 		case PackFloat::vd_XY:
@@ -197,17 +186,10 @@ BOOL CDialog_PackFloat::OnInitDialog()
 	m_Bm_Focused.LoadBitmap( IDC_B_RESETVPFOCUS );
 	m_Bm_UnFocused.LoadBitmap( IDC_B_RESETVP );
 
-	return TRUE;  // return TRUE unless you set the focus to a control
-	// EXCEPTION : les pages de propriétés OCX devraient retourner FALSE
+	return TRUE;
+
 }
-/*
-	\brief	if an object of any type is managed, it could be changed by a cursor state.
-			by default, it does nothing. It has to be extended.
-	\param	_x x position.
-	\param	_y y position.
-	\param	_z z position.
-	\param	_time the time of the cursor in seconds.
-*/
+
 void  CDialog_PackFloat::ChangeValueOfManagedObjectWithCursor(
 						VirtualMachine::InternalViewPort *_pClickedViewPort,
 						unsigned int _validityBits,
@@ -216,11 +198,10 @@ void  CDialog_PackFloat::ChangeValueOfManagedObjectWithCursor(
 	PackFloat *pPackFloat =(PackFloat *) m_pObjectToManage;
 	if( !pPackFloat ) return;
 
-	if( _validityBits & m_cursorbit_XValid ) pPackFloat->Set(_x); // in all cases.
+	if( _validityBits & m_cursorbit_XValid ) pPackFloat->Set(_x);
 	PackFloat::VectorDimension  dim= pPackFloat->GetVectorDimension();
-	if( (_validityBits & m_cursorbit_YValid) && dim>PackFloat::vd_X ) pPackFloat->Set(1,_y); // Y
-	if( (_validityBits & m_cursorbit_ZValid) && dim>PackFloat::vd_XY ) pPackFloat->Set(2,_z); // Z
-	if( (_validityBits & m_cursorbit_TimeValid) && dim>PackFloat::vd_XYZ ) pPackFloat->Set(3,(float)_time); // time.
+	if( (_validityBits & m_cursorbit_YValid) && dim>PackFloat::vd_X ) pPackFloat->Set(1,_y);
+	if( (_validityBits & m_cursorbit_ZValid) && dim>PackFloat::vd_XY ) pPackFloat->Set(2,_z);
+	if( (_validityBits & m_cursorbit_TimeValid) && dim>PackFloat::vd_XYZ ) pPackFloat->Set(3,(float)_time);
 
 }
-

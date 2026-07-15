@@ -1,6 +1,3 @@
-// ChildFrm.h : interface de la classe CChildFrame
-//
-
 
 #pragma once
 #include ".\xsplitterwndfixed.h"
@@ -12,23 +9,19 @@ class CChildFrame : public CMDIChildWnd
 public:
 	CChildFrame();
 
-// Attributs
 protected:
 	CSplitterWnd m_wndSplitter;
 	CSplitterWnd m_wndSplitter2;
-	XSplitterWndFixed m_wndSplitter3; // XSplitterWndFixed
+	XSplitterWndFixed m_wndSplitter3;
 public:
 
-// Opérations
 public:
 
-// Substitutions
 	public:
 	public:
 	virtual BOOL OnCreateClient(LPCREATESTRUCT lpcs, CCreateContext* pContext);
 	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
 
-// Implémentation
 public:
 	virtual ~CChildFrame();
 #ifdef _DEBUG
@@ -38,7 +31,7 @@ public:
 
 protected:
 	CFormViewBaseObject* GetRightPane();
-// Fonctions générées de la table des messages
+
 protected:
 	DECLARE_MESSAGE_MAP()
 public:

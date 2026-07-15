@@ -1,6 +1,3 @@
-// LeftView.h : interface de la classe CLeftView
-//
-
 
 #pragma once
 
@@ -9,24 +6,20 @@ class ClassNode;
 
 class CLeftView : public CTreeView
 {
-protected: // création à partir de la sérialisation uniquement
+protected:
 	CLeftView();
 	DECLARE_DYNCREATE(CLeftView)
 
-// Attributs
 public:
 	CVedaDemoOGLMfcGuiDoc* GetDocument();
 
-	// Opérations
 public:
 
-// Substitutions
 	public:
 	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
 	protected:
-	virtual void OnInitialUpdate(); // premier appel après la construction
+	virtual void OnInitialUpdate();
 
-// Implémentation
 public:
 	virtual ~CLeftView();
 #ifdef _DEBUG
@@ -38,13 +31,13 @@ protected:
 	void	InsertClassNode( const ClassNode *_pClassNode, HTREEITEM _fatheritem, CString &_classlevel );
 	CImageList	m_ImgList;
 	CToolTipCtrl	m_ToolTipCtrl;
-// Fonctions générées de la table des messages
+
 protected:
 	DECLARE_MESSAGE_MAP()
-	// link a tree item to each known classnode in the context.
+
 	CMapPtrToPtr	m_ClassNodeMap;
 	CMapPtrToPtr	m_BaseObjectMap;
-	virtual void OnUpdate(CView* /*pSender*/, LPARAM /*lHint*/, CObject* /*pHint*/);
+	virtual void OnUpdate(CView* , LPARAM , CObject* );
 public:
 	afx_msg void OnNMRclick(NMHDR *pNMHDR, LRESULT *pResult);
 
@@ -63,12 +56,10 @@ public:
 protected:
 	virtual BOOL OnNotify(WPARAM wParam, LPARAM lParam, LRESULT* pResult);
 public:
-//	afx_msg void OnExportcfile();
-//	afx_msg void OnExportExecutable();
+
 };
 
-#ifndef _DEBUG  // version de débogage dans LeftView.cpp
+#ifndef _DEBUG
 inline CVedaDemoOGLMfcGuiDoc* CLeftView::GetDocument()
    { return reinterpret_cast<CVedaDemoOGLMfcGuiDoc*>(m_pDocument); }
 #endif
-

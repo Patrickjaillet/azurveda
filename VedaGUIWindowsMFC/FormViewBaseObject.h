@@ -1,10 +1,6 @@
 #pragma once
 #include "afxwin.h"
 
-
-
-// Mode formulaire CFormViewBaseObject
-
 class BaseObject;
 class CVedaDemoOGLMfcGuiDoc;
 class CDialog_AbstractPackSerializable;
@@ -16,7 +12,7 @@ class CFormViewBaseObject : public CFormView
 	DECLARE_DYNCREATE(CFormViewBaseObject)
 
 protected:
-	CFormViewBaseObject();           // constructeur protégé utilisé par la création dynamique
+	CFormViewBaseObject();
 	virtual ~CFormViewBaseObject();
 
 public:
@@ -32,28 +28,16 @@ inline CVedaDemoOGLMfcGuiDoc* GetDocument()
 	afx_msg void OnMerge();
 protected:
 	bool m_initied;
-	virtual void DoDataExchange(CDataExchange* pDX);    // Prise en charge DDX/DDV
+	virtual void DoDataExchange(CDataExchange* pDX);
 	DECLARE_MESSAGE_MAP()
 	void	OnInitialUpdate();
-	virtual void OnUpdate(CView* /*pSender*/, LPARAM /*lHint*/, CObject* /*pHint*/);
+	virtual void OnUpdate(CView* , LPARAM , CObject* );
 
-	// the object dialog as a PackStruct:
 	CDialog_PackStruct	*m_pBaseObjectDialog;
-	//! enregistre les gadgets capable d'editer les membres: 
-	//void	RegisterPackDialog( const char *_pSuportedClass,CDialog_AbstractPackSerializable *(*_CreatorFunc)(CWnd *) );
 
-	// the known possible dialogs constructors:
-	//CMapStringToPtr	m_PackDialogMap;
-
-	// the base of the current built dialogs:
-	//CPtrList	m_CurrentDialogList;
-	//CPtrList	m_CurrentLabelMemberList;
-	// the object for which the view is currently shaped:
 	BaseObject *m_pViewShapedForMe;
 public:
-	//! this bool is used to forbid double recursion in some rare case:
-	//! an update can generate a recursive update, like for exemple,
-	//! a form deletion can throw a "Edit KillFocus"-> a set -> another update.
+
 	bool			m_ForbidUpdateRecursion;
 	virtual void	ShapeGUIForBaseObject( BaseObject *_pBaseObject);
 	virtual	void	DestroyAllDialogs();
@@ -83,5 +67,3 @@ public:
 	afx_msg void OnDestroy();
 	afx_msg void OnDropFiles(HDROP hDropInfo);
 };
-
-

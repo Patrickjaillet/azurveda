@@ -16,7 +16,7 @@ Equ_XYZD_Tore::Equ_XYZD_Tore() : Equ_XYZD_Virtual()
 	,mSer_AxisRotation(PackFloat::vd_X)
 	,mSer_BigRayVariation(PackFloat::vd_X)
 	,mSer_LittleRayVariation(PackFloat::vd_X)
-{	
+{
 	REGISTER_MEMBER_PACKDYNAMICFLOAT( mSer_Center,"Center",0.0f);
 	REGISTER_MEMBER_PACKFLOATBYTE_LIMITS( mSer_BigRay,"BigRay",0.4f,0.0f,1.0f);
 	REGISTER_MEMBER_PACKFLOATBYTE_LIMITS( mSer_LittleRay,"LitRay",4.0f,0.5f,16.0f);
@@ -26,17 +26,9 @@ Equ_XYZD_Tore::Equ_XYZD_Tore() : Equ_XYZD_Virtual()
 
 }
 
-/*!
-	\brief	 Set the framedate, and compute all terms with a constant date.
-		pass a int* which must be equal to 0 at start.
-	\param	_date			in seconds
-	\param	_piTermIndex	pointer to an index of the equation term to process. 
-	\param	_pbound			a 6 float table, xmin,xman,ymin,ymax,zmin,mzmax of the cube where values are !=1.0
-	\return if true, there is an index left to process.
-*/
 bool Equ_XYZD_Tore::SetFrameDate( float _date, unsigned int _iTermIndex,float _pbound[6] )
 {
-	// executed once by frame:
+
 	if(_iTermIndex>0) return false;
 	float pin[4],pout[4];
 	pin[3] = _date ;
@@ -50,7 +42,7 @@ bool Equ_XYZD_Tore::SetFrameDate( float _date, unsigned int _iTermIndex,float _p
 	pout[0] = PackFloat::m_0p0 ;
 	mSer_LittleRayVariation.Compute(pout,pin);
 	m_littleRayConst = mSer_LittleRay.Get() + pout[0];
-	// re-clamp
+
 	if(m_littleRayConst<mSer_LittleRay.GetMin() )m_littleRayConst=mSer_LittleRay.GetMin();
 	const float max=mSer_LittleRay.GetMax();
 	if(m_littleRayConst>max )m_littleRayConst=max;
@@ -73,10 +65,7 @@ bool Equ_XYZD_Tore::SetFrameDate( float _date, unsigned int _iTermIndex,float _p
 
 	return true;
 }
-/*!
-	\brief	 
-	\param	
-*/
+
 bool Equ_XYZD_Tore::SetYZConstant( float _y,float _z)
 {
 	register float	yd;
@@ -84,32 +73,24 @@ bool Equ_XYZD_Tore::SetYZConstant( float _y,float _z)
 	_z -= m_center[2];
 	yd = m_cosMove * _y - m_sinMove * _z;
 	yd = yd*yd*m_littleRayConst;
-	// for these (_y,_z) constant, everything will be >=1.0
-	// this escape most cases.
-	if(yd>=1.0f) return false; 
+
+	if(yd>=1.0f) return false;
 	m_ydyd = yd;
-	// calculate Z rotated:
-	yd = m_sinMove * _y + m_cosMove * _z;	
+
+	yd = m_sinMove * _y + m_cosMove * _z;
 	yd = yd*yd;
-/*shit...	if( (yd+m_BigRayConst-(1.0f*m_littleRayConst))
-			>=1.0f)
-	{		// will be always 1.0 whatever is X.
-			return false;
-	}*/
+
 	m_zz = yd;
-	
+
 	return true;
 }
-/*!
-	\brief	 
-	\param	
-*/
+
 float Equ_XYZD_Tore::ComputeByX( float _x)
 {
     register float   val;
 	_x -= m_center[0];
 	val=(_x*_x + m_zz) ;
-	val= sqrtf(val); // need real sqrt.
+	val= sqrtf(val);
 	val-=m_BigRayConst;
 	val = (val*val*m_littleRayConst) + m_ydyd ;
 	return QuickSqrtM(val) ;

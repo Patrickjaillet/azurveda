@@ -1,14 +1,12 @@
-/*! \file 
-	\author victorien ferry & www.m4nkind.com
-	\brief This file applies the GNU LESSER GENERAL PUBLIC LICENSE Version 2.1 , read file COPYING.
-*/
+// SPDX-License-Identifier: LGPL-2.1-only
+
 #include "Texture3D.h"
 
 #include "VirtualImage.h"
 #include "VirtualMachine.h"
 
 #ifdef _ENGINE_EDITABLE_
-// for preview.
+
 #include <math.h>
 #endif
 
@@ -18,19 +16,19 @@ Texture3D::Texture3D() : BaseObject()
 	,m_pInternalTexture(0L)
 	,mSer_BaseColor(PackFloat::vd_XYZD)
 #ifdef _ENGINE_EDITABLE_
-	// in edition mode, create a private 3D object buffer to preview the texture.
+
 	,m_pPreviewObject3D(0L)
 #endif
 {
 
 	REGISTER_MEMBER_FLAG( mSer_Flags ,"Properties",
-				VirtualMachine::InternalTexture::itf_Filtered | 
-				VirtualMachine::InternalTexture::itf_depthwrite| 
+				VirtualMachine::InternalTexture::itf_Filtered |
+				VirtualMachine::InternalTexture::itf_depthwrite|
 				VirtualMachine::InternalTexture::itf_depthtest,
 		"Filtered.Additive.EnvAdd.ClipU.ClipV.Z Write.Z Test.Substractive.doubleSide" );
 	REGISTER_MEMBER(mSer_BaseColor,"BaseColor");
 #ifdef _ENGINE_EDITABLE_
-		// in dedition mode, set default value for BaseColor:
+
 	mSer_BaseColor.SetConstant(1.0f,0);
 	mSer_BaseColor.SetConstant(1.0f,1);
 	mSer_BaseColor.SetConstant(1.0f,2);
@@ -40,11 +38,6 @@ Texture3D::Texture3D() : BaseObject()
 	REGISTER_MEMBER_REFERENCE( mSerRef_EnvImage ,"Env Image", VirtualImage::m_Description );
 }
 
-/*!
-	\brief	Method that really build the object using the serializable parameters.
-			For the virtual VirtualImage class, it allocs the bitmap memory.
-			Close() should close everything opened by CreateInternal().
-*/
 bool Texture3D::CreateInternal(void)
 {
 	GetMachine()->NewTexture( &m_pInternalTexture );
@@ -68,45 +61,34 @@ bool Texture3D::CreateInternal(void)
 	m_pInternalTexture->SetRenderFlags( mSer_Flags.Get() );
 
 #ifdef _ENGINE_EDITABLE_
-	// in edition mode, create a private 3D object buffer to preview the texture.
-	GetMachine()->NewObject3DBuffer( &m_pPreviewObject3D, 
+
+	GetMachine()->NewObject3DBuffer( &m_pPreviewObject3D,
 		(m_MaxNumberOfGridDivisionInWidth+1)*(m_MaxNumberOfGridDivisionInHeight+1),
 		(m_MaxNumberOfGridDivisionInWidth)*(m_MaxNumberOfGridDivisionInHeight)*2,
 		VirtualMachine::bOb3D_VertexNormal|VirtualMachine::bOb3D_VertexUVMapping
-		/*|VirtualMachine::bOb3D_VertexRGBA*/);
+		);
 #endif
 	m_LastUpdateDate = PackFloat::m_Max;
 	UpdateToFrame(PackFloat::m_0p0);
 	return(true);
 }
 #ifdef _ENGINE_EDITABLE_
-/*!
-	\brief	that closes everything. Still, the object exist and can be rebuild the same using Create()
-*/
+
 void Texture3D::CloseInternal(void)
 {
-	GetMachine()->DeleteTexture( &m_pInternalTexture ); // it does the checking.
+	GetMachine()->DeleteTexture( &m_pInternalTexture );
 #ifdef _ENGINE_EDITABLE_
-	// in edition mode, create a private 3D object buffer to preview the texture.
-	// we delete it on close of course:
+
 	GetMachine()->DeleteObject3DBuffer( &m_pPreviewObject3D );
 #endif
 }
 #endif
 #ifdef _ENGINE_EDITABLE_
-/*!
-	\brief	a GUI could need to play, draw, print, or output from any way, a preview of a 
-			created object. This is done with this method. sub classes can implement it (or not) in
-			any way, to explicit current shape of an object.<br>
 
-	\param	_frameDate a date, in second, which defines the effect cinematic.
-	\param	_pPreviewViewPort the viewport to render. Can't be 0L.
-	\param	_pPreviewConfiguration
-*/
 void Texture3D::ProcessPreview(double _frameDate,VirtualMachine::InternalViewPort *_pPreviewViewPort,const PreviewConfiguration *_pPreviewConfiguration)
 {
 	if(!m_pPreviewObject3D ) return;
-	// change object shape.
+
 	VirtualMachine::InternalVertex *pVertexFill;
 	VirtualMachine::InternalVertex *pVertex = pVertexFill = m_pPreviewObject3D->GetFirstVertex();
 	float opx,opy,opz;
@@ -147,7 +129,7 @@ void Texture3D::ProcessPreview(double _frameDate,VirtualMachine::InternalViewPor
 			ny += pVertexFill->m_z;
 			nz = 0.04f;
 			nn = 1.0f/sqrt( nx*nx + ny*ny + nz*nz );
-			
+
 			pVertexFill->m_nx = nx*nn ;
 			pVertexFill->m_ny = ny*nn ;
 			pVertexFill->m_nz = nz*nn ;
@@ -173,38 +155,27 @@ void Texture3D::ProcessPreview(double _frameDate,VirtualMachine::InternalViewPor
 	m_pPreviewObject3D->SetNumberOfActiveTriangle(
 		(m_MaxNumberOfGridDivisionInWidth)*(m_MaxNumberOfGridDivisionInHeight)*2
 		);
-	// place matrix:
+
 	_pPreviewViewPort->Matrix_LoadID();
-	_pPreviewViewPort->Matrix_Translate(opx,opy,opz-0.75f); // camera move
+	_pPreviewViewPort->Matrix_Translate(opx,opy,opz-0.75f);
 	_pPreviewViewPort->Matrix_Rotate( (objectRotAxeX)*2.4f,0.0f,-1.0f,0.0f);
 	_pPreviewViewPort->Matrix_Rotate( (objectRotAxeY)*2.4f,-1.0f,0.0f,0.0f);
-	//m_pPreviewMatrixStack->Rotate((float)_frameDate*0.1f ,0.0f,0.0f,1.0f);
-	// draw rendering:
-	// we don't use Mesh3D:: RenderObject() so we have to mix the basecolor ourself:
+
 	UpdateToFrame(_frameDate);
-	/*float	inparam[4],outparam[4];
-	inparam[3]=_frameDate; // time as parameter.
-	outparam[0]=outparam[1]=outparam[2]=outparam[3]=1.0f; // if no constant, use white:
-	if( mSer_BaseColor.GetSelectedIndex() != 0) // optim
-		mSer_BaseColor.Compute(outparam,inparam);
-	m_pPreviewObject3D->SetColor(outparam[0],outparam[1],outparam[2],outparam[3]);*/
+
 	_pPreviewViewPort->SetFOVLength(0.75f);
 	_pPreviewViewPort->RenderMesh( 	m_pPreviewObject3D, m_pInternalTexture );
 }
 #endif
-/*!
-	\brief	In case of a time-dynamic texture, an update had to be done:
-	\param	_framedate date in seconds
-*/
+
 void	Texture3D::UpdateToFrame(float _framedate)
 {
 	if(m_LastUpdateDate == _framedate) return;
 
-	//m_RGBA[4]
 	float	inparam[4],outparam[4];
-	// update base color:
+
 	inparam[0]=PackFloat::m_0p0;
-	inparam[3]=_framedate; // time as parameter.
+	inparam[3]=_framedate;
 	outparam[0]=outparam[1]=outparam[2]=outparam[3]=1.0f;
 	if(mSer_BaseColor.GetSelectedIndex() != 0)
 	{
@@ -212,9 +183,9 @@ void	Texture3D::UpdateToFrame(float _framedate)
 		mSer_BaseColor.Compute(outparam,inparam);
 	}
 	m_pInternalTexture->SetBaseColor(outparam);
-	// update mapping image:
+
 	VirtualImage *pimage;
-	// test ok:
+
 	pimage = (VirtualImage *) mSerRef_MappingImage.GetObjectPointer();
 	 if(pimage && pimage->IsTimeDynamic() )
 	 {
@@ -226,7 +197,7 @@ void	Texture3D::UpdateToFrame(float _framedate)
 					pimage->GetPixelHeight()
 					);
 	 }
-	// update environment image:
+
 	 pimage = (VirtualImage *) mSerRef_EnvImage.GetObjectPointer();
 	 if(pimage && pimage->IsTimeDynamic() )
 	 {
@@ -238,6 +209,6 @@ void	Texture3D::UpdateToFrame(float _framedate)
 					pimage->GetPixelHeight()
 					);
 	 }
-	// now, the texture is updated for date:	
+
 	m_LastUpdateDate = _framedate;
 }

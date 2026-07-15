@@ -1,12 +1,10 @@
-/*! \file 
-	\author victorien ferry & www.m4nkind.com
-	\brief This file applies the GNU LESSER GENERAL PUBLIC LICENSE Version 2.1 , read file COPYING.
-*/
+// SPDX-License-Identifier: LGPL-2.1-only
+
 #include "Object3DGrid.h"
 #include "PackFloat.h"
 BASEOBJECT_DECLARE_CLASS( "grd", Object3DGrid, Object3DMeshVirtual,"3D Object Grid","Grid3D","construct a subdivided grid plane.");
 
-Object3DGrid::Object3DGrid() : Object3DMeshVirtual() 
+Object3DGrid::Object3DGrid() : Object3DMeshVirtual()
 	,mSer_DimensionXY(PackFloat::vd_XY)
 	,mSer_MappingUV1(PackFloat::vd_XY)
 	,mSer_MappingUV2(PackFloat::vd_XY)
@@ -18,10 +16,6 @@ Object3DGrid::Object3DGrid() : Object3DMeshVirtual()
 	REGISTER_MEMBER_PACKFLOAT_XY(mSer_MappingUV2,"MapXY1",1.0f,1.0f);
 }
 
-/*!
-	\brief	Method that really build the object using the serializable parameters.
-			Close() should close everything opened by CreateInternal().
-*/
 bool Object3DGrid::CreateInternal(void)
 {
 	const unsigned int subdivX = mSer_SubdivisionX.Get();
@@ -29,7 +23,7 @@ bool Object3DGrid::CreateInternal(void)
 
 	m_pObject3DBufferTable = new Object3DBufferHandler[1];
 
-	unsigned int meshflag = 
+	unsigned int meshflag =
 			VirtualMachine::bOb3D_VertexNormal|
 			VirtualMachine::bOb3D_VertexUVMapping;
 	if( !mSer_Flags.TestFlags(OB3DFlag_OneColor) )
@@ -41,9 +35,9 @@ bool Object3DGrid::CreateInternal(void)
 		(subdivX)*(subdivY)*2,
 		meshflag);
 	VirtualMachine::InternalObject3DBuffer *p3DBuffer =  m_pObject3DBufferTable->m_pObject3DBuffer;
-	if(!p3DBuffer) return false;	
+	if(!p3DBuffer) return false;
 	m_CurrentNumberOf3DBuffer = 1;
-	// --- trinagles are static for this object:
+
 	VirtualMachine::InternalTriangle *pTriangleFill = p3DBuffer->GetFirstTriangle();
 	const unsigned int nbw = subdivX+1;
 	unsigned int xx,yy;
@@ -63,24 +57,17 @@ bool Object3DGrid::CreateInternal(void)
 	}
 	p3DBuffer->SetNumberOfActiveTriangle(
 		(subdivY)*(subdivX)*2
-		);	
-	// --- vertex are dynamic for this object:
+		);
+
 	CreateShape(PackFloat::m_0p0);
 	return true;
 }
-/*!
-	\brief	update the shape of the object for this date, during
-			the lifetime the object, when it is created.
-			by defdault, does nothing, so static object can be created
-			with CreateInternal() only.
-	\param	_newShapeTime the new date.
-	\param	_shapeIndex the index of the shape to modify.
-*/
+
 void Object3DGrid::CreateShape(float _newShapeTime, unsigned int _shapeIndex )
 {
 	VirtualMachine::InternalObject3DBuffer *p3DBuffer =  m_pObject3DBufferTable->m_pObject3DBuffer;
 	m_pObject3DBufferTable->m_ActiveNumberOfVertex = p3DBuffer->GetMaximumNumberOfVertexes();
-	// ----- 
+
 	const unsigned int subdivX = mSer_SubdivisionX.Get();
 	const unsigned int subdivY = mSer_SubdivisionY.Get();
 
@@ -119,7 +106,7 @@ void Object3DGrid::CreateShape(float _newShapeTime, unsigned int _shapeIndex )
 			pVertexFill->m_z =v0p0;
 			pVertexFill->m_u = fu  ;
 			pVertexFill->m_v =  fv;
-			//float nx,ny,nz,nn;
+
 			pVertexFill->m_nx = v0p0 ;
 			pVertexFill->m_ny = v0p0 ;
 			pVertexFill->m_nz = PackFloat::m_0p5 ;

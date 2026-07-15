@@ -33,6 +33,18 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/lang/fr/).
 - `VedaLibImageJPEG` : remplacement de la copie vendue d'IJG libjpeg 6b par la
   dépendance vcpkg `libjpeg-turbo` ; le module ne contient plus que le code propre à
   AzurVeda (`ImageJPEG.cpp/.h`, `RegisterLibImageJPEG.cpp/.h`).
+- Traduction intégrale en anglais des ressources visibles utilisateur de
+  `VedaGUIWindowsMFC` : `VedaDemoOGLMfcGui.rc` (menus, string table, boîtes de
+  dialogue, `VERSIONINFO`) et `res/VedaDemoOGLMfcGui.rc2`, y compris la métadonnée de
+  langue de la ressource compilée (`LANG_FRENCH` → `LANG_ENGLISH, SUBLANG_ENGLISH_US`,
+  codepage `040c` → `0409`). Deux messages `TRACE0` en français traduits dans
+  `VedaGUIWindowsMFC/MainFrm.cpp`.
+- Suppression de l'intégralité des commentaires du code source AzurVeda (255 fichiers
+  `.cpp`/`.h`/`.c`, tous les modules sauf le code tiers vendu `VedaLibSoundMP3`
+  (décodeur MP3, fork de libmad) et `VedaLibSoundXM` (moteur XM `uniminixm`), non
+  écrit par AzurVeda et donc hors périmètre). Les 158 fichiers qui portaient la
+  mention de licence LGPL 2.1 en commentaire d'en-tête conservent une ligne unique
+  `// SPDX-License-Identifier: LGPL-2.1-only` à la place de l'ancien bloc Doxygen.
 
 ### Fixed
 
@@ -63,5 +75,7 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/lang/fr/).
 
 - Copie vendue d'IJG libjpeg 6b dans `VedaLibImageJPEG` (~24 fichiers `.c`/`.h`),
   remplacée par `libjpeg-turbo` via vcpkg.
+- `VedaGUIWindowsMFC/MainFrm_old.cpp`/`.h` (fichiers obsolètes, non référencés par
+  aucun `.vcproj`/`CMakeLists.txt`).
 
 [Unreleased]: https://github.com/OWNER/AzurVeda/compare/HEAD

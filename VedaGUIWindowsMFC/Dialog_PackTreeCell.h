@@ -2,7 +2,7 @@
 
 #include "Dialog_AbstractPackSerializable.h"
 #include "afxcmn.h"
-// Boîte de dialogue CDialog_PackTreeCell
+
 class PackTreeCell;
 class BaseType;
 class CDialog_PackSerializable;
@@ -11,10 +11,9 @@ class CDialog_PackTreeCell : public CDialog_AbstractPackSerializable
 	DECLARE_DYNAMIC(CDialog_PackTreeCell)
 
 public:
-	CDialog_PackTreeCell(CWnd* pParent = NULL);   // constructeur standard
+	CDialog_PackTreeCell(CWnd* pParent = NULL);
 	virtual ~CDialog_PackTreeCell();
 
-// Données de boîte de dialogue
 	enum { IDD = IDD_PACKTREECELL };
 	static const char *GetManagedClassName(){ return("PackTreeCell");   };
 	static CDialog_AbstractPackSerializable *NewInstance(CWnd* pParent);
@@ -28,7 +27,7 @@ public:
 	void		FillTreeWithCell(PackTreeCell *_pCell,HTREEITEM treeitem);
 	void		SetElementEditor( BaseType *_pObjectToShape);
 protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // Prise en charge DDX/DDV
+	virtual void DoDataExchange(CDataExchange* pDX);
 
 	DECLARE_MESSAGE_MAP()
 	virtual void OnOK();
@@ -36,7 +35,7 @@ protected:
 
 	CDialog_PackSerializable	*m_pMemberEditor;
 	PackTreeCell				*m_pCurrentSelection;
-	//HTREEITEM					m_CurrentSelectionItem;
+
 	CMapPtrToPtr			m_MapTreeCellToItem;
 public:
 	virtual BOOL OnInitDialog();

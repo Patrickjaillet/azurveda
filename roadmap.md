@@ -40,11 +40,11 @@
 
 ## Phase 2 — Traduction en anglais & nettoyage éditorial (~3-5 jours)
 
-- [ ] Renommer toutes les variables, fonctions, classes, fichiers en anglais (le code contient actuellement des identifiants et messages en français, notamment dans `VedaGUIWindowsMFC`)
-- [ ] Traduire les chaînes de caractères visibles utilisateur (menus, dialogues `.rc`, messages d'erreur) en anglais
-- [ ] Supprimer **l'intégralité** des commentaires du code source (tous fichiers `.cpp`/`.h`)
-- [ ] Supprimer les fichiers `*_old.cpp` / `*_old.h` obsolètes (ex. `MainFrm_old.cpp`) une fois vérifié qu'ils ne sont plus référencés
-- [ ] Vérifier qu'aucune régression de compilation n'a été introduite par le renommage (build CI vert)
+- [x] Renommer toutes les variables, fonctions, classes, fichiers en anglais — après audit complet, le français n'existait que dans des commentaires et 2 chaînes `TRACE0` dans `VedaGUIWindowsMFC` (`MainFrm.cpp`), tous supprimés/traduits ; aucun identifiant (variable/fonction/classe/fichier) en français n'a été trouvé nulle part dans le workspace
+- [x] Traduire les chaînes de caractères visibles utilisateur (menus, dialogues `.rc`, messages d'erreur) en anglais — `VedaGUIWindowsMFC/VedaDemoOGLMfcGui.rc` et `res/VedaDemoOGLMfcGui.rc2` entièrement traduits (menus, string table, `VERSIONINFO`, captions), y compris la métadonnée de langue de la ressource (`LANGUAGE LANG_FRENCH, SUBLANG_FRENCH` → `LANG_ENGLISH, SUBLANG_ENGLISH_US`, codepage de langue `040c` → `0409`)
+- [x] Supprimer **l'intégralité** des commentaires du code source (tous fichiers `.cpp`/`.h`/`.c`) — 255 fichiers traités (tous les modules sauf le code vendu tiers `VedaLibSoundMP3`/`VedaLibSoundXM`, hors périmètre car non écrit par AzurVeda). Les 158 fichiers qui portaient la mention de licence LGPL/GPL2 en commentaire d'en-tête conservent une ligne `// SPDX-License-Identifier: LGPL-2.1-only` (décision utilisateur) à la place de l'ancien bloc Doxygen complet
+- [x] Supprimer les fichiers `*_old.cpp` / `*_old.h` obsolètes (ex. `MainFrm_old.cpp`) une fois vérifié qu'ils ne sont plus référencés — `VedaGUIWindowsMFC/MainFrm_old.cpp`/`.h` supprimés (seuls fichiers correspondant au motif dans tout le workspace)
+- [x] Vérifier qu'aucune régression de compilation n'a été introduite par le renommage (build CI vert) — rebuild complet validé sur machine réelle (`cmake --preset ci-windows-x64 -DAZURVEDA_BUILD_MFC_EDITOR=ON && cmake --build --preset ci-windows-x64-release`), exit 0, les 4 exécutables générés, `Example01_SimpleSerialization` s'exécute correctement
 
 ## Phase 3 — Portage 64-bit & C++ moderne (~3-5 jours)
 

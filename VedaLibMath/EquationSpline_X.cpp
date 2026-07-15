@@ -1,7 +1,5 @@
-/*! \file 
-	\author victorien ferry & www.m4nkind.com
-	\brief This file applies the GNU LESSER GENERAL PUBLIC LICENSE Version 2.1 , read file COPYING.
-*/
+// SPDX-License-Identifier: LGPL-2.1-only
+
 #include "EquationSpline_X.h"
 #include <math.h>
 #ifdef _ENGINE_EDITABLE_
@@ -12,10 +10,9 @@ BASEOBJECT_DECLARE_CLASS( "X", EquationSpline_X, VirtualEquationSpline,"Equation
 
 EquationSpline_X::EquationSpline_X() : VirtualEquationSpline()
 	,mSer_List(NewSplineElementX)
-{	
+{
 	REGISTER_MEMBER( mSer_List,"Key List");
 
-	// register tool method:
 	BASEOBJECT_REGISTER_TOOLMETHOD( tm_VEquationSpline_Shift,0,"Shift","Shift all values.");
 	BASEOBJECT_REGISTER_TOOLMETHOD( tm_VEquationSpline_Scale,0,"Scale","Scale all values.");
 	BASEOBJECT_REGISTER_TOOLMETHOD( tm_VEquationSpline_Optimize,0,"Optimize","cull useless values.");
@@ -24,17 +21,12 @@ EquationSpline_X::EquationSpline_X() : VirtualEquationSpline()
 
 }
 #ifdef _ENGINE_EDITABLE_
-/*!
-	\brief	Tool Method main entry. In editable mode, the object can register a set of methods identified 
-			with an ID number by using RegisterToolMethod(), and throw the methods through a switch in ToolMethod(). 
-			Here, It is used to export wave sound format.
-	\param	_MethodIDToExecute	the tool method ID, greater than 0.
-*/
+
 void EquationSpline_X::ExecuteToolMethod( unsigned int _MethodIDToExecute )
 {
-	// superclass call:
+
 	VirtualEquation::ExecuteToolMethod(_MethodIDToExecute);
-	// handle our tool methods:
+
 	switch(_MethodIDToExecute)
 	{
 		default:break;
@@ -57,36 +49,28 @@ void EquationSpline_X::ExecuteToolMethod( unsigned int _MethodIDToExecute )
 }
 #endif
 #ifdef _ENGINE_EDITABLE_
-/*!
-	\brief	
-*/
+
 void EquationSpline_X::ToolMethod_Shift()
 {
 
 }
 #endif
 #ifdef _ENGINE_EDITABLE_
-/*!
-	\brief	
-*/
+
 void EquationSpline_X::ToolMethod_Scale()
 {
 
 }
 #endif
 #ifdef _ENGINE_EDITABLE_
-/*!
-	\brief	
-*/
+
 void EquationSpline_X::ToolMethod_Optimize()
 {
 
 }
 #endif
 #ifdef _ENGINE_EDITABLE_
-/*!
-	\brief	
-*/
+
 void EquationSpline_X::ToolMethod_ImportWaveVolume()
 {
 	char FilePath[256];
@@ -103,9 +87,8 @@ void EquationSpline_X::ToolMethod_ImportWaveVolume()
 	result = ToolMethod_Import_StartLoadWave(resource,swaveInfo);
 	if(!result) return;
 
-	// 
-	const unsigned int	 UnitperSec=3; // 1/8 seconds
-	//unsigned int	vector = swaveInfo.nSamplesPerSec<<(16-UnitperSec); //*65536/persec.
+	const unsigned int	 UnitperSec=3;
+
 	unsigned int	nbSample	= (swaveInfo.dataEndOffset-swaveInfo.dataStartOffset)>>1;
 	if(swaveInfo.nChannels ==2) nbSample>>=1;
 	unsigned int	nbUnitPass1 = ((nbSample<<UnitperSec)/swaveInfo.nSamplesPerSec)+1;
@@ -114,25 +97,25 @@ void EquationSpline_X::ToolMethod_ImportWaveVolume()
 	unsigned int ii=0,jj=0;
 	const unsigned char *pBinary=0L;
 	unsigned int	binaryLengthReturned;
-	unsigned char	smoothmax = 0; // we set 0->63
+	unsigned char	smoothmax = 0;
 	short allTimeMax =0;
 	short allTimeMin =0;
-	for(ii=0 ; ii<nbUnitPass1 && jj<nbSample ; ii++ ) 
+	for(ii=0 ; ii<nbUnitPass1 && jj<nbSample ; ii++ )
 	{
 		unsigned int NextPassFirst=(swaveInfo.nSamplesPerSec*(ii+1))>>UnitperSec;
 		if(NextPassFirst>nbSample) NextPassFirst=nbSample;
-		// load chunk:
+
 		unsigned int	binaryLengthToGet=(NextPassFirst-jj)<<1;
 		if(swaveInfo.nChannels ==2) binaryLengthToGet<<=1;
 		resource.GetBinaryAtOffset(pBinary,binaryLengthReturned,swaveInfo.dataStartOffset,
 									binaryLengthToGet);
 		if(binaryLengthReturned != binaryLengthToGet) break;
 		swaveInfo.dataStartOffset += binaryLengthReturned;
-		unsigned char	maxvolume = 0; // we set 0->63
+		unsigned char	maxvolume = 0;
 
 		for( ;jj<NextPassFirst;jj++)
 		{
-			signed short left = (signed short)(pBinary[0]|(pBinary[1]<<8)); // Little endian read.
+			signed short left = (signed short)(pBinary[0]|(pBinary[1]<<8));
 			pBinary+=2;
 			if(left>allTimeMax)allTimeMax=left;
 			if(left<allTimeMin)allTimeMin=left;
@@ -140,13 +123,13 @@ void EquationSpline_X::ToolMethod_ImportWaveVolume()
 			signed short right=0;
 			if(swaveInfo.nChannels ==2)
 			{
-				right = (signed short)(pBinary[0]|(pBinary[1]<<8)); // Little endian read.
+				right = (signed short)(pBinary[0]|(pBinary[1]<<8));
 				pBinary+=2;
 			}
 			if(left==-32768)left=32767;
 			if(left<0)left=-left;
-			unsigned char volumeleft = left>>11; // 1<<15 -> 1<<4 ->[0,15]
-			
+			unsigned char volumeleft = left>>11;
+
 			if(volumeleft>smoothmax) smoothmax = volumeleft;
 			if(smoothmax>maxvolume) maxvolume = smoothmax;
 		}
@@ -154,51 +137,46 @@ void EquationSpline_X::ToolMethod_ImportWaveVolume()
 		else  smoothmax-=8;
 		pVolumeTable[ii] = maxvolume;
 	}
-	// if last elements couldn't be filled : set rest to zero:
+
 	while(ii<nbUnitPass1)
 	{
 		pVolumeTable[ii] = 0;
 		ii++;
 	}
-	// smooth curve up:
 
-	// first count of optimized elements:
 	unsigned int	nbKept=1;
 	unsigned int lastKeptIndex = 0;
 	unsigned char lastKeptValue = pVolumeTable[0];
-	for(ii=1 ; ii<(nbUnitPass1-1) ; ) // (nbUnitPass1-1) because we always keep the last value.
+	for(ii=1 ; ii<(nbUnitPass1-1) ; )
 	{
-		// actual slope: ii is candidate.
+
 		float lastSlope = (((float)pVolumeTable[ii])-((float)lastKeptValue))
 							/( (float)(ii-lastKeptIndex) );
-		// skip suit of line vector: test better candidate.
+
 		jj = ii+1;
 		while( jj<(nbUnitPass1-1) )
 		{
 			float newSlope = (((float)pVolumeTable[jj])-((float)lastKeptValue))
 					/( (float)(jj-lastKeptIndex) );
-			if(newSlope != lastSlope ) break; // too different:
+			if(newSlope != lastSlope ) break;
 			jj++;
 		}
 		ii = jj;
-		// one more kept !
+
 		nbKept++;
 		lastKeptIndex = ii;
 		lastKeptValue = pVolumeTable[ii];
 		ii++;
 	}
-	//nbKept++; // because we always keep the last value.
-	// prevent from too big things:
+
 	if(nbKept>6000)
 	{
 		delete [] pVolumeTable ;
 		return;
 	}
-	// ----------- fill table:
-	//PackList_TimeTrack *pTimeList = GetList();
-	//pTimeList->DeleteAllElements();
+
 	PackList_TimeTrack	BuildList(NewSplineElementX);
-	
+
 	PackList::Cell *pCell=BuildList.AddElement();
 	SplineElement *pSplineElt = (SplineElement *)pCell->GetManagedObject();
 	pSplineElt->SetTimeInSecond(0.0);
@@ -206,27 +184,27 @@ void EquationSpline_X::ToolMethod_ImportWaveVolume()
 	nbKept = 0;
 	lastKeptIndex = 0;
 	lastKeptValue = pVolumeTable[0];
-	for(ii=1 ; ii<(nbUnitPass1-1) ; ) // (nbUnitPass1-1) because we always keep the last value.
+	for(ii=1 ; ii<(nbUnitPass1-1) ; )
 	{
-		// actual slope: ii is candidate.
+
 		float lastSlope = (((float)pVolumeTable[ii])-((float)lastKeptValue))
 							/( (float)(ii-lastKeptIndex) );
-		// skip suit of line vector: test better candidate.
+
 		jj = ii+1;
 		while( jj<(nbUnitPass1-1) )
 		{
 			float newSlope = (((float)pVolumeTable[jj])-((float)lastKeptValue))
 					/( (float)(jj-lastKeptIndex) );
-			if(newSlope != lastSlope ) break; // too different:
+			if(newSlope != lastSlope ) break;
 			jj++;
 		}
 		ii = jj;
-		// one more kept !
+
 		nbKept++;
 		lastKeptIndex = ii;
 		lastKeptValue = pVolumeTable[ii];
 		ii++;
-		// add cell:
+
 		PackList::Cell *pCell=BuildList.AddElement();
 		SplineElement *pSplineElt = (SplineElement *)pCell->GetManagedObject();
 		double timeSec = ((float)lastKeptIndex)/((float)(1<<UnitperSec));
@@ -235,16 +213,14 @@ void EquationSpline_X::ToolMethod_ImportWaveVolume()
 
 	}
 	PackList_TimeTrack *pTimeList = GetList();
-	//pTimeList->DeleteAllElements();
+
 	pTimeList->MakeCloneOf(BuildList);
-	
+
 	delete [] pVolumeTable ;
 }
 #endif
 #ifdef _ENGINE_EDITABLE_
-/*!
-	\brief	
-*/
+
 void EquationSpline_X::ToolMethod_ImportWaveFreq()
 {
 
@@ -252,14 +228,11 @@ void EquationSpline_X::ToolMethod_ImportWaveFreq()
 #endif
 
 #ifdef _ENGINE_EDITABLE_
-/*!
-	\brief	
-*/
-bool EquationSpline_X::ToolMethod_Import_StartLoadWave(PackResource &_resource,struct	waveInfo &_WaveInfo) 
-{
-#define TOTAG(a,b,c,d) ((a<<24)|(b<<16)|(c<<8)|d) 
 
-	// all AzurVeda code should use litle/big endian resolution functions:
+bool EquationSpline_X::ToolMethod_Import_StartLoadWave(PackResource &_resource,struct	waveInfo &_WaveInfo)
+{
+#define TOTAG(a,b,c,d) ((a<<24)|(b<<16)|(c<<8)|d)
+
 	unsigned int rifftag;
 	unsigned int filesize;
 	unsigned int fileOffset=0;
@@ -275,23 +248,23 @@ bool EquationSpline_X::ToolMethod_Import_StartLoadWave(PackResource &_resource,s
 	if(!_resource.GetLE_UnsignedInt(jumpToData,fileOffset))return false;
 	jumpToData +=fileOffset;
 
-	short    wFormatTag;        // format type 
-    short    nChannels;         // number of channels (i.e. mono, stereo...) 
-    int   nSamplesPerSec;    // sample rate 
-    //int   nAvgBytesPerSec;   // for buffer estimation 
-    short    nBlockAlign;       // block size of data 
-    short    wBitsPerSample;    // Number of bits per sample of mono data 
-    short    cbSize;            // The count in bytes of the size of
-                                //    extra information (after cbSize) 
+	short    wFormatTag;
+    short    nChannels;
+    int   nSamplesPerSec;
+
+    short    nBlockAlign;
+    short    wBitsPerSample;
+    short    cbSize;
+
 	if(!_resource.GetLE_SignedShort(wFormatTag,fileOffset))return false;
 	if(!_resource.GetLE_SignedShort(nChannels,fileOffset))return false;
 	if(!_resource.GetLE_SignedInt(nSamplesPerSec,fileOffset))return false;
 	fileOffset+=4;
-	//if(!resource.GetLE_SignedInt(nAvgBytesPerSec,fileOffset))return;
+
 	if(!_resource.GetLE_SignedShort(nBlockAlign,fileOffset))return false;
 	if(!_resource.GetLE_SignedShort(wBitsPerSample,fileOffset))return false;
 	if(!_resource.GetLE_SignedShort(cbSize,fileOffset))return false;
-	// we have all needed information to read 'data'
+
 	fileOffset = jumpToData;
 	if(!_resource.GetLE_UnsignedInt(rifftag,fileOffset))return false;
 	if(rifftag != TOTAG('a','t','a','d')) return false;

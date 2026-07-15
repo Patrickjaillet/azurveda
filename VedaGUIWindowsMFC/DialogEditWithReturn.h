@@ -1,22 +1,18 @@
 #pragma once
 #include "afxwin.h"
 
-
-// Boîte de dialogue CDialogEditWithReturn
-
 class CDialogEditWithReturn : public CDialog
 {
 	DECLARE_DYNAMIC(CDialogEditWithReturn)
 
 public:
-	CDialogEditWithReturn(CWnd* pParent = NULL);   // constructeur standard
+	CDialogEditWithReturn(CWnd* pParent = NULL);
 	virtual ~CDialogEditWithReturn();
 
-// Données de boîte de dialogue
 	enum { IDD = IDD_DIALOG1 };
 
 protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // Prise en charge DDX/DDV
+	virtual void DoDataExchange(CDataExchange* pDX);
 
 	DECLARE_MESSAGE_MAP()
 public:

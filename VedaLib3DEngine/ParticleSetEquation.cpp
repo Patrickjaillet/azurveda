@@ -1,7 +1,5 @@
-/*! \file 
-	\author victorien ferry & www.m4nkind.com
-	\brief This file applies the GNU LESSER GENERAL PUBLIC LICENSE Version 2.1 , read file COPYING.
-*/
+// SPDX-License-Identifier: LGPL-2.1-only
+
 #include "ParticleSetEquation.h"
 #include "VirtualEquation.h"
 #include "PackFloat.h"
@@ -10,13 +8,9 @@ BASEOBJECT_DECLARE_CLASS( "q", ParticleSetEquation, ParticleSetVirtual,"3D Parti
 ParticleSetEquation::ParticleSetEquation() : ParticleSetVirtual()
 {
 	REGISTER_MEMBER_REFERENCE( mSerRef_Equation ,"Equation", VirtualEquation::m_Description );
-	
-	
+
 }
-/*!
-	\brief	get a particle in its current state.
-	\param	_index	the particle index in the population.
-*/
+
 void	ParticleSetEquation::SetFrameDate( float _frameDate )
 {
 
@@ -39,22 +33,8 @@ void	ParticleSetEquation::SetFrameDate( float _frameDate )
 			findex+=m_OneOverNumberOfActiveParticle;
 		}
 	}
-} 
-/*!
-	\brief	Method that really build the object using the serializable parameters.
-			Close() should close everything opened by CreateInternal().
-*//*
-bool ParticleSetEquation::CreateInternal(void)
-{
-	
-	return ParticleSetVirtual::CreateInternal();
-}*/
-#ifdef _ENGINE_EDITABLE_
-/*!
-	\brief	that closes everything. Still, the object exist and can be rebuild the same using Create()
-*//*
-void	ParticleSetEquation::CloseInternal(void)
-{
+}
 
-}*/
+#ifdef _ENGINE_EDITABLE_
+
 #endif

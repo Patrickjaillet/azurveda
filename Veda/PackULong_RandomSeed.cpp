@@ -10,9 +10,7 @@ PackULong_RandomSeed::~PackULong_RandomSeed(void)
 {
 }
 #endif
-/*!
-	\brief get a random number, continuing the suit of random number shaped by the seed.
-*/
+
 unsigned int	PackULong_RandomSeed::GetRandomNumber()
 {
 	unsigned int nn = m_CurrentRandomValue;

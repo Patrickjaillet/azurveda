@@ -1,7 +1,5 @@
-/*! \file 
-	\author victorien ferry & www.m4nkind.com
-	\brief This file applies the GNU LESSER GENERAL PUBLIC LICENSE Version 2.1 , read file COPYING.
-*/
+// SPDX-License-Identifier: LGPL-2.1-only
+
 #include "ParticleSetVirtual.h"
 #include "PackFloat.h"
 BASEOBJECT_DECLARE_VIRTUALCLASS( "pctl", ParticleSetVirtual, BaseObject );
@@ -15,10 +13,6 @@ ParticleSetVirtual::ParticleSetVirtual() : BaseObject()
 
 }
 
-/*!
-	\brief	Method that really build the object using the serializable parameters.
-			Close() should close everything opened by CreateInternal().
-*/
 bool ParticleSetVirtual::CreateInternal(void)
 {
 	m_pCurrentParticleSet = new Particle[mSer_MaxNumberOfParticle.Get() ];
@@ -27,9 +21,7 @@ bool ParticleSetVirtual::CreateInternal(void)
 	return true;
 }
 #ifdef _ENGINE_EDITABLE_
-/*!
-	\brief	that closes everything. Still, the object exist and can be rebuild the same using Create()
-*/
+
 void	ParticleSetVirtual::CloseInternal(void)
 {
 	if(m_pCurrentParticleSet )
@@ -37,7 +29,6 @@ void	ParticleSetVirtual::CloseInternal(void)
 		delete [] m_pCurrentParticleSet;
 		m_pCurrentParticleSet = 0L;
 	}
-
 
 }
 #endif

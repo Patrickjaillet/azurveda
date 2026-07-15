@@ -1,30 +1,22 @@
-// VedaDemoOGLMfcGuiView.h : interface de la classe CVedaDemoOGLMfcGuiView
-//
-
 
 #pragma once
 
-
 class CVedaDemoOGLMfcGuiView : public CListView
 {
-protected: // création à partir de la sérialisation uniquement
+protected:
 	CVedaDemoOGLMfcGuiView();
 	DECLARE_DYNCREATE(CVedaDemoOGLMfcGuiView)
 
-// Attributs
 public:
 	CVedaDemoOGLMfcGuiDoc* GetDocument() const;
 
-// Opérations
 public:
 
-// Substitutions
 	public:
 virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
 protected:
-	virtual void OnInitialUpdate(); // premier appel après la construction
+	virtual void OnInitialUpdate();
 
-// Implémentation
 public:
 	virtual ~CVedaDemoOGLMfcGuiView();
 #ifdef _DEBUG
@@ -34,15 +26,13 @@ public:
 
 protected:
 
-// Fonctions générées de la table des messages
 protected:
 	afx_msg void OnStyleChanged(int nStyleType, LPSTYLESTRUCT lpStyleStruct);
 	DECLARE_MESSAGE_MAP()
-	virtual void OnUpdate(CView* /*pSender*/, LPARAM /*lHint*/, CObject* /*pHint*/);
+	virtual void OnUpdate(CView* , LPARAM , CObject* );
 };
 
-#ifndef _DEBUG  // version de débogage dans VedaDemoOGLMfcGuiView.cpp
+#ifndef _DEBUG
 inline CVedaDemoOGLMfcGuiDoc* CVedaDemoOGLMfcGuiView::GetDocument() const
    { return reinterpret_cast<CVedaDemoOGLMfcGuiDoc*>(m_pDocument); }
 #endif
-

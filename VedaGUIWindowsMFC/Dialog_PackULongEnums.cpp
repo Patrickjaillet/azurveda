@@ -1,5 +1,3 @@
-// Dialog_PackULongEnums.cpp : fichier d'implémentation
-//
 
 #include "stdafx.h"
 #include "VedaDemoOGLMfcGui.h"
@@ -7,9 +5,6 @@
 #include ".\dialog_packulongenums.h"
 
 #include "PackUlong_Enums.h"
-
-// Boîte de dialogue CDialog_PackULongEnums
-
 
 void CDialog_PackULongEnums::Create(CWnd* pParent )
 {
@@ -23,7 +18,7 @@ CDialog_AbstractPackSerializable *CDialog_PackULongEnums::NewInstance(CWnd* pPar
 }
 
 IMPLEMENT_DYNAMIC(CDialog_PackULongEnums, CDialog)
-CDialog_PackULongEnums::CDialog_PackULongEnums(CWnd* pParent /*=NULL*/)
+CDialog_PackULongEnums::CDialog_PackULongEnums(CWnd* pParent )
 	: CDialog_AbstractPackSerializable(CDialog_PackULongEnums::IDD, pParent)
 {
 }
@@ -39,13 +34,9 @@ void CDialog_PackULongEnums::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_COMBOENUMS, m_ComboBox);
 }
 
-
 BEGIN_MESSAGE_MAP(CDialog_PackULongEnums, CDialog)
 	ON_CBN_SELCHANGE(IDC_COMBOENUMS, OnCbnSelchangeComboenums)
 END_MESSAGE_MAP()
-
-
-// Gestionnaires de messages CDialog_PackULongEnums
 
 void CDialog_PackULongEnums::OnOK()
 {
@@ -61,7 +52,6 @@ void	CDialog_PackULongEnums::Update(void)
 
 	m_ComboBox.SetCurSel(value);
 
-
 }
 void CDialog_PackULongEnums::SetPackSerializable(	BaseType *_objToManage,
 							CVedaDemoOGLMfcGuiDoc *_pDoc,
@@ -73,15 +63,13 @@ void CDialog_PackULongEnums::SetPackSerializable(	BaseType *_objToManage,
 	PackULong_Enums *pVedaEnum =(PackULong_Enums *) m_pObjectToManage;
 	if(!pVedaEnum)return;
 
-	// fill combo:
-	//m_ComboBox.DeleteItem
 	const char *pVedaEnumList = pVedaEnum->GetEnumsInfo();
 	if(pVedaEnumList )
 	{
 		CString cstr;
 		const char *pLastStart = pVedaEnumList;
 		int wordLength=0;
-		do 
+		do
 		{
 			wordLength++;
 			pVedaEnumList++;

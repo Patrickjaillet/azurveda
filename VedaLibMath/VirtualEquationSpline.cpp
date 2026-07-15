@@ -1,7 +1,5 @@
-/*! \file 
-	\author victorien ferry & www.m4nkind.com
-	\brief This file applies the GNU LESSER GENERAL PUBLIC LICENSE Version 2.1 , read file COPYING.
-*/
+// SPDX-License-Identifier: LGPL-2.1-only
+
 #include "VirtualEquationSpline.h"
 #include "PackFloat.h"
 #include <math.h>
@@ -14,7 +12,7 @@ VirtualEquationSpline::VirtualEquationSpline() : VirtualEquation()
 
 void VirtualEquationSpline::Compute( float _OutgoingParameterTable[4] , const float _IncomingParameterTable[4] )
 {
-//	float v_0p01 = PackFloat::m_0p01;
+
 	int flag = mSer_Flags.Get();
 	float date = _IncomingParameterTable[3];
 	PackList_TimeTrack *pList = GetList();
@@ -22,14 +20,9 @@ void VirtualEquationSpline::Compute( float _OutgoingParameterTable[4] , const fl
 	float					d1,d2,d3,d4;
 	SplineElement *pDElt1,*pDElt2,*pDElt3,*pDElt4;
 	PackStruct::Cell *p1,*p2,*p3,*p4=0L;
-	// default: no more, let like before if not computed. default must be set elsewhere.
-	/*_OutgoingParameterTable[0]=
-	_OutgoingParameterTable[1]=
-	_OutgoingParameterTable[2]=
-	_OutgoingParameterTable[3]= 0.0f;*/
-	// check time bounds:
+
 	p1 = pList->GetFirstCell();
-	if( !p1 ) return;	// can only mean: empty list.
+	if( !p1 ) return;
 	p2 = pList->GetLastCell();
 
 	d1 = ((SplineElement *)p1->GetManagedObject())->GetTimeInSecond();
@@ -37,12 +30,11 @@ void VirtualEquationSpline::Compute( float _OutgoingParameterTable[4] , const fl
 
 	if(date<d1 || date>d2)
 	{
-		if(flag & splf_Repeat) 
+		if(flag & splf_Repeat)
 		{
 			float ll = d2-d1;
 			date-=d1;
 
-			//date = fmodf(d1, (d2-d1) );
 			int	nb = (int)(date/ll);
 			date -= ((float)nb)*ll;
 			if( date<0.0f) date+=ll;
@@ -53,9 +45,9 @@ void VirtualEquationSpline::Compute( float _OutgoingParameterTable[4] , const fl
 			else	date=d2;
 		}
 	}
-	
-	p2 = pList->GetCellByDate(date); // should not be NULL according to previous tests.
-	if( !p2 ) return; // but in rare edition case it is...
+
+	p2 = pList->GetCellByDate(date);
+	if( !p2 ) return;
 	pDElt2 = (SplineElement *)p2->GetManagedObject();
 	d2 = pDElt2->GetTimeInSecond();
 
@@ -74,7 +66,6 @@ void VirtualEquationSpline::Compute( float _OutgoingParameterTable[4] , const fl
 	pDElt4 = (SplineElement *)p4->GetManagedObject();
 	d4 = pDElt4->GetTimeInSecond();
 
-	// loop by dimension managed:
 	unsigned int nbDim = (unsigned int)pDElt2->mSer_Vector.GetVectorDimension() ;
 	float	tt,dt,v1,v2,b,t1,t2;
 	float g_2=2.0f,g_3=3.0f;
@@ -92,35 +83,24 @@ void VirtualEquationSpline::Compute( float _OutgoingParameterTable[4] , const fl
 
 			b = ( -(dt*t2) - (g_2*t1*dt) + g_3*(v2-v1) ) /(dt*dt) ;
 			t2 = (t2 -b*dt*g_2 -t1 ) /( g_3*(dt*dt));
-			v2 = tt*tt; // re-use val
+			v2 = tt*tt;
 			v1 += (t2*(v2*tt)  + b*v2 + (tt)*t1 );
-		}		
+		}
 		_OutgoingParameterTable[ii] += v1;
 	}
 
 }
 #ifdef _ENGINE_EDITABLE_
-/*!
-	\brief	a GUI could need to play, draw, print, or output from any way, a preview of a 
-			created object. This is done with this method. sub classes can implement it (or not) in
-			any way, to explicit current shape of an object.<br>
 
-	\param	_frameDate a date, in second, which defines the effect cinematic.
-	\param	_pPreviewViewPort the viewport to render. Can't be 0L.
-	\param	_pPreviewConfiguration
-*/
 void VirtualEquationSpline::ProcessPreview(double _frameDate,VirtualMachine::InternalViewPort *_pPreviewViewPort,const PreviewConfiguration *_pPreviewConfiguration)
 {
-	// classic drawing.
-	//VirtualEquation::ProcessPreview(_frameDate,_pPreviewViewPort,_pPreviewConfiguration);
+
 	ProcessPreview_DrawEquation(_frameDate,_pPreviewViewPort,_pPreviewConfiguration);
 
-	// draw keys position:
 	VirtualMachine::InternalObject3DBuffer	*m_pOb;
 	ProcessPreview_CreateLine(&m_pOb,2);
 	if(!m_pOb) return;
-	
-		
+
 	float xds1= (-_pPreviewViewPort->GetPositionX1() ) /
 		(_pPreviewViewPort->GetPositionX2()-_pPreviewViewPort->GetPositionX1())
 		-0.5f ;
@@ -140,7 +120,6 @@ void VirtualEquationSpline::ProcessPreview(double _frameDate,VirtualMachine::Int
 		float ywidth = 0.005f /
 			(_pPreviewViewPort->GetPositionY2()-_pPreviewViewPort->GetPositionY1()) ;
 
-	// init render object:
 	VirtualMachine::InternalVertex *pVert = m_pOb->GetFirstVertex();
 
 	float	cellwidth=0.01f;
@@ -151,7 +130,7 @@ void VirtualEquationSpline::ProcessPreview(double _frameDate,VirtualMachine::Int
 	pVert->m_x = xwidth;
 	pVert->m_y = cellwidth;
 	pVert->m_z = 0.0f;
-	pVert++;			
+	pVert++;
 	pVert->m_x = -xwidth;
 	pVert->m_y = -cellwidth;
 	pVert->m_z = 0.0f;
@@ -159,7 +138,7 @@ void VirtualEquationSpline::ProcessPreview(double _frameDate,VirtualMachine::Int
 	pVert->m_x = xwidth;
 	pVert->m_y = -cellwidth;
 	pVert->m_z = 0.0f;
-	// loop by keys:
+
 	PackList_TimeTrack *pList = GetList();
 	PackList::Cell *pCell = pList->GetFirstCell();
 	_pPreviewViewPort->Matrix_Push();
@@ -187,10 +166,9 @@ void VirtualEquationSpline::ProcessPreview(double _frameDate,VirtualMachine::Int
 		pVert->m_x = time+xwidth;
 		pVert->m_y = -val -ywidth;
 		pVert->m_z = 0.0f;
-			//_pPreviewViewPort->Matrix_Translate(time-lastTranslate,0.0f,0.0f);
-			//lastTranslate += time;
+
 			_pPreviewViewPort->RenderMesh(m_pOb);
-				
+
 		}
 		pCell = pCell->GetNextBrotherCell();
 	}

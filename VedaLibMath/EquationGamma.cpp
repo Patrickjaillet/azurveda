@@ -1,7 +1,5 @@
-/*! \file 
-	\author victorien ferry & www.m4nkind.com
-	\brief This file applies the GNU LESSER GENERAL PUBLIC LICENSE Version 2.1 , read file COPYING.
-*/
+// SPDX-License-Identifier: LGPL-2.1-only
+
 #include "EquationGamma.h"
 #include <math.h>
 #ifndef powf
@@ -12,7 +10,7 @@ BASEOBJECT_DECLARE_CLASS( "Gm", EquationGamma, VirtualEquation,"Equation Gamma x
 EquationGamma::EquationGamma() : VirtualEquation()
 	,mSer_CurveStart(PackFloat::vd_XY)
 	,mSer_CurveEnd(PackFloat::vd_XY)
-{	
+{
 	REGISTER_MEMBER_PACKFLOAT_XY(mSer_CurveStart,"Start",0.0f,0.0f)
 	REGISTER_MEMBER_PACKFLOAT_XY(mSer_CurveEnd,"End",1.0f,1.0f)
 	REGISTER_MEMBER_PACKFLOATBYTE_0_1( mSer_Center,"Center",0.5f);
@@ -43,7 +41,7 @@ void EquationGamma::Compute( float _OutgoingParameterTable[4] , const float _Inc
 		_OutgoingParameterTable[0] = f_by1 ;
 		return;
 	}
-	fx = (fx-f_ax1) / (f_bx1-f_ax1); //[0,1]
+	fx = (fx-f_ax1) / (f_bx1-f_ax1);
 
 	if( fx<center  )
 	{
@@ -51,7 +49,7 @@ void EquationGamma::Compute( float _OutgoingParameterTable[4] , const float _Inc
 		fx = powf(fx,force);
 		fx*= center;
 	} else
-	{	
+	{
 		float domainLength = ct1-center;
 		fx=ct1-fx;
 		fx/=domainLength;
@@ -59,7 +57,7 @@ void EquationGamma::Compute( float _OutgoingParameterTable[4] , const float _Inc
 		fx*= domainLength;
 		fx=ct1-fx;
 	}
-	
+
 	fx = f_ay1 + fx*(f_by1-f_ay1);
 
 	_OutgoingParameterTable[0] = fx ;

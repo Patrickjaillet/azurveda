@@ -2,7 +2,6 @@
 
 #include "Dialog_AbstractPackSerializable.h"
 #include "afxwin.h"
-// Boîte de dialogue CDialog_PackListDynamic
 
 class CDialog_PackSerializable;
 
@@ -11,13 +10,13 @@ class CDialog_PackListDynamic : public CDialog_AbstractPackSerializable
 	DECLARE_DYNAMIC(CDialog_PackListDynamic)
 
 public:
-	CDialog_PackListDynamic(CWnd* pParent = NULL);   // constructeur standard
+	CDialog_PackListDynamic(CWnd* pParent = NULL);
 	virtual ~CDialog_PackListDynamic();
 	virtual	void	Update(void);
-// Données de boîte de dialogue
+
 	enum { IDD = IDD_PackListDynamic };
 	static const char *GetManagedClassName(){ return("PackList");   };
-	
+
 	static CDialog_AbstractPackSerializable *NewInstance(CWnd* pParent);
 
 	virtual void Create(CWnd* pParent = NULL);
@@ -26,7 +25,7 @@ public:
 										CView				  *_pView
 										);
 protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // Prise en charge DDX/DDV
+	virtual void DoDataExchange(CDataExchange* pDX);
 
 	DECLARE_MESSAGE_MAP()
 	virtual void OnOK();
@@ -43,7 +42,7 @@ public:
 	afx_msg void OnBnClickedButtonMinus();
 	afx_msg void OnDestroy();
 	afx_msg void OnLvnItemActivateList1(NMHDR *pNMHDR, LRESULT *pResult);
-	//CStatic m_MemberName;
+
 	afx_msg void OnBnClickedButtonUp();
 	afx_msg void OnBnClickedButtonDown();
 	afx_msg void OnBnClickedButtonClone();

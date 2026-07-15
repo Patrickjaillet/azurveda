@@ -1,12 +1,10 @@
-/*! \file 
-	\author victorien ferry & www.m4nkind.com
-	\brief This file applies the GNU LESSER GENERAL PUBLIC LICENSE Version 2.1 , read file COPYING.
-*/
+// SPDX-License-Identifier: LGPL-2.1-only
+
 #include "ModifierObject3DColor.h"
 #include "PackFloat.h"
 BASEOBJECT_DECLARE_CLASS( "cl", ModifierObject3DColor, ModifierObject3DVirtual,"3DModifier Color","mdfColor","Modify the colors and transparency of a dynamic 3D Objects, through 3DObjectScene Shape Modifier List.");
 
-ModifierObject3DColor::ModifierObject3DColor() : ModifierObject3DVirtual() 
+ModifierObject3DColor::ModifierObject3DColor() : ModifierObject3DVirtual()
 	,m_LastComputedDate(PackFloat::m_Max)
 	,mSer_BaseColor_RGB(PackFloat::vd_XYZ)
 	,mSer_BaseColor_Alpha(PackFloat::vd_X)
@@ -16,12 +14,6 @@ ModifierObject3DColor::ModifierObject3DColor() : ModifierObject3DVirtual()
 
 }
 
-/*
-	\brief	Apply a modification on a vertex (shape or color or anything).
-	\param	_pVertexList first vertex to modify
-	\param	_NbVertex number of vertex in list.
-	\param	_framedate	date in seconds.
-*/
 void ModifierObject3DColor::Modify( VirtualMachine::InternalVertex *_pVertexList,
 						const unsigned int _NbVertex,
 						float _framedate)
@@ -44,7 +36,7 @@ void ModifierObject3DColor::Modify( VirtualMachine::InternalVertex *_pVertexList
 		_pVertexList->m_ColorRGBA[1]*= param_out[1];
 		_pVertexList->m_ColorRGBA[2]*= param_out[2];
 		}
-		// alpha:
+
 		if(mSer_BaseColor_Alpha.GetSelectedIndex()!=0)
 		{
 			param_out[0]=v0;
@@ -54,4 +46,3 @@ void ModifierObject3DColor::Modify( VirtualMachine::InternalVertex *_pVertexList
 		_pVertexList++;
 	}
 }
-

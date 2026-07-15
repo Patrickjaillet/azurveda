@@ -1,5 +1,3 @@
-// Dialog_PackULongFlags.cpp : fichier d'implémentation
-//
 
 #include "stdafx.h"
 #include "VedaDemoOGLMfcGui.h"
@@ -7,8 +5,6 @@
 #include ".\dialog_packulongflags.h"
 #include "VedaDemoOGLMfcGuiDoc.h"
 #include "PackULong_Flags.h"
-// Boîte de dialogue CDialog_PackULongFlags
-
 
 void CDialog_PackULongFlags::Create(CWnd* pParent )
 {
@@ -21,7 +17,7 @@ CDialog_AbstractPackSerializable *CDialog_PackULongFlags::NewInstance(CWnd* pPar
 
 }
 IMPLEMENT_DYNAMIC(CDialog_PackULongFlags, CDialog)
-CDialog_PackULongFlags::CDialog_PackULongFlags(CWnd* pParent /*=NULL*/)
+CDialog_PackULongFlags::CDialog_PackULongFlags(CWnd* pParent )
 	: CDialog_AbstractPackSerializable(CDialog_PackULongFlags::IDD, pParent)
 	,m_NumberOfBitManaged(0)
 {
@@ -47,7 +43,6 @@ void CDialog_PackULongFlags::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_CHECK10, m_c[9]);
 }
 
-
 BEGIN_MESSAGE_MAP(CDialog_PackULongFlags, CDialog)
 	ON_BN_CLICKED(IDC_CHECK1, OnBnClickedCheck0)
 	ON_BN_CLICKED(IDC_CHECK2, OnBnClickedCheck1)
@@ -61,11 +56,9 @@ BEGIN_MESSAGE_MAP(CDialog_PackULongFlags, CDialog)
 	ON_BN_CLICKED(IDC_CHECK10, OnBnClickedCheck9)
 END_MESSAGE_MAP()
 
-
-// Gestionnaires de messages CDialog_PackULongFlags
 void CDialog_PackULongFlags::SetPackSerializable( BaseType *_objToManage,
 										CVedaDemoOGLMfcGuiDoc *_pDoc,
-										CView				  *_pView														   
+										CView				  *_pView
 														   )
 {
 	CDialog_AbstractPackSerializable::SetPackSerializable(_objToManage,_pDoc,_pView);
@@ -77,18 +70,17 @@ void CDialog_PackULongFlags::SetPackSerializable( BaseType *_objToManage,
 	int index;
 	for( index=0 ; index<NBCHECKBOX ; index++) m_c[index].ShowWindow(false);
 	index=0;
-	// CString
-	// split the definition of type flag0.flag1.flag2...
+
 	while( index<bitfieldmeaning.GetLength() )
 	{
 		if(numberOfBitUsed<NBCHECKBOX) m_c[numberOfBitUsed].ShowWindow(true);
 		int next = bitfieldmeaning.Find('.',index);
 		if(next == -1)
-		{	// last flag:
+		{
 			CString substring = bitfieldmeaning.Mid( index, bitfieldmeaning.GetLength()-index );
 			if(numberOfBitUsed<NBCHECKBOX) m_c[numberOfBitUsed].SetWindowText( substring.GetString() );
 			numberOfBitUsed++;
-		
+
 			break;
 		}
 		CString substring = bitfieldmeaning.Mid( index,next-index );
@@ -100,29 +92,19 @@ void CDialog_PackULongFlags::SetPackSerializable( BaseType *_objToManage,
 	m_NumberOfBitManaged = numberOfBitUsed;
 
 	if(m_NumberOfBitManaged<=5) Resize(-1, 20);
-	
+
 	Update();
-	/*
-	CDialog_AbstractPackSerializable::SetPackSerializable(_objToManage);
-	// cast veda type:
-	PackULong *pVedaULong =(PackULong *)_objToManage;
-	// set the value to the edit ctrl:
-	CString str;
-	str.Format( "%d", pVedaULong->Get() );
-	m_editCtrl.SetWindowText( str.GetString() );
-*/
 
 }
 
 void CDialog_PackULongFlags::OnOK()
 {
-	//CDialog_AbstractPackSerializable::OnOK();
+
 }
 
 void CDialog_PackULongFlags::OnCancel()
 {
-	
-	//CDialog_AbstractPackSerializable::OnCancel();
+
 }
 void	CDialog_PackULongFlags::Update(void)
 {
@@ -132,12 +114,12 @@ void	CDialog_PackULongFlags::Update(void)
 	unsigned int ii;
 
 	for(ii=0 ; ii<m_NumberOfBitManaged && ii<NBCHECKBOX ; ii++)
-	{ // CButton
+	{
 		if( (value & 1)!= 0 )
 			m_c[ii].SetCheck( BST_CHECKED );
 		else
 			m_c[ii].SetCheck( BST_UNCHECKED );
-		value>>=1; // next bit:
+		value>>=1;
 	}
 
 }

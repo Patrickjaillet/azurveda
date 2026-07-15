@@ -1,14 +1,11 @@
-/*! \file 
-	\author victorien ferry & www.m4nkind.com
-	\brief This file applies the GNU LESSER GENERAL PUBLIC LICENSE Version 2.1 , read file COPYING.
-*/
+// SPDX-License-Identifier: LGPL-2.1-only
+
 #include "BaseContext.h"
 
-// Other packages needed by 3DEngine:
 #include "VirtualMedia.h"
 #include "RegisterLibMath.h"
 #include "RegisterLibImage.h"
-// Lib3DEngine classes:
+
 #include "Object3DVirtual.h"
 #include "Object3DMeshVirtual.h"
 #include "Object3DGrid.h"
@@ -33,7 +30,7 @@ void	RegisterLib3DEngine(BaseContext *_pContext )
 {
 	RegisterLibMath(_pContext);
 	RegisterLibImage(_pContext);
-	// register all classes that the context can manage:
+
 	const BaseObject::ClassDescription * const descTable[]=
 	{
 		& VirtualMedia::m_Description,
@@ -42,7 +39,7 @@ void	RegisterLib3DEngine(BaseContext *_pContext )
 			& Object3DMeshVirtual::m_Description,
 				& Object3DGrid::m_Description,
 				& Object3DMesh3D::m_Description,
-				& Object3DVirtualDynamic::m_Description, // used by LibDemo ATM.
+				& Object3DVirtualDynamic::m_Description,
 				& Object3DLWOResource::m_Description,
 				& Object3DMultiplier::m_Description,
 			& Object3DScene::m_Description,
@@ -52,8 +49,6 @@ void	RegisterLib3DEngine(BaseContext *_pContext )
 			& ModifierObject3DSinusDisplace::m_Description,
 
 		& RenderTargetVirtual::m_Description,
-			//re & RenderTargetTexture::m_Description,
-			//re & RenderTargetRectangle::m_Description,
 
 		& Texture3D::m_Description,
 		& LightModel::m_Description,

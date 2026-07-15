@@ -1,5 +1,3 @@
-// Dialog_PackFloatByte_Limits.cpp : fichier d'implémentation
-//
 
 #include "stdafx.h"
 #include "VedaDemoOGLMfcGui.h"
@@ -17,10 +15,8 @@ CDialog_AbstractPackSerializable *CDialog_PackFloatByte_Limits::NewInstance(CWnd
 
 }
 
-// Boîte de dialogue CDialog_PackFloatByte_Limits
-
 IMPLEMENT_DYNAMIC(CDialog_PackFloatByte_Limits, CDialog)
-CDialog_PackFloatByte_Limits::CDialog_PackFloatByte_Limits(CWnd* pParent /*=NULL*/)
+CDialog_PackFloatByte_Limits::CDialog_PackFloatByte_Limits(CWnd* pParent )
 	: CDialog_AbstractPackSerializable(CDialog_PackFloatByte_Limits::IDD, pParent)
 {
 }
@@ -51,14 +47,10 @@ void CDialog_PackFloatByte_Limits::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_BEDIT_X, m_focusedit);
 }
 
-
 BEGIN_MESSAGE_MAP(CDialog_PackFloatByte_Limits, CDialog)
 	ON_WM_HSCROLL()
 	ON_STN_CLICKED(IDC_BEDIT_X, OnActionEditClicks)
 END_MESSAGE_MAP()
-
-
-// Gestionnaires de messages CDialog_PackFloatByte_Limits
 
 void CDialog_PackFloatByte_Limits::OnOK()
 {
@@ -99,13 +91,12 @@ void	CDialog_PackFloatByte_Limits::Update(void)
 {
 	PackFloatByte_Limits *pveda =(PackFloatByte_Limits *) m_pObjectToManage;
 	if(!pveda)return;
-	// are we focused ?
+
 	if( IsFocused() )
 		m_focusedit.SetBitmap( (HBITMAP)m_Bm_Focused.m_hObject );
 	else
 		m_focusedit.SetBitmap( (HBITMAP)m_Bm_UnFocused.m_hObject );
 
-	// set the value to the edit ctrl:
 	CString str;
 	str.Format( "%f", pveda->Get() );
 	m_editctrl.SetWindowText( str.GetString() );
@@ -140,15 +131,15 @@ void	CDialog_PackFloatByte_Limits::Update(void)
 }
 void CDialog_PackFloatByte_Limits::SetPackSerializable( BaseType *_objToManage,
 										CVedaDemoOGLMfcGuiDoc *_pDoc,
-										CView				  *_pView														   
+										CView				  *_pView
 														   )
 {
 	CDialog_AbstractPackSerializable::SetPackSerializable(_objToManage,_pDoc,_pView);
-	// cast veda type:
+
 	PackFloatByte_Limits *pVedaLong =(PackFloatByte_Limits *)_objToManage;
 	float min = pVedaLong->GetMin();
 	float max = pVedaLong->GetMax();
-	// CSliderCtrl
+
 	m_slider.SetRange(0,255,true);
 	m_sliderY.SetRange(0,255,true);
 	m_sliderZ.SetRange(0,255,true);
@@ -163,7 +154,7 @@ void CDialog_PackFloatByte_Limits::SetPackSerializable( BaseType *_objToManage,
 	m_maxtext.SetWindowText(text.GetString());
 	m_maxtextY.SetWindowText(text.GetString());
 	m_maxtextZ.SetWindowText(text.GetString());
-	// hide Y and Z by default:
+
 	m_editctrlY.ShowWindow( SW_HIDE );
 	m_editctrlZ.ShowWindow( SW_HIDE );
 	m_editctrlD.ShowWindow( SW_HIDE );
@@ -223,7 +214,6 @@ void CDialog_PackFloatByte_Limits::SetPackSerializable( BaseType *_objToManage,
 		break;
 	}
 
-	// 
 	Update();
 }
 
@@ -235,7 +225,7 @@ void CDialog_PackFloatByte_Limits::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar
 	{
 		int id = pScrollBar->GetDlgCtrlID();
 		PackFloatByte_Limits *pVedaOb =(PackFloatByte_Limits *) m_pObjectToManage;
-		if( pVedaOb )	
+		if( pVedaOb )
 		{
 			if( id == IDC_SLIDER1 )
 			{
@@ -277,20 +267,10 @@ BOOL CDialog_PackFloatByte_Limits::OnInitDialog()
 	m_Bm_Focused.LoadBitmap( IDC_B_RESETVPFOCUS );
 	m_Bm_UnFocused.LoadBitmap( IDC_B_RESETVP );
 
-	// TODO :  Ajoutez ici une initialisation supplémentaire
+	return TRUE;
 
-	return TRUE;  // return TRUE unless you set the focus to a control
-	// EXCEPTION : les pages de propriétés OCX devraient retourner FALSE
 }
-/*
-	\brief	if an object of any type is managed, it could be changed by a cursor state.
-			by default, it does nothing. It has to be extended.
-	\param	_validityBits tels if _x,_y,_z and _time are  valid
-	\param	_x x position.
-	\param	_y y position.
-	\param	_z z position.
-	\param	_time the time of the cursor in seconds.
-*/
+
 void CDialog_PackFloatByte_Limits::ChangeValueOfManagedObjectWithCursor(
 	VirtualMachine::InternalViewPort *_pClickedViewPort,
 	unsigned int _validityBits,
@@ -306,15 +286,14 @@ void CDialog_PackFloatByte_Limits::ChangeValueOfManagedObjectWithCursor(
 	_z  = (_z-_pClickedViewPort->GetPositionY1()) /
 	(_pClickedViewPort->GetPositionY2() - _pClickedViewPort->GetPositionY1() );
 
-
 	if( _validityBits & m_cursorbit_XValid ) pPackFloat->Set(
 		pPackFloat->GetMin()+ _x * (pPackFloat->GetMax()-pPackFloat->GetMin())
-					); // in all cases.
+					);
 	PackFloat::VectorDimension  dim= pPackFloat->GetVectorDimension();
-	if( (_validityBits & m_cursorbit_YValid) && dim>PackFloat::vd_X ) 
-				pPackFloat->Set(1,pPackFloat->GetMin()+ _y * (pPackFloat->GetMax()-pPackFloat->GetMin())); // Y
-	if( (_validityBits & m_cursorbit_ZValid) && dim>PackFloat::vd_XY ) 
-				pPackFloat->Set(2,pPackFloat->GetMin()+ _y * (pPackFloat->GetMax()-pPackFloat->GetMin())); // Z
-	if( (_validityBits & m_cursorbit_TimeValid) && dim>PackFloat::vd_XYZ ) pPackFloat->Set(3,(float)_time); // time.
+	if( (_validityBits & m_cursorbit_YValid) && dim>PackFloat::vd_X )
+				pPackFloat->Set(1,pPackFloat->GetMin()+ _y * (pPackFloat->GetMax()-pPackFloat->GetMin()));
+	if( (_validityBits & m_cursorbit_ZValid) && dim>PackFloat::vd_XY )
+				pPackFloat->Set(2,pPackFloat->GetMin()+ _y * (pPackFloat->GetMax()-pPackFloat->GetMin()));
+	if( (_validityBits & m_cursorbit_TimeValid) && dim>PackFloat::vd_XYZ ) pPackFloat->Set(3,(float)_time);
 
 }

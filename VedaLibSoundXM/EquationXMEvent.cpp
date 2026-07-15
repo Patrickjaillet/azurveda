@@ -1,6 +1,5 @@
-/*! \file 
-	\brief This file applies the GNU LESSER GENERAL PUBLIC LICENSE Version 2.1 , read file COPYING.
-*/
+// SPDX-License-Identifier: LGPL-2.1-only
+
 #include "EquationXMEvent.h"
 #include "XMSoundObject.h"
 #include "PackFloat.h"
@@ -23,10 +22,10 @@ void EquationXMEvent::Compute( float _OutgoingParameterTable[4] , const float _I
 {
 	XMSoundObject *pXM = (XMSoundObject *)mSer_XMMusicReference.GetObjectPointer();
 	if(!pXM) return;
-	// FIND CURRENT VALUE;
+
 	float vol,amp;
 	if(_IncomingParameterTable[3] == m_LastDateComputed)
-	{	
+	{
 		vol = m_LastValueFound;
 	}else
 	{
@@ -38,9 +37,9 @@ void EquationXMEvent::Compute( float _OutgoingParameterTable[4] , const float _I
 		float dateDelta = _IncomingParameterTable[3]-m_LastDateComputed ;
 		dateDelta = fabs(dateDelta);
 		if(realvolume>m_LastValueFound)
-			dateDelta*=12.0f;	// go faster when going up.
+			dateDelta*=12.0f;
 		else
-			dateDelta*=8.0f;	// slower when down.
+			dateDelta*=8.0f;
 
 		if(dateDelta>v1p0)  dateDelta=v1p0;
 		vol = realvolume*dateDelta + m_LastValueFound*(v1p0-dateDelta);
@@ -48,7 +47,7 @@ void EquationXMEvent::Compute( float _OutgoingParameterTable[4] , const float _I
 		m_LastDateComputed = _IncomingParameterTable[3] ;
 	}
 	amp = mSer_VolumeScale.Get(1)- mSer_VolumeScale.Get(0);
-	// rescale values:
+
 	vol = (vol*amp)+mSer_VolumeScale.Get(0);
 	unsigned int flags = mSer_Flags.Get();
 
@@ -57,19 +56,10 @@ void EquationXMEvent::Compute( float _OutgoingParameterTable[4] , const float _I
 	if(flags & bApplyFlag_VolToZ) _OutgoingParameterTable[2] += vol;
 }
 #ifdef _ENGINE_EDITABLE_
-/*!
-	\brief	a GUI could need to play, draw, print, or output from any way, a preview of a 
-			created object. This is done with this method. sub classes can implement it (or not) in
-			any way, to explicit current shape of an object.<br>
 
-	\param	_frameDate a date, in second, which defines the effect cinematic.
-	\param	_pPreviewViewPort the viewport to render. Can't be 0L.
-	\param	_pPreviewConfiguration
-*/
 void EquationXMEvent::ProcessPreview(double _frameDate,VirtualMachine::InternalViewPort *_pPreviewViewPort,const PreviewConfiguration *_pPreviewConfiguration)
 {
-	// classic drawing.
-	//VirtualEquation::ProcessPreview(_frameDate,_pPreviewViewPort,_pPreviewConfiguration);
+
 	ProcessPreview_DrawEquation(_frameDate,_pPreviewViewPort,_pPreviewConfiguration);
 
 }

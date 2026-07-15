@@ -6,17 +6,15 @@
 #endif
 BASEOBJECT_DECLARE_CLASS( "ar", Object3DFontArial, Object3DFontVirtual,"3D Object Font Arial","FontArial","objects to be used as a font by 3D Object Text. Supported characters:-abcdefghijklmnopqrstuvwxyz!/@:.0123456789");
 
-Object3DFontArial::Object3DFontArial() : Object3DFontVirtual() 
+Object3DFontArial::Object3DFontArial() : Object3DFontVirtual()
 	, m_pCharTable(0L)
-{	
-	// TODO: finish shadowlist !!
-	REGISTER_MEMBER(mSer_ShadowList,/*"ShadowList"*/0L);
+{
+
+	REGISTER_MEMBER(mSer_ShadowList,0L);
 }
 
-//! horrible static base of the font shape.
 const signed char Object3DFontArial::m_fontc[]={
-// filelength:3847:
-// now start with '-'  nbv,nbf, .(x,y) .(0,1,2)
+
 4,2,   10,64, 50,64, 50,58, 10,58,   0,1,2, 0,2,3,
 29,29,5,89,52,89,63,84,67,70,69,24,45,24,43,31,34,24,16,24,5,28,1,42,1,53,5,65,13,68,38,68,43,
 72,37,77,13,77,3,74,43,56,31,56,26,53,25,47,25,45,26,39,31,36,37,36,41,38,43,45,0,17,18,1,17,
@@ -143,18 +141,17 @@ const signed char Object3DFontArial::m_fontc[]={
 
 bool Object3DFontArial::CreateInternal(void)
 {
-//	GetMachine()->NewObject3DBuffer( &m_pObject3DBuffer ,8,12);
+
 	m_pObject3DBufferTable = new Object3DBufferHandler[96];
-		//new VirtualMachine::InternalObject3DBuffer *[128];
+
 	Object3DBufferHandler *ptable = m_pObject3DBufferTable;
 	const signed char *pfontc = &(m_fontc[0]);
 	const signed char *pfontend = pfontc+ sizeof(m_fontc);
 
 	const float   v1d255 = PackFloat::m_1Div255;
     const float   vdecal=0.03f;
-	float ff,fy,fx1,fy1,fx2,fy2;	// to find width of char.
+	float ff,fy,fx1,fy1,fx2,fy2;
 
-	// alloc 256 asci inde:
 	FontBase *pIndexTable = new FontBase[ 256 ];
 	if(!pIndexTable)
 	{
@@ -166,7 +163,7 @@ bool Object3DFontArial::CreateInternal(void)
 	for(ii=0 ;ii<256 ; ii++) pIndexTable[ii].m_ShapeIndex = -1 ;
 	unsigned int nbchar=0;
 	const char *pCharMap = "-abcdefghijklmnopqrstuvwxyz!/@:.0123456789" ;
-    float   sizeedge=0.03f; // minimum.
+    float   sizeedge=0.03f;
 
 	while(pfontc<pfontend)
 	{
@@ -180,39 +177,27 @@ bool Object3DFontArial::CreateInternal(void)
 			BASEOBJECT_CREATEINTERNAL_EXPLICIT_ERROR_MEMORY();
 			return false;
 		}
-		ptable->m_pRenderTexture = 0L; // important: if no render to texture is made by the object, this is null.
+		ptable->m_pRenderTexture = 0L;
 		VirtualMachine::InternalVertex *pVertex = ptable->m_pObject3DBuffer->GetFirstVertex() ;
-		// note: all 2d coords char -128 -> 127 coords
-		// are meant to have their 0,0 standing for left-down corner
-		// of the character 'start'. 'J' have its queue going backward 0,0.
-		// the width of a char is given by its +0 value, + a gap.
-		//------vertex:
-		fx2 = /*fy2 =*/ -1.0f;   //
-	   /* fx1 = fy1 = 1.0f ;*/
+
+		fx2 =  -1.0f;
+
 		for( ; nbv > 0 ; nbv-- )
 		{
 			pVertex->m_x = ff = ((float) *(pfontc++)) * v1d255;
 			pVertex->m_u = ff ;
 			pVertex->m_nx = (ff-0.15f);
 				if(ff>fx2 ) fx2 = ff;
-				//if(ff<fx1) fx1 = ff;
 
 			pVertex->m_v =
 				pVertex->m_y = ff = - ((float) *(pfontc++)) * v1d255;
-				//if(ff>fy2 ) fy2 = ff;
-				//if(ff<fy1) fy1 = ff;
+
 			pVertex->m_ny = (ff-0.15f);
 			pVertex->m_z = PackFloat::m_0p0;
 			pVertex->m_nz = PackFloat::m_0p5;
 			pVertex++;
 		}
-		/*
-			//---- keep character bounding box &
-			pfontbaseBuild2->plx1 = fx1-vdecal;
-			pfontbaseBuild2->ply1 = fy1-vdecal ;
-			pfontbaseBuild2->plx2 = fx2+vdecal ;
-			pfontbaseBuild2->ply2 = fy2+vdecal ;
-		*/
+
 		VirtualMachine::InternalTriangle *pTriangle  = ptable->m_pObject3DBuffer->GetFirstTriangle();
 		ptable->m_pObject3DBuffer->SetNumberOfActiveTriangle(nbf);
 		for ( ; nbf>0 ; nbf-- )
@@ -229,14 +214,12 @@ bool Object3DFontArial::CreateInternal(void)
 		nbchar++;
 	}
 	m_CurrentNumberOf3DBuffer = nbchar;
-	// if asked by flag, replace all objects by their billboard rendering:
+
 	return CreateInternal_RenderObjectToTexture();
 
 }
 #ifdef _ENGINE_EDITABLE_
-/*!
-	\brief	Closes everything.
-*/
+
 void	Object3DFontArial::CloseInternal(void)
 {
 	if(m_pCharTable)
@@ -247,28 +230,17 @@ void	Object3DFontArial::CloseInternal(void)
 	Object3DFontVirtual::CloseInternal();
 }
 #endif
-/*!
-	\brief	Return the 3D shape index of the object that fit one character.
-			(then use index with RenderObject() )
-			a character is given with a zero-ended string because we can support
-			one byte character and more large char formats.
-			If the char is not supportd, we return false.
-			else,_rShapeIndex can return -1 if the char is space or tab.
-	\param	_pString	zero ended char.
-	\param	_rShapeIndex return index
-	\param	_rCharWidth		the width of the char, to use them in the geometry.
-*/
+
 bool Object3DFontArial::GetShapeIndexForCharacter( const char *_pString,
 										int &_rShapeIndex,
 										float &_rCharWidth )
 {
-	// no support for >1 char
+
 	if(_pString[1]!=0) return false;
 	FontBase *pcharbase = &(m_pCharTable[(unsigned int)_pString[0]]);
 	_rShapeIndex = pcharbase->m_ShapeIndex;
 	if(_rShapeIndex == -1) return false;
 	_rCharWidth = pcharbase->m_CharWidth ;
-	/*re_rShapeIndex = m_pCharTable[];
-	signed char	*m_pCharTable;*/
+
 	return true;
 }

@@ -2,7 +2,6 @@
 
 #include "Dialog_AbstractPackSerializable.h"
 #include "afxwin.h"
-// Boîte de dialogue CDialog_PackReference
 
 class ClassNode;
 
@@ -11,13 +10,12 @@ class CDialog_PackReference : public CDialog_AbstractPackSerializable
 	DECLARE_DYNAMIC(CDialog_PackReference)
 
 public:
-	CDialog_PackReference(CWnd* pParent = NULL);   // constructeur standard
+	CDialog_PackReference(CWnd* pParent = NULL);
 	virtual ~CDialog_PackReference();
 
-// Données de boîte de dialogue
 	enum { IDD = IDD_PACKREFERENCE };
 static const char *GetManagedClassName(){ return("PackObjectReference");   };
-	
+
 	static CDialog_AbstractPackSerializable *NewInstance(CWnd* pParent);
 
 	virtual void Create(CWnd* pParent = NULL);
@@ -27,13 +25,12 @@ static const char *GetManagedClassName(){ return("PackObjectReference");   };
 										);
 	virtual	void	Update(void);
 protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // Prise en charge DDX/DDV
+	virtual void DoDataExchange(CDataExchange* pDX);
 
 	DECLARE_MESSAGE_MAP()
 	virtual void OnCancel();
 	virtual void OnOK();
 
-	//! add objects from a class and subclass to the object list:
 	void	UpdateComboList();
 	void	AddClassObjectsInCombo( const ClassNode *_pFatherClassNode);
 	void	InsertNewClassNode( const ClassNode *_pClassNode );

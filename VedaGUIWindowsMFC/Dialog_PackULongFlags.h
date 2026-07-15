@@ -2,19 +2,15 @@
 
 #include "Dialog_AbstractPackSerializable.h"
 #include "afxwin.h"
-// Boîte de dialogue CDialog_PackULong
-
-// Boîte de dialogue CDialog_PackULongFlags
 
 class CDialog_PackULongFlags : public CDialog_AbstractPackSerializable
 {
 	DECLARE_DYNAMIC(CDialog_PackULongFlags)
 
 public:
-	CDialog_PackULongFlags(CWnd* pParent = NULL);   // constructeur standard
+	CDialog_PackULongFlags(CWnd* pParent = NULL);
 	virtual ~CDialog_PackULongFlags();
 
-// Données de boîte de dialogue
 	enum { IDD = IDD_PACKULONG_FLAGS };
 	static const char *GetManagedClassName(){ return("PackULong::PackULong_Flags");   };
 	static CDialog_AbstractPackSerializable *NewInstance(CWnd* pParent);
@@ -26,7 +22,7 @@ public:
 										);
 	virtual	void	Update(void);
 protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // Prise en charge DDX/DDV
+	virtual void DoDataExchange(CDataExchange* pDX);
 
 	DECLARE_MESSAGE_MAP()
 	virtual void OnOK();

@@ -2,21 +2,19 @@
 
 #include "Dialog_AbstractPackSerializable.h"
 #include "afxwin.h"
-// Boîte de dialogue CDialog_PackString
 
 class CDialog_PackString : public CDialog_AbstractPackSerializable
 {
 	DECLARE_DYNAMIC(CDialog_PackString)
 
 public:
-	CDialog_PackString(CWnd* pParent = NULL);   // constructeur standard
+	CDialog_PackString(CWnd* pParent = NULL);
 	virtual ~CDialog_PackString();
 
-// Données de boîte de dialogue
 	enum { IDD = IDD_PACKSTRING };
 
 	static const char *GetManagedClassName(){ return("PackString");   };
-	
+
 	static CDialog_AbstractPackSerializable *NewInstance(CWnd* pParent);
 
 	virtual void Create(CWnd* pParent = NULL);
@@ -26,7 +24,7 @@ public:
 										);
 	virtual	void	Update(void);
 protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // Prise en charge DDX/DDV
+	virtual void DoDataExchange(CDataExchange* pDX);
 
 	DECLARE_MESSAGE_MAP()
 	virtual void OnOK();

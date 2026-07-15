@@ -1,7 +1,5 @@
-/*! \file 
-	\author victorien ferry & www.m4nkind.com
-	\brief This file applies the GNU LESSER GENERAL PUBLIC LICENSE Version 2.1 , read file COPYING.
-*/
+// SPDX-License-Identifier: LGPL-2.1-only
+
 #include "ModifierObject3DSinusDisplace.h"
 #include "PackFloat.h"
 #include <math.h>
@@ -10,7 +8,7 @@
 #endif
 BASEOBJECT_DECLARE_CLASS( "sd", ModifierObject3DSinusDisplace, ModifierObject3DVirtual,"3DModifier Displace Sinus","DisSinus","Modify the vertex position of a dynamic 3D Objects, through 3DObjectScene Shape Modifier List.");
 
-ModifierObject3DSinusDisplace::ModifierObject3DSinusDisplace() : ModifierObject3DVirtual() 
+ModifierObject3DSinusDisplace::ModifierObject3DSinusDisplace() : ModifierObject3DVirtual()
 	,mSer_Center(PackFloat::vd_XYZ)
 	,mSer_Frequence(PackFloat::vd_XYZ)
 	,mSer_Amplitude(PackFloat::vd_XYZ)
@@ -22,12 +20,6 @@ ModifierObject3DSinusDisplace::ModifierObject3DSinusDisplace() : ModifierObject3
 
 }
 
-/*
-	\brief	Apply a modification on a vertex (shape or color or anything).
-	\param	_pVertexList first vertex to modify
-	\param	_NbVertex number of vertex in list.
-	\param	_framedate	date in seconds.
-*/
 void ModifierObject3DSinusDisplace::Modify( VirtualMachine::InternalVertex *_pVertexList,
 						const unsigned int _NbVertex,
 						float _framedate)

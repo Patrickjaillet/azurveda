@@ -1,9 +1,6 @@
 #pragma once
 #include "afxwin.h"
 
-
-// Mode formulaire CPreviewView
-
 class BaseObject;
 class CVedaDemoOGLMfcGuiDoc;
 class CDialog_AbstractPackSerializable;
@@ -13,7 +10,7 @@ class CPreviewView : public CFormView
 	DECLARE_DYNCREATE(CPreviewView)
 
 protected:
-	CPreviewView();           // constructeur protégé utilisé par la création dynamique
+	CPreviewView();
 	virtual ~CPreviewView();
 
 public:
@@ -28,20 +25,18 @@ inline CVedaDemoOGLMfcGuiDoc* GetDocument()
 	afx_msg void OnRedo();
 	afx_msg void OnMerge();
 protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // Prise en charge DDX/DDV
+	virtual void DoDataExchange(CDataExchange* pDX);
 	DECLARE_MESSAGE_MAP()
 	void	OnInitialUpdate();
-	virtual void OnUpdate(CView* /*pSender*/, LPARAM /*lHint*/, CObject* /*pHint*/);
+	virtual void OnUpdate(CView* , LPARAM , CObject* );
 
-	// the object for which the view is currently shaped:
 	BaseObject *m_pObjectPreView;
 
 public:
 
-
 protected:
-	virtual void OnDraw(CDC* /*pDC*/);
-	CImageList	m_ImgList; 
+	virtual void OnDraw(CDC* );
+	CImageList	m_ImgList;
 
 public:
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
@@ -49,5 +44,3 @@ public:
 	CStatic m_objname;
 	CStatic m_ObjectName;
 };
-
-

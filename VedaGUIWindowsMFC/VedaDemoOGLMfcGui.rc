@@ -13,11 +13,11 @@
 #undef APSTUDIO_READONLY_SYMBOLS
 
 /////////////////////////////////////////////////////////////////////////////
-// Français (France) resources
+// English (United States) resources
 
-#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_FRA)
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
 #ifdef _WIN32
-LANGUAGE LANG_FRENCH, SUBLANG_FRENCH
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
 #pragma code_page(1252)
 #endif //_WIN32
 
@@ -44,11 +44,11 @@ BEGIN
     "#define _AFX_NO_TRACKER_RESOURCES\r\n"
     "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
     "\r\n"
-    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_FRA)\r\n"
-    "LANGUAGE 12, 1\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)\r\n"
+    "LANGUAGE 9, 1\r\n"
     "#pragma code_page(1252)\r\n"
-    "#include ""res\\VedaDemoOGLMfcGui.rc2""  // ressources non modifiées par Microsoft Visual C++ \r\n"
-    "#include ""afxres.rc""         // Composants standard\r\n"
+    "#include ""res\\VedaDemoOGLMfcGui.rc2""  // resources not edited by Microsoft Visual C++ \r\n"
+    "#include ""afxres.rc""         // Standard components\r\n"
     "#endif\r\n"
     "\0"
 END
@@ -345,11 +345,11 @@ END
 
 IDD_DIALOG_ABSTRACTPACKSERIALIZABLE DIALOG  0, 0, 186, 95
 STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
-CAPTION "Boîte de dialogue"
+CAPTION "Dialog"
 FONT 8, "MS Sans Serif"
 BEGIN
     DEFPUSHBUTTON   "OK",IDOK,129,7,50,16
-    PUSHBUTTON      "Annuler",IDCANCEL,129,26,50,16
+    PUSHBUTTON      "Cancel",IDCANCEL,129,26,50,16
 END
 
 IDD_PACKULONG_FLAGS DIALOGEX 0, 0, 287, 29
@@ -586,21 +586,21 @@ VS_VERSION_INFO VERSIONINFO
 BEGIN
     BLOCK "StringFileInfo"
     BEGIN
-        BLOCK "040c04e4"
+        BLOCK "040904e4"
         BEGIN
-            VALUE "CompanyName", "TODO: <Nom de la société>"
-            VALUE "FileDescription", "TODO: <Description du fichier>"
+            VALUE "CompanyName", "TODO: <Company name>"
+            VALUE "FileDescription", "TODO: <File description>"
             VALUE "FileVersion", "1.0.0.1"
             VALUE "InternalName", "VedaDemoOGLMfcGui.exe"
-            VALUE "LegalCopyright", "TODO: (c) <Nom de la société>. Tous droits réservés."
+            VALUE "LegalCopyright", "TODO: (c) <Company name>.  All rights reserved."
             VALUE "OriginalFilename", "VedaDemoOGLMfcGui.exe"
-            VALUE "ProductName", "TODO: <Nom du produit>"
+            VALUE "ProductName", "TODO: <Product name>"
             VALUE "ProductVersion", "1.0.0.1"
         END
     END
     BLOCK "VarFileInfo"
     BEGIN
-        VALUE "Translation", 0x40c, 1252
+        VALUE "Translation", 0x409, 1252
     END
 END
 
@@ -769,7 +769,7 @@ BEGIN
     ID_INDICATOR_EXT        "EXT"
     ID_INDICATOR_CAPS       "MAJ"
     ID_INDICATOR_NUM        "NUM"
-    ID_INDICATOR_SCRL       "DÉFIL"
+    ID_INDICATOR_SCRL       "SCRL"
     ID_INDICATOR_OVR        "RFP"
     ID_INDICATOR_REC        "ENR"
 END
@@ -778,89 +778,89 @@ STRINGTABLE
 BEGIN
     ID_FILE_NEW             "New Demo Context"
     ID_FILE_OPEN            "Open existing .avb Binary Context File"
-    ID_FILE_CLOSE           "Ferme le document actif\nFermer"
+    ID_FILE_CLOSE           "Close the active document\nClose"
     ID_FILE_SAVE            "Save Context as Binary File"
-    ID_FILE_SAVE_AS         "Enregistre le document actif sous un nouveau nom\nEnregistre sous"
-    ID_FILE_NEW_FRAME       "Créez un nouveau frame\nNouveau frame"
+    ID_FILE_SAVE_AS         "Save the active document with a new name\nSave As"
+    ID_FILE_NEW_FRAME       "Create a new frame\nNew Frame"
 END
 
 STRINGTABLE 
 BEGIN
     ID_APP_ABOUT            "About UVeda MFC User Interface"
-    ID_APP_EXIT             "Quitte l'application et invite à enregistrer les documents\nQuitter"
+    ID_APP_EXIT             "Quit the application; prompts to save documents\nExit"
 END
 
 STRINGTABLE 
 BEGIN
-    ID_FILE_MRU_FILE1       "Ouvrir ce document"
-    ID_FILE_MRU_FILE2       "Ouvrir ce document"
-    ID_FILE_MRU_FILE3       "Ouvrir ce document"
-    ID_FILE_MRU_FILE4       "Ouvrir ce document"
-    ID_FILE_MRU_FILE5       "Ouvrir ce document"
-    ID_FILE_MRU_FILE6       "Ouvrir ce document"
-    ID_FILE_MRU_FILE7       "Ouvrir ce document"
-    ID_FILE_MRU_FILE8       "Ouvrir ce document"
-    ID_FILE_MRU_FILE9       "Ouvrir ce document"
-    ID_FILE_MRU_FILE10      "Ouvrir ce document"
-    ID_FILE_MRU_FILE11      "Ouvrir ce document"
-    ID_FILE_MRU_FILE12      "Ouvrir ce document"
-    ID_FILE_MRU_FILE13      "Ouvrir ce document"
-    ID_FILE_MRU_FILE14      "Ouvrir ce document"
-    ID_FILE_MRU_FILE15      "Ouvrir ce document"
-    ID_FILE_MRU_FILE16      "Ouvrir ce document"
+    ID_FILE_MRU_FILE1       "Open this document"
+    ID_FILE_MRU_FILE2       "Open this document"
+    ID_FILE_MRU_FILE3       "Open this document"
+    ID_FILE_MRU_FILE4       "Open this document"
+    ID_FILE_MRU_FILE5       "Open this document"
+    ID_FILE_MRU_FILE6       "Open this document"
+    ID_FILE_MRU_FILE7       "Open this document"
+    ID_FILE_MRU_FILE8       "Open this document"
+    ID_FILE_MRU_FILE9       "Open this document"
+    ID_FILE_MRU_FILE10      "Open this document"
+    ID_FILE_MRU_FILE11      "Open this document"
+    ID_FILE_MRU_FILE12      "Open this document"
+    ID_FILE_MRU_FILE13      "Open this document"
+    ID_FILE_MRU_FILE14      "Open this document"
+    ID_FILE_MRU_FILE15      "Open this document"
+    ID_FILE_MRU_FILE16      "Open this document"
 END
 
 STRINGTABLE 
 BEGIN
-    ID_NEXT_PANE            "Bascule vers le volet de fenêtre suivant\nVolet suivant"
-    ID_PREV_PANE            "Bascule vers le volet de fenêtre précédent\nVolet précédent"
+    ID_NEXT_PANE            "Switch to the next window pane\nNext Pane"
+    ID_PREV_PANE            "Switch back to the previous window pane\nPrevious Pane"
 END
 
 STRINGTABLE 
 BEGIN
-    ID_WINDOW_SPLIT         "Fractionne la fenêtre active en volets\nFractionner"
+    ID_WINDOW_SPLIT         "Split the active window into panes\nSplit"
 END
 
 STRINGTABLE 
 BEGIN
-    ID_EDIT_CLEAR           "Efface la sélection\nEffacer"
+    ID_EDIT_CLEAR           "Erase the selection\nErase"
     ID_EDIT_CLEAR_ALL       "Efface tout\nEffacer tout"
-    ID_EDIT_FIND            "Recherche le texte spécifié\nRechercher"
-    ID_EDIT_REPEAT          "Répète la dernière action\nRépéter"
-    ID_EDIT_REPLACE         "Remplace un texte spécifié par un texte différent\nRemplacer"
-    ID_EDIT_SELECT_ALL      "Sélectionne la totalité du document\nSélectionner tout"
-    ID_EDIT_UNDO            "Annule la dernière action\nAnnuler"
-    ID_EDIT_REDO            "Rétablit l'action précédemment annulée\nRétablir"
+    ID_EDIT_FIND            "Find the specified text\nFind"
+    ID_EDIT_REPEAT          "Repeat the last action\nRepeat"
+    ID_EDIT_REPLACE         "Replace specific text with different text\nReplace"
+    ID_EDIT_SELECT_ALL      "Select the entire document\nSelect All"
+    ID_EDIT_UNDO            "Undo the last action\nUndo"
+    ID_EDIT_REDO            "Redo the previously undone action\nRedo"
 END
 
 STRINGTABLE 
 BEGIN
-    ID_VIEW_TOOLBAR         "Affiche ou masque la barre d'outils\nActiver/Désactiver Barre d'outils"
-    ID_VIEW_STATUS_BAR      "Affiche ou masque la barre d'état\nActiver/Désactiver Barre d'état"
-    ID_VIEW_AUTOARRANGE     "Place les icônes dans une grille."
+    ID_VIEW_TOOLBAR         "Show or hide the toolbar\nToggle ToolBar"
+    ID_VIEW_STATUS_BAR      "Show or hide the status bar\nToggle StatusBar"
+    ID_VIEW_AUTOARRANGE     "Arrange icons in a grid."
 END
 
 STRINGTABLE 
 BEGIN
-    AFX_IDS_SCSIZE          "Modifie la taille de la fenêtre"
-    AFX_IDS_SCMOVE          "Modifie la position de la fenêtre"
-    AFX_IDS_SCMINIMIZE      "Affiche la fenêtre sous forme d'icône"
-    AFX_IDS_SCMAXIMIZE      "Affiche la fenêtre en plein écran"
-    AFX_IDS_SCNEXTWINDOW    "Bascule vers la fenêtre de document suivante"
-    AFX_IDS_SCPREVWINDOW    "Bascule vers la fenêtre de document précédente"
-    AFX_IDS_SCCLOSE         "Ferme la fenêtre active et propose l'enregistrement des documents"
+    AFX_IDS_SCSIZE          "Change the window size"
+    AFX_IDS_SCMOVE          "Change the window position"
+    AFX_IDS_SCMINIMIZE      "Reduce the window to an icon"
+    AFX_IDS_SCMAXIMIZE      "Enlarge the window to full size"
+    AFX_IDS_SCNEXTWINDOW    "Switch to the next document window"
+    AFX_IDS_SCPREVWINDOW    "Switch to the previous document window"
+    AFX_IDS_SCCLOSE         "Close the active window and prompts to save the documents"
 END
 
 STRINGTABLE 
 BEGIN
-    AFX_IDS_SCRESTORE       "Restaure la fenêtre à sa taille normale"
-    AFX_IDS_SCTASKLIST      "Active la liste des tâches"
+    AFX_IDS_SCRESTORE       "Restore the window to normal size"
+    AFX_IDS_SCTASKLIST      "Activate Task List"
 END
 
 STRINGTABLE 
 BEGIN
-    ID_VIEW_LINEUP          "Place les icônes dans une grille."
-    ID_VIEW_BYNAME          "Trie les icônes par ordre alphabétique."
+    ID_VIEW_LINEUP          "Arrange icons in a grid."
+    ID_VIEW_BYNAME          "Sort icons by name."
 END
 
 STRINGTABLE 
@@ -876,7 +876,7 @@ BEGIN
     ID_EXPORTEXEC           "BASS"
 END
 
-#endif    // Français (France) resources
+#endif    // English (United States) resources
 /////////////////////////////////////////////////////////////////////////////
 
 
@@ -890,11 +890,11 @@ END
 #define _AFX_NO_TRACKER_RESOURCES
 #define _AFX_NO_PROPERTY_RESOURCES
 
-#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_FRA)
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
 LANGUAGE 12, 1
 #pragma code_page(1252)
-#include "res\VedaDemoOGLMfcGui.rc2"  // ressources non modifiées par Microsoft Visual C++ 
-#include "afxres.rc"         // Composants standard
+#include "res\VedaDemoOGLMfcGui.rc2"  // resources not edited by Microsoft Visual C++ 
+#include "afxres.rc"         // Standard components
 #endif
 
 /////////////////////////////////////////////////////////////////////////////

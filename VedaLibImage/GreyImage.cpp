@@ -1,13 +1,5 @@
-/*! \file 
-	\author victorien ferry & www.m4nkind.com
-	\brief This file applies the GNU LESSER GENERAL PUBLIC LICENSE Version 2.1 , read file COPYING.
-*/
+// SPDX-License-Identifier: LGPL-2.1-only
+
 #include "GreyImage.h"
 
 BASEOBJECT_DECLARE_VIRTUALCLASS("Grey", GreyImage, VirtualImage );
-/*
-GreyImage::GreyImage() : VirtualImage()
-{
-	
-}
-*/

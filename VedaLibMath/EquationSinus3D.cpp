@@ -1,7 +1,5 @@
-/*! \file 
-	\author victorien ferry & www.m4nkind.com
-	\brief This file applies the GNU LESSER GENERAL PUBLIC LICENSE Version 2.1 , read file COPYING.
-*/
+// SPDX-License-Identifier: LGPL-2.1-only
+
 #include "EquationSinus3D.h"
 #include <math.h>
 #ifndef sinf
@@ -19,7 +17,7 @@ EquationSinus3D::EquationSinus3D() : VirtualEquation()
 	,mSer_IndexMultiplier_Frequence(PackFloat::vd_X)
 	,mSer_IndexMultiplier_Amplitude(PackFloat::vd_X)
 	,m_LastComputedDate(PackFloat::m_Max)
-{	
+{
 	REGISTER_MEMBER_PACKFLOAT_XYZ(mSer_Center,"Center",0.0f,0.0f,0.0f);
 	REGISTER_MEMBER_PACKDYNAMICFLOAT(mSer_Frequence,"Frequence",3.1415f*0.5f);
 	REGISTER_MEMBER_PACKDYNAMICFLOAT(mSer_Amplitude,"Amplitude",0.5f);
@@ -30,9 +28,9 @@ EquationSinus3D::EquationSinus3D() : VirtualEquation()
 void EquationSinus3D::Compute( float _OutgoingParameterTable[4] , const float _IncomingParameterTable[4] )
 {
 
-	const float date =_IncomingParameterTable[3] ; 
+	const float date =_IncomingParameterTable[3] ;
 	if(m_LastComputedDate != date)
-	{	// update to that frame:
+	{
 		m_param_amplitude[0]=PackFloat::m_0p0;
 		mSer_IndexMultiplier_Frequence.Compute(m_param_amplitude,_IncomingParameterTable);
 		m_indexMultiplierFreq = m_param_amplitude[0];
@@ -45,13 +43,7 @@ void EquationSinus3D::Compute( float _OutgoingParameterTable[4] , const float _I
 		mSer_Frequence.Compute(m_param_frequence,_IncomingParameterTable);
 		m_LastComputedDate = date;
 	}
-/*
-	float m_indexMultiplierFreq;
-	// computed for m_LastComputedDate.
-	float m_indexMultiplierAmp;
-*/
 
-	//_IncomingParameterTable[]
 	_OutgoingParameterTable[0] += mSer_Center.Get(0)+cosf(
 			date*(m_param_frequence[0]+m_indexMultiplierFreq*_IncomingParameterTable[0])
 			)*(m_param_amplitude[0]+m_indexMultiplierAmp*_IncomingParameterTable[0]);

@@ -3,17 +3,15 @@
 #include "Dialog_AbstractPackSerializable.h"
 #include "afxwin.h"
 #include "afxcmn.h"
-// Boîte de dialogue CDialog_PackULong
 
 class CDialog_PackULong : public CDialog_AbstractPackSerializable
 {
 	DECLARE_DYNAMIC(CDialog_PackULong)
 
 public:
-	CDialog_PackULong(CWnd* pParent = NULL);   // constructeur standard
+	CDialog_PackULong(CWnd* pParent = NULL);
 	virtual ~CDialog_PackULong();
 
-// Données de boîte de dialogue
 	enum { IDD = IDD_PACKULONG };
 
 	static const char *GetManagedClassName(){ return("PackULong");   };
@@ -26,7 +24,7 @@ public:
 										);
 	virtual	void	Update(void);
 protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // Prise en charge DDX/DDV
+	virtual void DoDataExchange(CDataExchange* pDX);
 
 	DECLARE_MESSAGE_MAP()
 	virtual void OnOK();
@@ -38,7 +36,3 @@ public:
 	virtual BOOL OnInitDialog();
 	afx_msg void OnEnKillfocusEdit1();
 };
-
-
-
-

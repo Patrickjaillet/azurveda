@@ -1,5 +1,3 @@
-// Dialog_PackLong_WithLimits.cpp : fichier d'implémentation
-//
 
 #include "stdafx.h"
 #include "VedaDemoOGLMfcGui.h"
@@ -18,10 +16,9 @@ CDialog_AbstractPackSerializable *CDialog_PackLong_WithLimits::NewInstance(CWnd*
 	return new CDialog_PackLong_WithLimits(pParent);
 
 }
-// Boîte de dialogue CDialog_PackLong_WithLimits
 
 IMPLEMENT_DYNAMIC(CDialog_PackLong_WithLimits, CDialog)
-CDialog_PackLong_WithLimits::CDialog_PackLong_WithLimits(CWnd* pParent /*=NULL*/)
+CDialog_PackLong_WithLimits::CDialog_PackLong_WithLimits(CWnd* pParent )
 	: CDialog_AbstractPackSerializable(CDialog_PackLong_WithLimits::IDD, pParent)
 {
 }
@@ -49,21 +46,17 @@ BEGIN_MESSAGE_MAP(CDialog_PackLong_WithLimits, CDialog)
 	ON_STN_CLICKED(IDC_BEDIT_X, OnActionEditClicks)
 END_MESSAGE_MAP()
 
-
-// Gestionnaires de messages CDialog_PackLong_WithLimits
-
-// Gestionnaires de messages CDialog_PackULongFlags
 void CDialog_PackLong_WithLimits::SetPackSerializable( BaseType *_objToManage,
 										CVedaDemoOGLMfcGuiDoc *_pDoc,
-										CView				  *_pView														   
+										CView				  *_pView
 														   )
 {
 	CDialog_AbstractPackSerializable::SetPackSerializable(_objToManage,_pDoc,_pView);
-	// cast veda type:
+
 	PackLong_WithLimits *pVedaLong =(PackLong_WithLimits *)_objToManage;
 	int min = pVedaLong->GetMin();
 	int max = pVedaLong->GetMax();
-	// CSliderCtrl
+
 	m_slider.SetRange(min,max,true);
 
 	CString text ;
@@ -74,7 +67,6 @@ void CDialog_PackLong_WithLimits::SetPackSerializable( BaseType *_objToManage,
 
 	m_Spin.SetRange32(min,max);
 
-	// 
 	Update();
 }
 void CDialog_PackLong_WithLimits::OnOK()
@@ -87,13 +79,12 @@ void CDialog_PackLong_WithLimits::OnOK()
 		unsigned int value = atoi(ctxt.GetString());
 		pVedaOb->Set(value );
 	}
-	//CDialog_AbstractPackSerializable::OnOK();
+
 }
 
 void CDialog_PackLong_WithLimits::OnCancel()
 {
 
-	//CDialog_AbstractPackSerializable::OnCancel();
 }
 
 void CDialog_PackLong_WithLimits::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
@@ -115,14 +106,11 @@ void	CDialog_PackLong_WithLimits::Update(void)
 	PackLong_WithLimits *pVedaLong =(PackLong_WithLimits *) m_pObjectToManage;
 	if(!pVedaLong)return;
 
-	// are we focused ?
 	if( IsFocused() )
 		m_Focusedit.SetBitmap( (HBITMAP)m_Bm_Focused.m_hObject );
 	else
 		m_Focusedit.SetBitmap( (HBITMAP)m_Bm_UnFocused.m_hObject );
 
-
-	// set the value to the edit ctrl:
 	CString str;
 	str.Format( "%d", pVedaLong->Get() );
 	m_editctrl.SetWindowText( str.GetString() );
@@ -146,8 +134,8 @@ BOOL CDialog_PackLong_WithLimits::OnInitDialog()
 	m_Spin.SetBase(10);
 	m_Spin.SetAccel(4,acctable);
 
-	return TRUE;  // return TRUE unless you set the focus to a control
-	// EXCEPTION : les pages de propriétés OCX devraient retourner FALSE
+	return TRUE;
+
 }
 
 void CDialog_PackLong_WithLimits::OnDeltaposSpin1(NMHDR *pNMHDR, LRESULT *pResult)
@@ -160,32 +148,16 @@ void CDialog_PackLong_WithLimits::OnDeltaposSpin1(NMHDR *pNMHDR, LRESULT *pResul
 		m_editctrl.GetWindowText(ctxt);
 		unsigned int value = atoi(ctxt.GetString());
 		pVedaOb->Set(value );
-	}	
-	
+	}
+
 	*pResult = 0;
 }
 
 void CDialog_PackLong_WithLimits::OnEnKillfocusEdit1()
-{	/*
-	if( m_pObjectToManage )
-	{
-		PackLong_WithLimits *pVedaOb =(PackLong_WithLimits *) m_pObjectToManage;
-		CString ctxt;
-		m_editctrl.GetWindowText(ctxt);
-		unsigned int value = atoi(ctxt.GetString());
-		pVedaOb->Set(value );
-	}	*/
+{
 
 }
-/*
-	\brief	if an object of any type is managed, it could be changed by a cursor state.
-			by default, it does nothing. It has to be extended.
-	\param	_validityBits tels if _x,_y,_z and _time are  valid
-	\param	_x x position.
-	\param	_y y position.
-	\param	_z z position.
-	\param	_time the time of the cursor in seconds.
-*/
+
 void CDialog_PackLong_WithLimits::ChangeValueOfManagedObjectWithCursor(
 	VirtualMachine::InternalViewPort *_pClickedViewPort,
 	unsigned int _validityBits,
@@ -204,12 +176,6 @@ void CDialog_PackLong_WithLimits::ChangeValueOfManagedObjectWithCursor(
 	if( _validityBits & m_cursorbit_XValid ) pVedaLong->Set(
 		pVedaLong->GetMin()+ (int)
 					(_x * (float)(pVedaLong->GetMax()-pVedaLong->GetMin()))
-					); // in all cases.
-/*	PackFloat::VectorDimension  dim= pVedaLong->GetVectorDimension();
-	if( (_validityBits & m_cursorbit_YValid) && dim>PackFloat::vd_X ) 
-				pVedaLong->Set(1,pVedaLong->GetMin()+ _y * (pVedaLong->GetMax()-pVedaLong->GetMin())); // Y
-	if( (_validityBits & m_cursorbit_ZValid) && dim>PackFloat::vd_XY ) 
-				pVedaLong->Set(2,pVedaLong->GetMin()+ _y * (pVedaLong->GetMax()-pVedaLong->GetMin())); // Z
-	if( (_validityBits & m_cursorbit_TimeValid) && dim>PackFloat::vd_XYZ ) pVedaLong->Set(3,_time); // time.
-*/
+					);
+
 }
