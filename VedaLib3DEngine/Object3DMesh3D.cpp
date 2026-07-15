@@ -155,7 +155,6 @@ void Object3DMesh3D::CreateShape(float , unsigned int  )
 	{
 		PolygonList *pPolygonList = (PolygonList *)pCell->GetManagedObject();
 		const unsigned int vPerPoly = pPolygonList->mSer_VertPerPoly.Get();
-		unsigned int nbvref = pPolygonList->mSer_RefList.GetNumberOfCell();
 		if( pPolygonList->mSer_Flags.TestFlags(ePMode_Strips) )
 		{
 
@@ -357,8 +356,6 @@ void Object3DMesh3D::ToolMethod_SetAsCube()
 
 	mSer_StaticVertexList.DeleteAllElements();
 	mSer_PolygonList.DeleteAllElements();
-	const float v0 = 0.0f;
-	const float v1 = 1.0f;
 	static const float cubetable[]=
 	{
 		0.0f,0.0f,1.0f,

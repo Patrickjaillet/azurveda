@@ -20,7 +20,6 @@ void ModifierObject3DColor::Modify( VirtualMachine::InternalVertex *_pVertexList
 {
 	float	param_in[4],param_out[4];
 	const float	v0 = PackFloat::m_0p0;
-	const float	v255 = PackFloat::m_256p0;
 	param_in[3]=_framedate;
 	unsigned int ii;
 	for( ii=0 ; ii<_NbVertex ; ii++ )

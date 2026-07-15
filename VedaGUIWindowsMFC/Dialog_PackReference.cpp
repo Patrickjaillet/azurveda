@@ -65,8 +65,6 @@ void CDialog_PackReference::SetPackSerializable( BaseType *_objToManage,
 	m_isBeingUpdated = true;
 	CDialog_AbstractPackSerializable::SetPackSerializable(_objToManage,_pDoc,_pView);
 
-	PackObjectReference *pVeda = (PackObjectReference *)_objToManage;
-
 	while( m_ObjectCombo.GetCount() >0 )
 		m_ObjectCombo.DeleteString(0);
 

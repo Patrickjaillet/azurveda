@@ -65,7 +65,6 @@ void Object3DVirtual::ProcessPreview_CreateLine(VirtualMachine::InternalObject3D
 									0 );
 	if( !(*_ppVertexAndPolygonBufferOut)) return;
 
-	VirtualMachine::InternalVertex *pVert = (*_ppVertexAndPolygonBufferOut)->GetFirstVertex();
 	unsigned int ii;
 	VirtualMachine::InternalTriangle *pTriangle = (*_ppVertexAndPolygonBufferOut)->GetFirstTriangle();
 

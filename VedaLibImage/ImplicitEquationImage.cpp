@@ -101,7 +101,6 @@ void	ImplicitEquationImage::ProtectedDraw(float _framedate)
 			}
 		} else
 		{
-			int intval;
 			const float v0 = PackFloat::m_0p0;
 			const float v1 = PackFloat::m_1p0;
 			const float v255 = PackFloat::m_255p0;

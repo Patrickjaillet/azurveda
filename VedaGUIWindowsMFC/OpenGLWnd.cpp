@@ -121,8 +121,6 @@ void COpenGLWnd::OnDraw(CDC* )
 	if( !pdoc ) return ;
 	if( pdoc->IsCurrentlySerializing() ) return;
 
-	BaseContext *pContext = pdoc->GetVedaContext();
-
 	InterfacePrefObject *ppref = InterfacePrefObject::GetContextActivePref(pdoc->GetVedaContext());
 	VirtualMachine::InternalViewPort *pChildVP;
 	VirtualMachine::InternalViewPort *pPositionVP;

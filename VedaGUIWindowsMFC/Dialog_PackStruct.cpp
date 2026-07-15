@@ -59,8 +59,6 @@ void CDialog_PackStruct::OnCancel()
 }
 void	CDialog_PackStruct::Update(void)
 {
-	CVedaDemoOGLMfcGuiDoc	*pdoc =m_pDoc;
-
 	int		ww=1;
 	int		hh=1;
 	CRect	recBeforeUpdate;
@@ -105,7 +103,6 @@ void CDialog_PackStruct::SetPackSerializable( BaseType *_objToManage,
 	DestroyAllDialogs();
 
 	int		verticalline=0;
-	int		maxright=40;
 	PackStruct::Cell *pcell = pPackStruct->GetFirstCell();
 	while( pcell )
 	{

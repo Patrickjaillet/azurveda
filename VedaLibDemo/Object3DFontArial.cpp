@@ -149,8 +149,7 @@ bool Object3DFontArial::CreateInternal(void)
 	const signed char *pfontend = pfontc+ sizeof(m_fontc);
 
 	const float   v1d255 = PackFloat::m_1Div255;
-    const float   vdecal=0.03f;
-	float ff,fy,fx1,fy1,fx2,fy2;
+	float ff,fx2;
 
 	FontBase *pIndexTable = new FontBase[ 256 ];
 	if(!pIndexTable)

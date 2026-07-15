@@ -88,7 +88,6 @@ void	Image2DEffectFire::UpdateToFrame(float _framedate)
 	float *pRead = m_pDblBuf2+width;
 	unsigned char *pBitmap = m_pBuffer;
 	const float fdiv = 1.0f/(6.08f);
-	const float v255 = 255.0f;
 	for(yy=1 ; yy<(height-2) ; yy++)
 	{
 		for(xx=0 ; xx<width ; xx++)

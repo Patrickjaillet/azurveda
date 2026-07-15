@@ -68,8 +68,6 @@ void CDialog_PackResource::SetPackSerializable( BaseType *_objToManage,
 {
 	CDialog_AbstractPackSerializable::SetPackSerializable(_objToManage,_pDoc,_pView);
 
-	PackResource *pVedaString =(PackResource *)_objToManage;
-
 }
 
 void CDialog_PackResource::OnEnKillfocusStringctrl()

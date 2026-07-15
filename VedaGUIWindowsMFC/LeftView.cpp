@@ -295,10 +295,8 @@ void CLeftView::OnNewobject()
 
 }
 
-void CLeftView::OnTvnSelchanged(NMHDR *pNMHDR, LRESULT *pResult)
+void CLeftView::OnTvnSelchanged(NMHDR *, LRESULT *pResult)
 {
-	LPNMTREEVIEW pNMTreeView = reinterpret_cast<LPNMTREEVIEW>(pNMHDR);
-
 	HTREEITEM nItem = GetTreeCtrl().GetNextItem(TVI_ROOT, TVGN_CARET );
 
 	int image,selimage;
@@ -473,7 +471,6 @@ void CLeftView::OnTvnGetInfoTip(NMHDR *pNMHDR,
 	GetTreeCtrl().GetItemImage( pGetInfoTip->hItem, image, selimage );
 	CMenu menu;
 
-	ClassNode *pClassNodeOfTheItem=NULL;
 	if( image == 2 )
 	{
 		ClassNode *pClassNodeOfTheItem =  (ClassNode *)GetTreeCtrl().GetItemData(pGetInfoTip->hItem);

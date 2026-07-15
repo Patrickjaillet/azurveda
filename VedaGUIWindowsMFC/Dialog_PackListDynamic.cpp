@@ -144,7 +144,6 @@ void	CDialog_PackListDynamic::InitListShape( BaseType *_pObjectToShapeList  )
 	lvc.iSubItem = 0;
 
 	CRect editorrec;
-	int verticalline=1,maxright=1;
 	if( strcmp(_pObjectToShapeList->GetClassID(),"PackStruct") ==0 )
 	{
 			lvc.cx = 24 ;
@@ -328,7 +327,6 @@ void CDialog_PackListDynamic::OnBnClickedButtonMinus()
 	BaseType *peltobj = (BaseType *)
 										m_listctrl.GetItemData(nItem );
 	if( peltobj == NULL ) return;
-	BaseObject *pOb = peltobj->GetObjectThatManagesThis();
 
 	if( m_pMemberEditor && m_pMemberEditor->GetManagedObject() == peltobj )
 	{

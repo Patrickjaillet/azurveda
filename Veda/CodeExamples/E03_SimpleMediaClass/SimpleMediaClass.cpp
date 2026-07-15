@@ -114,7 +114,6 @@ void miniMedia::ProcessSoundInterupt( VirtualMachine::SoundBufferToAddYourSignal
 
 	for(ii=0 ; ii<lengthToRender ; ii++)
 	{
-		float vv = sin( fp1 );
 		*(pSoundBuffer++) += sin( fp1 ) *leftVolume ;
 		*(pSoundBuffer++) += sin( fp2 ) *rightVolume;
 		fp1 +=(speed1 + sin(fp2*0.0018f)*0.004f);

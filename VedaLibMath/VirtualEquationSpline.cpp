@@ -110,13 +110,6 @@ void VirtualEquationSpline::ProcessPreview(double _frameDate,VirtualMachine::Int
 		-0.5f ;
 	float xwidth = 0.005f /
 		(_pPreviewViewPort->GetPositionX2()-_pPreviewViewPort->GetPositionX1()) ;
-		float yds1= (-_pPreviewViewPort->GetPositionY1() ) /
-			(_pPreviewViewPort->GetPositionY2()-_pPreviewViewPort->GetPositionY1())
-			-0.5f ;
-
-		float yds2= (1.0f-_pPreviewViewPort->GetPositionY1()) /
-			(_pPreviewViewPort->GetPositionY2()-_pPreviewViewPort->GetPositionY1())
-			-0.5f ;
 		float ywidth = 0.005f /
 			(_pPreviewViewPort->GetPositionY2()-_pPreviewViewPort->GetPositionY1()) ;
 
@@ -142,7 +135,6 @@ void VirtualEquationSpline::ProcessPreview(double _frameDate,VirtualMachine::Int
 	PackList_TimeTrack *pList = GetList();
 	PackList::Cell *pCell = pList->GetFirstCell();
 	_pPreviewViewPort->Matrix_Push();
-	double lastTranslate = 0.0;
 	while(pCell)
 	{
 		SplineElement *pSplineElt = (SplineElement *) pCell->GetManagedObject();

@@ -877,13 +877,11 @@ void	Object3DMarchCube::Pass4_AmbientOcclusion()
 
 	MarchinCubeSpace *pcubespace = (MarchinCubeSpace *) mSer_MarchinCubeSpaceRef.GetObjectPointer() ;
 	const int nxt = pcubespace->GetLengthX()+1 ;
-    const int nyt = pcubespace->GetLengthY()+1 ;
 
 	const unsigned char *pPass4EdgeCubeIndex = m_pPass4EdgeCubeIndex;
 	unsigned int	*pmc_checkDate_s = pcubespace->GetCubeTable_CheckDate();
 	const float	*pmc_value_s = pcubespace->GetCubeTable_Values();
 
-	const float fxs = -1.0f;
 	const int maxXn = pcubespace->GetLengthX();
 	const int maxYn = pcubespace->GetLengthY();
 	const int maxZn = pcubespace->GetLengthZ();

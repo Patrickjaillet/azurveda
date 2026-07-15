@@ -138,9 +138,8 @@ BOOL CDialog_PackLong_WithLimits::OnInitDialog()
 
 }
 
-void CDialog_PackLong_WithLimits::OnDeltaposSpin1(NMHDR *pNMHDR, LRESULT *pResult)
+void CDialog_PackLong_WithLimits::OnDeltaposSpin1(NMHDR *, LRESULT *pResult)
 {
-	LPNMUPDOWN pNMUpDown = reinterpret_cast<LPNMUPDOWN>(pNMHDR);
 	if( m_pObjectToManage )
 	{
 		PackLong_WithLimits *pVedaOb =(PackLong_WithLimits *) m_pObjectToManage;

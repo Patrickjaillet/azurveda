@@ -97,7 +97,6 @@ bool Object3DText::CreateInternal(void)
 	for(ii=0 ; ii<llength ; ii++)
 	{
 		float	scalex=1.0f;
-		float	scaley=1.0f;
 		float	scalez=1.0f;
 		int		shapeIndex;
 		float	shapeWidth;
@@ -323,7 +322,7 @@ void	Object3DText::RenderObject( double _frameDate,
 {
 	unsigned int ii;
 	Object3DFontVirtual	*pFont = (Object3DFontVirtual *)mSer_AlphabetRef.GetObjectPointer();
-	float outEqu[4],InEqu[4];
+	float InEqu[4];
 	InEqu[3]=_frameDate;
 
 	CharacterBase *pCharBase = m_pCharacterBase;

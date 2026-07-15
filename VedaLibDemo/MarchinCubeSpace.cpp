@@ -240,7 +240,6 @@ bool    MarchinCubeSpace::PreGenerateTriangleTables( void )
 		int nbY =	mSer_LengthY.Get() +1;
 		int nbZ =	mSer_LengthZ.Get() +2;
 
-		float       f0p5= PackFloat::m_0p5;
 		unsigned int    *polyTable,ii,jj;
 		unsigned char   *edgetable;
 

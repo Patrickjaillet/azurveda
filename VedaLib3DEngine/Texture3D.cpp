@@ -89,8 +89,7 @@ void Texture3D::ProcessPreview(double _frameDate,VirtualMachine::InternalViewPor
 {
 	if(!m_pPreviewObject3D ) return;
 
-	VirtualMachine::InternalVertex *pVertexFill;
-	VirtualMachine::InternalVertex *pVertex = pVertexFill = m_pPreviewObject3D->GetFirstVertex();
+	VirtualMachine::InternalVertex *pVertexFill = m_pPreviewObject3D->GetFirstVertex();
 	float opx,opy,opz;
 	float objectRotAxeX,objectRotAxeY,objectRotAxeZ;
 	_pPreviewConfiguration->GetPreviewPosition( opx,opy,opz);

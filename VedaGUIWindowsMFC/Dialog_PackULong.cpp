@@ -73,10 +73,8 @@ void CDialog_PackULong::SetPackSerializable( BaseType *_objToManage,
 	m_Spin.SetRange32(0,(1<<28)-1);
 }
 
-void CDialog_PackULong::OnDeltaposSpin1(NMHDR *pNMHDR, LRESULT *pResult)
+void CDialog_PackULong::OnDeltaposSpin1(NMHDR *, LRESULT *pResult)
 {
-	LPNMUPDOWN pNMUpDown = reinterpret_cast<LPNMUPDOWN>(pNMHDR);
-
 	if( m_pObjectToManage )
 	{
 		PackULong *pVedaOb =(PackULong *) m_pObjectToManage;

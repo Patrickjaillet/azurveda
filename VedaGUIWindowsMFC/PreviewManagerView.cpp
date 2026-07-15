@@ -191,7 +191,7 @@ void	CPreviewManagerView::UpdateFromPreferenceObject(InterfacePrefObject *ppref)
 	}
 
 	InterfacePrefObject::PreviewEdited::InterfacePreviewConfiguration *pInterfacePreviewConfiguration=NULL;
-	BaseObject *pPreviewObject = ppref->GetContextPreviewObject( 0,&pInterfacePreviewConfiguration);
+	ppref->GetContextPreviewObject( 0,&pInterfacePreviewConfiguration);
 	float	playspeed = 1.0;
 	float	timeend = 360.0;
 	float	timestart = 1.0;
@@ -273,7 +273,7 @@ void CPreviewManagerView::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScroll
 	InterfacePrefObject *ppref = InterfacePrefObject::GetContextActivePref(pdoc->GetVedaContext());
 	if( !ppref ) return;
 	InterfacePrefObject::PreviewEdited::InterfacePreviewConfiguration *pInterfacePreviewConfiguration=NULL;
-	BaseObject *pPreviewObject = ppref->GetContextPreviewObject( 0,&pInterfacePreviewConfiguration);
+	ppref->GetContextPreviewObject( 0,&pInterfacePreviewConfiguration);
 	if(!pInterfacePreviewConfiguration) return;
 
 	if(pScrollBar)
@@ -310,7 +310,7 @@ void CPreviewManagerView::OnEnKillfocusMinsec()
 	InterfacePrefObject *ppref = InterfacePrefObject::GetContextActivePref(pdoc->GetVedaContext());
 	if( !ppref ) return;
 	InterfacePrefObject::PreviewEdited::InterfacePreviewConfiguration *pInterfacePreviewConfiguration=NULL;
-	BaseObject *pPreviewObject = ppref->GetContextPreviewObject( 0,&pInterfacePreviewConfiguration);
+	ppref->GetContextPreviewObject( 0,&pInterfacePreviewConfiguration);
 	if(!pInterfacePreviewConfiguration) return;
 
 	CString	str;
@@ -325,7 +325,7 @@ void CPreviewManagerView::OnEnKillfocusMaxsec()
 	InterfacePrefObject *ppref = InterfacePrefObject::GetContextActivePref(pdoc->GetVedaContext());
 	if( !ppref ) return;
 	InterfacePrefObject::PreviewEdited::InterfacePreviewConfiguration *pInterfacePreviewConfiguration=NULL;
-	BaseObject *pPreviewObject = ppref->GetContextPreviewObject( 0,&pInterfacePreviewConfiguration);
+	ppref->GetContextPreviewObject( 0,&pInterfacePreviewConfiguration);
 	if(!pInterfacePreviewConfiguration) return;
 
 	CString	str;
@@ -378,7 +378,7 @@ void CPreviewManagerView::OnStnClickedBreturnstop()
 	InterfacePrefObject *ppref = InterfacePrefObject::GetContextActivePref(pdoc->GetVedaContext());
 	if( !ppref ) return;
 	InterfacePrefObject::PreviewEdited::InterfacePreviewConfiguration *pInterfacePreviewConfiguration=NULL;
-	BaseObject *pPreviewObject = ppref->GetContextPreviewObject( 0,&pInterfacePreviewConfiguration);
+	ppref->GetContextPreviewObject( 0,&pInterfacePreviewConfiguration);
 	if(!pInterfacePreviewConfiguration) return;
 
 	pdoc->SetPreviewPlayState( false );
@@ -433,9 +433,6 @@ void	CPreviewManagerView::CActionFocusable_Move::ManageViewPortClickAction(  Vir
 										unsigned int _mouseButtonEvent
 											)
 {
-	CPreviewMachine::PreviewOGLInternalViewPort *pVP =
-	(CPreviewMachine::PreviewOGLInternalViewPort*) _pClickedViewPort ;
-
 	if(_mouseButtonEvent == 0 &&
 		 _pClickedViewPort == m_pLastViewPortClicked
 		)
@@ -470,9 +467,6 @@ void	CPreviewManagerView::CActionFocusable_Rotate::ManageViewPortClickAction(  V
 										unsigned int _mouseButtonEvent
 											)
 {
-	CPreviewMachine::PreviewOGLInternalViewPort *pVP =
-	(CPreviewMachine::PreviewOGLInternalViewPort*) _pClickedViewPort ;
-
 	if(_mouseButtonEvent == 0 &&
 		 _pClickedViewPort == m_pLastViewPortClicked
 		)

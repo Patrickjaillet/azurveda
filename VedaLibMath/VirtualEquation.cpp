@@ -212,7 +212,6 @@ void VirtualEquation::ProcessPreview_DrawEquation(double _frameDate,VirtualMachi
 		pVertD = m_pPreviewLineD->GetFirstVertex();
 		float	param[4];
 		float value[4];
-		float	pos;
 
 		for(ii=0 ; ii<(m_PreviewLinePoints) ; ii++)
 		{

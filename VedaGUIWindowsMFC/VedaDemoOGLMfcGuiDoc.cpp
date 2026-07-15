@@ -402,12 +402,10 @@ void	CVedaDemoOGLMfcGuiDoc::SetPreviewPlayState(bool _play,unsigned int _RenderV
 	InterfacePrefObject *pRef =	InterfacePrefObject::GetContextActivePref( GetVedaContext() );
 	if(!pRef) return;
 	InterfacePrefObject::PreviewEdited::InterfacePreviewConfiguration *pInterfacePreviewConfiguration=NULL;
-	BaseObject *pPreviewObject = pRef->GetContextPreviewObject( _RenderViewIndex,&pInterfacePreviewConfiguration);
+	pRef->GetContextPreviewObject( _RenderViewIndex,&pInterfacePreviewConfiguration);
 	if(!pInterfacePreviewConfiguration) return;
 
 	float	playspeed = pInterfacePreviewConfiguration->GetPlaySpeed();
-	float	timeend  = pInterfacePreviewConfiguration->GetPreviewEndTime();
-	float	timestart= pInterfacePreviewConfiguration->GetPreviewStartTime();
 
 	if( !_play )
 	{
@@ -430,7 +428,7 @@ void	CVedaDemoOGLMfcGuiDoc::SetPreviewCurrentTime(double _sec,unsigned int _Rend
 	InterfacePrefObject *pRef =	InterfacePrefObject::GetContextActivePref( GetVedaContext() );
 	if(!pRef) return;
 	InterfacePrefObject::PreviewEdited::InterfacePreviewConfiguration *pInterfacePreviewConfiguration=NULL;
-	BaseObject *pPreviewObject = pRef->GetContextPreviewObject( _RenderViewIndex,&pInterfacePreviewConfiguration);
+	pRef->GetContextPreviewObject( _RenderViewIndex,&pInterfacePreviewConfiguration);
 	if(!pInterfacePreviewConfiguration) return;
 
 	if( _sec> pInterfacePreviewConfiguration->GetPreviewEndTime() ) _sec = pInterfacePreviewConfiguration->GetPreviewStartTime();

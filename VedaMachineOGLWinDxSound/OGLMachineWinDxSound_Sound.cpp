@@ -233,8 +233,7 @@ void	OGLMachineWinDxSound::UpdateSoundBuffers()
 }
 DWORD WINAPI OGLMachineWinDxSound::NotificationProc( LPVOID lpParameter )
 {
-
-	HWND hDlg = (HWND) lpParameter;
+	(void)lpParameter;
 
 	CoInitializeEx(NULL, COINIT_MULTITHREADED);
 

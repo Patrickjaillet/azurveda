@@ -361,7 +361,6 @@ void MediaTimePattern::ProcessPreview_DrawTracks(double _frameDate,VirtualMachin
 						m_pPreviewSquareObject->SetColor(rgba_EmptyPart[0],rgba_EmptyPart[1],rgba_EmptyPart[2],rgba_EmptyPart[3]);
 
 					_pPreviewViewPort->Matrix_Push();
-						PartToPlay *pPart = (PartToPlay *)pPartCell->GetManagedObject();
 						_pPreviewViewPort->Matrix_Translate(0.0f,trackCenterY,0.0f);
 						_pPreviewViewPort->Matrix_Scale( 0.96f,trackScaleY*0.96f,1.0f);
 						_pPreviewViewPort->RenderMesh(m_pPreviewSquareObject );
