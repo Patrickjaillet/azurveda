@@ -30,7 +30,11 @@ add_compile_definitions(WINVER=0x0A00 _WIN32_WINNT=0x0A00)
 # test rig risks introducing real bugs. Standard practice for this kind of legacy port.
 add_compile_definitions(_CRT_SECURE_NO_WARNINGS)
 
-add_compile_options(/W4)
+# /W4 for the whole tree; /WX (warnings-as-errors) for AzurVeda-owned code only.
+# The vendored MP3 (libmad) and XM (uniminixm) decoders keep a relaxed /W1 /WX-
+# level via set_source_files_properties() in their respective CMakeLists.txt,
+# since upstream third-party code is not held to AzurVeda's warning bar.
+add_compile_options(/W4 /WX)
 
 option(AZURVEDA_BUILD_GPL_MODULES "Build the GPL2-licensed modules (VedaLibSoundMP3, VedaLibDemo, VedaGUIWindowsMFC)" ON)
 option(AZURVEDA_BUILD_EXAMPLES "Build the Veda/CodeExamples sample programs" ON)

@@ -28,6 +28,12 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/lang/fr/).
   `Example01_SimpleSerialization`, vérification de CHANGELOG.md sur chaque PR,
   incrément automatique du `PATCH` de `VERSION` sur chaque build réussi de `main`.
 - `/W4` activé projet entier (`CMakeLists.txt` racine).
+- `/WX` (avertissements traités comme des erreurs) activé pour toutes les cibles
+  AzurVeda, une fois le nettoyage `/W4` terminé (voir *Fixed*). Un garde-fou
+  `/W1 /WX-` est appliqué spécifiquement aux fichiers `.c` du code tiers vendu
+  (`VedaLibSoundMP3/CMakeLists.txt`, `VedaLibSoundXM/CMakeLists.txt`, via
+  `set_source_files_properties`), qui n'est pas retenu par le même standard de
+  qualité.
 
 ### Changed
 
@@ -89,6 +95,36 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/lang/fr/).
   stocké dans un `int` puis ré-additionné et recasté), `VedaGUIWindowsMFC/LeftView.cpp`
   (`NMHDR::idFrom` est `UINT_PTR` dans le SDK Win32, pas `UINT` — la variable locale
   tronquait le handle de fenêtre avant même le cast `(HWND)`).
+- Les 425 avertissements `/W4` restants dans le code AzurVeda (voir *Known issues*
+  précédent) ont été traités intégralement, catégorie par catégorie. Le code
+  AzurVeda compile désormais sans aucun avertissement `/W4`. Plusieurs vrais bugs
+  ont été trouvés et corrigés au passage, pas seulement des avertissements
+  silencieux :
+  - `VedaLib3DEngine/lwo2reader.h` : `struct LwoPolyToVertex` référençait un tag de
+    structure fantôme au lieu de `struct _LwoPolyToVertex`.
+  - `VedaLib3DEngine/lwo2reader.c` : compteurs `unsigned int` utilisés avec des
+    sentinelles `-1` (fonctionnait par un rebouclage non garanti) ; retypés en `int`.
+    Pointeur `plwclip` non initialisé quand `nbclip == 0`, exploitable via un
+    fichier LWO incohérent contenant un chunk `CLIP` malgré tout.
+  - `VedaLibDemo/Object3DFontArial.h`/`.cpp` : `m_fontc` déclaré `signed char[]`
+    corrompait les valeurs d'octet supérieures à 127, utilisées comme indices de
+    triangle et coordonnées de texture normalisées sur 0-255.
+  - `Veda/VirtualMachine.h` : `InternalViewPort` (classe abstraite) n'avait pas de
+    destructeur virtuel malgré un `delete` via pointeur de base dans
+    `OGLMachine.cpp` — comportement indéfini réel, pas juste un avertissement.
+  - `VedaMachineOGLWinDxSound/OGLMachineWinDxSound.cpp` : condition toujours fausse
+    `if(vmr_OK != vmr_OK) return res;` qui avalait silencieusement un échec
+    d'initialisation de la classe de base.
+  - `VedaLibMath/EquationSinus3D.cpp` : les champs `mSer_IndexMultiplier_Frequence`
+    et `mSer_IndexMultiplier_Amplitude`, de type `PackDynamicFloat`, étaient
+    enregistrés via la macro `REGISTER_MEMBER_PACKFLOAT` au lieu de
+    `REGISTER_MEMBER_PACKDYNAMICFLOAT`. Cette macro appelle `Set(_DefaultVal)`, qui
+    pour un `PackDynamicFloat` résout vers `PackDynamicType::Set(unsigned int)` — une
+    méthode sans rapport — corrompant silencieusement l'état interne ("shape") au
+    lieu de fixer une valeur flottante par défaut. Recherche exhaustive confirmant
+    qu'il s'agit du seul cas de ce pattern dans la base de code.
+  - `Veda/BaseType.cpp::WriteFile` : `pserializedFormAfter` n'était jamais affecté
+    si `fopen()` échouait, et sa valeur non initialisée était lue juste après.
 
 ### Removed
 
@@ -105,13 +141,11 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/lang/fr/).
 
 ### Known issues
 
-- Avec `/W4`, il reste 425 avertissements dans le code AzurVeda (principalement
-  `C4244` conversions avec perte potentielle, `C4100` paramètres non utilisés,
-  `C4189` variables locales non utilisées, `C4996` fonctions CRT dépréciées,
-  `C4018`/`C4389`/`C4245` signé/non signé) et 72 dans le code tiers vendu (non
-  traité, hors périmètre). Aucun n'est une troncature pointeur→entier 32 bits — ces
-  dernières ont toutes été corrigées (voir *Fixed*). `/WX` n'est donc pas encore
-  activé ; voir `roadmap.md` Phase 3.
+- Le code tiers vendu (`VedaLibSoundMP3` fork de libmad, `VedaLibSoundXM`
+  `uniminixm`) conserve 6 avertissements sous `/W1` (`C4311`/`C4312`, troncatures
+  pointeur dans `uniminixm_Init.c`/`uniminixm_StereoFloatMixer.c`), non traités car
+  hors périmètre AzurVeda ; `/WX-` les laisse non bloquants pour le build. Voir
+  `roadmap.md` Phase 3.
 - Le portage DirectSound → XAudio2 (`VedaMachineOGLWinDxSound`) compile et
   s'exécute sans crash (`Example02`/`Example03` testés 8s sans erreur), mais
   **n'a pas été validé à l'oreille** (pas de test audio audible possible dans cet
