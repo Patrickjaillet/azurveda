@@ -358,8 +358,8 @@ void MP3SoundObject::ProcessSoundInterupt( VirtualMachine::SoundBufferToAddYourS
 			m_pleft_chRunner = m_pleft_ch;
 			m_pright_chRunner = m_pright_ch;
 
-				m_RunnerVector = (unsigned int)(( 65536.0f * ((float)m_psynth->pcm.samplerate)))
-					/ _SoundBufferToAddYourSignal.m_PlayFrequency  ;
+				m_RunnerVector = (unsigned int)((( 65536.0f * ((float)m_psynth->pcm.samplerate)))
+					/ _SoundBufferToAddYourSignal.m_PlayFrequency)  ;
 				m_RunnerIndex &= 0x0000ffff;
 		}
 

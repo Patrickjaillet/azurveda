@@ -12,7 +12,7 @@ unsigned char PerlinNoiseImage::GetPerlinMergeRandom( int vv, unsigned char ufor
 {
 
     if(uforce >=8)
-        return( vv>>2  );
+        return( (unsigned char)(vv>>2)  );
     else
         return(
                 (unsigned char)(
@@ -59,7 +59,7 @@ bool PerlinNoiseImage::CreateInternal(void)
 
                 ofx = (xx+middle ) ;
                 ofy = (yy+middle ) *width_height ;
-                pchunkbase[ ofx + ofy ] = GetPerlinMergeRandom(vv,force);
+                pchunkbase[ ofx + ofy ] = GetPerlinMergeRandom(vv,(unsigned char)force);
             }
         }
 
@@ -82,7 +82,7 @@ bool PerlinNoiseImage::CreateInternal(void)
                     vv += pchunkbase[ ofx +ofy ] ;
 
                 ofy = yy *width_height ;
-                pchunkbase[ ofx  + ofy ] = GetPerlinMergeRandom(vv,force);
+                pchunkbase[ ofx  + ofy ] = GetPerlinMergeRandom(vv,(unsigned char)force);
 
                     ofy =  ((yy+ll)& mask) * width_height ;
                     vv2+= pchunkbase[ xx +ofy ] ;
@@ -91,7 +91,7 @@ bool PerlinNoiseImage::CreateInternal(void)
                     ofy =  (yy+middle) * width_height ;
                     vv2+=  pchunkbase[ ofx +ofy ] ;
 
-                pchunkbase[ xx + ofy ] =  GetPerlinMergeRandom(vv2,force);
+                pchunkbase[ xx + ofy ] =  GetPerlinMergeRandom(vv2,(unsigned char)force);
             }
         }
 

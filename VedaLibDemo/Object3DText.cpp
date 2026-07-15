@@ -196,7 +196,7 @@ void	Object3DText::PackDynamicTextShadeIn::ComputeShadeIn(LetterState &_lstate,d
 		if(endAt==beginAt) return;
 		float maxrate = PackFloat::m_1p0 + mSer_TextShade.mSer_OutGoingLetterRatio.Get();
 
-		comerate=(_framedate-beginAt)*maxrate/(endAt-beginAt);
+		comerate=(float)((_framedate-beginAt)*maxrate/(endAt-beginAt));
 		comerate -= (  _lstate.m_TimeDelta * mSer_TextShade.mSer_OutGoingLetterRatio.Get());
 		ComputeShade(_lstate,_framedate-beginAt,comerate);
 		return;
@@ -225,7 +225,7 @@ void	Object3DText::PackDynamicTextShadeOut::ComputeShadeOut(LetterState &_lstate
 		if(endAt==beginAt) return;
 		float maxrate = PackFloat::m_1p0 + mSer_TextShade.mSer_OutGoingLetterRatio.Get();
 
-		comerate=(_framedate-beginAt)/(endAt-beginAt);
+		comerate=(float)((_framedate-beginAt)/(endAt-beginAt));
 		comerate=1.0f-comerate;
 		comerate*=maxrate;
 		comerate -= (  (1.0f-_lstate.m_TimeDelta) * mSer_TextShade.mSer_OutGoingLetterRatio.Get());
@@ -259,7 +259,7 @@ void	Object3DText::PackDynamicTextShadeIn::ComputeShade(LetterState &_lstate,dou
 	float inparam[4];
 	float outparam[4];
 	inparam[0]=_lstate.m_TimeDelta;
-	inparam[3]=_framedate ;
+	inparam[3]=(float)_framedate ;
 
 	if(mSer_TextShade.mSer_Flags.TestFlags( TextShadeComplex::bTSF_CharRelative))
 	{
@@ -317,7 +317,7 @@ void	Object3DText::RenderObject( double _frameDate,
 	unsigned int ii;
 	Object3DFontVirtual	*pFont = (Object3DFontVirtual *)mSer_AlphabetRef.GetObjectPointer();
 	float InEqu[4];
-	InEqu[3]=_frameDate;
+	InEqu[3]=(float)_frameDate;
 
 	CharacterBase *pCharBase = m_pCharacterBase;
 	for(ii=0 ; ii<m_CharacterUsed ; ii++)

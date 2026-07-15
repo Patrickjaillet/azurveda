@@ -98,9 +98,9 @@ unsigned char * PackFloat::Serialize_Out(unsigned char * _pDescriptionChunkToFil
 
 			unsigned int bitImage = *(  (unsigned int *)(&(m_value[ii])) );
 
-			*(_pDescriptionChunkToFill++) = bitImage>>24;
-			*(_pDescriptionChunkToFill++) = bitImage>>16;
-			*(_pDescriptionChunkToFill++) = bitImage>>8;
+			*(_pDescriptionChunkToFill++) = (unsigned char)(bitImage>>24);
+			*(_pDescriptionChunkToFill++) = (unsigned char)(bitImage>>16);
+			*(_pDescriptionChunkToFill++) = (unsigned char)(bitImage>>8);
 		}
 	}
 	return( _pDescriptionChunkToFill );

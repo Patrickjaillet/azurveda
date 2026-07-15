@@ -128,7 +128,7 @@ lwo2_error	ReadLwo(sLwoObject *_pLwoObject, const unsigned char *_pLwoFileChunk,
 		int nbcurrentLayer=-1;
 		unsigned int offset=12;
         sLwoLayer    *pcurrentlayer;
-        struct  LwoClip		*plwclip;
+        struct  LwoClip		*plwclip=NULL;
 	    if( _pLwoObject->m_NumberOfLayers == 0 )
 		{
 			_pLwoObject->m_NumberOfLayers=1;
@@ -218,8 +218,11 @@ lwo2_error	ReadLwo(sLwoObject *_pLwoObject, const unsigned char *_pLwoFileChunk,
 
                 case 0x434C4950:
 
-                    error = Read_CLIP_LWO2( _pLwoObject,offset+8,endOffsetL2, plwclip  );
-                    plwclip++;
+                    if( plwclip )
+                    {
+                        error = Read_CLIP_LWO2( _pLwoObject,offset+8,endOffsetL2, plwclip  );
+                        plwclip++;
+                    }
                 break;
 
                 case 1398100550:

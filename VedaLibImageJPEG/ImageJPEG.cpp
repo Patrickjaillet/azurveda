@@ -132,13 +132,13 @@ static int CreateInternal_C(const unsigned char *pFileChunk,unsigned int fileSiz
 			for(unsigned int ii=0;ii<cinfo.output_width;ii++)
 			{
 				unsigned int rr,gg,bb;
-				*pOutputBuffer++ = rr= *(pLiner++);
-				*pOutputBuffer++ = gg= *(pLiner++);
-				*pOutputBuffer++ = bb= *(pLiner++);
+				*pOutputBuffer++ = (unsigned char)(rr= *(pLiner++));
+				*pOutputBuffer++ = (unsigned char)(gg= *(pLiner++));
+				*pOutputBuffer++ = (unsigned char)(bb= *(pLiner++));
 				 rr = rr+gg+bb;
 				 rr /=3;
 				 if(rr>255) rr=255;
-				*pOutputBuffer++ = rr;
+				*pOutputBuffer++ = (unsigned char)rr;
 
 			}
 		} else

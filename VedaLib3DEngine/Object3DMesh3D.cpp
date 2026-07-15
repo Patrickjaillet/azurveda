@@ -161,9 +161,9 @@ void Object3DMesh3D::CreateShape(float , unsigned int  )
 			PackList::Cell *prCell =pPolygonList->mSer_RefList.GetFirstCell();
 			unsigned int nbRef = pPolygonList->mSer_RefList.GetNumberOfCell();
 
-			unsigned int v0,v1;
+			unsigned int v0=0,v1=0;
 			unsigned int nbv=vPerPoly;
-			float nx,ny,nz;
+			float nx=0.0f,ny=0.0f,nz=0.0f;
 			while(prCell )
 			{
 				if(nbv==vPerPoly)

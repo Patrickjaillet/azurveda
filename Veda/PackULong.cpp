@@ -65,7 +65,7 @@ unsigned char * PackULong::Serialize_Out(unsigned char * _pDescriptionChunkToFil
 	{
 		cc = value & 127 ;
 		if( value>127 ) cc |= 128;
-		*(_pDescriptionChunkToFill++) = cc;
+		*(_pDescriptionChunkToFill++) = (unsigned char)cc;
 		value>>=7;
 		nbByte++;
 	} while( value > 0 && (nbByte<4)  );

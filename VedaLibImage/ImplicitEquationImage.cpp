@@ -116,25 +116,25 @@ void	ImplicitEquationImage::ProtectedDraw(float _framedate)
 				if(fval<=v0) *(pbuffer++) = 0;
 				else if(fval>=v1) *(pbuffer++) = 255;
 				else{
-					 *(pbuffer++) = (int) ( resultTable[0] * v255 ) ;
+					 *(pbuffer++) = (unsigned char) ( resultTable[0] * v255 ) ;
 				}
 				fval = resultTable[1] ;
 				if(fval<=v0) *(pbuffer++) = 0;
 				else if(fval>=v1) *(pbuffer++) = 255;
 				else{
-					 *(pbuffer++) = (int) ( resultTable[0] * v255 ) ;
+					 *(pbuffer++) = (unsigned char) ( resultTable[0] * v255 ) ;
 				}
 				fval = resultTable[2] ;
 				if(fval<=v0) *(pbuffer++) = 0;
 				else if(fval>=v1) *(pbuffer++) = 255;
 				else{
-					 *(pbuffer++) = (int) ( resultTable[0] * v255 ) ;
+					 *(pbuffer++) = (unsigned char) ( resultTable[0] * v255 ) ;
 				}
 				fval = resultTable[3] ;
 				if(fval<=v0) *(pbuffer++) = 0;
 				else if(fval>=v1) *(pbuffer++) = 255;
 				else{
-					 *(pbuffer++) = (int) ( resultTable[0] * v255 ) ;
+					 *(pbuffer++) = (unsigned char) ( resultTable[0] * v255 ) ;
 				}
 				fx += fxd;
 			}

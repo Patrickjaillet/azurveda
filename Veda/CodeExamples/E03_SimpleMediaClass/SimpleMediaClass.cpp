@@ -85,11 +85,11 @@ void miniMedia::ProcessMedia( double ,VirtualMachine::InternalViewPort *_pViewPo
 	_pViewPort->Matrix_LoadID();
 	_pViewPort->Matrix_Translate(0.0f,0.0f,-1.0f);
 
-	_pViewPort->Matrix_Rotate(sin(m_sinusPostion1*0.002f),0.0f,0.0f,-1.0f);
+	_pViewPort->Matrix_Rotate(sinf(m_sinusPostion1*0.002f),0.0f,0.0f,-1.0f);
 
 	_pViewPort->SetFOVLength(0.75f);
 
-	float vibratoterm2 =0.5f+ sin(m_sinusPostion2*0.0018f) *0.5f;
+	float vibratoterm2 =0.5f+ sinf(m_sinusPostion2*0.0018f) *0.5f;
 	m_p3DObject->SetColor(vibratoterm2,0.25f,1.0f);
 
 	_pViewPort->RenderMesh( m_p3DObject );
@@ -104,7 +104,7 @@ void miniMedia::ProcessSoundInterupt( VirtualMachine::SoundBufferToAddYourSignal
 
 	const float freq = _SoundBufferToAddYourSignal.m_PlayFrequency ;
 	float speed1 =  440.0f*4.0f/freq;
-	float speed2 =  293.3*4.0f/freq;
+	float speed2 =  293.3f*4.0f/freq;
 
 	unsigned int ii;
 	float fp1 = m_sinusPostion1;
@@ -114,10 +114,10 @@ void miniMedia::ProcessSoundInterupt( VirtualMachine::SoundBufferToAddYourSignal
 
 	for(ii=0 ; ii<lengthToRender ; ii++)
 	{
-		*(pSoundBuffer++) += sin( fp1 ) *leftVolume ;
-		*(pSoundBuffer++) += sin( fp2 ) *rightVolume;
-		fp1 +=(speed1 + sin(fp2*0.0018f)*0.004f);
-		fp2 += speed2+ sin(fp1*0.002f)*0.004f;
+		*(pSoundBuffer++) += sinf( fp1 ) *leftVolume ;
+		*(pSoundBuffer++) += sinf( fp2 ) *rightVolume;
+		fp1 +=(speed1 + sinf(fp2*0.0018f)*0.004f);
+		fp2 += speed2+ sinf(fp1*0.002f)*0.004f;
 	}
 
 	m_sinusPostion1 = fp1;

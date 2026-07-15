@@ -15,8 +15,8 @@ EquationSinus3D::EquationSinus3D() : VirtualEquation()
 	REGISTER_MEMBER_PACKFLOAT_XYZ(mSer_Center,"Center",0.0f,0.0f,0.0f);
 	REGISTER_MEMBER_PACKDYNAMICFLOAT(mSer_Frequence,"Frequence",3.1415f*0.5f);
 	REGISTER_MEMBER_PACKDYNAMICFLOAT(mSer_Amplitude,"Amplitude",0.5f);
-	REGISTER_MEMBER_PACKFLOAT(mSer_IndexMultiplier_Frequence,"FreqMult",0.5f);
-	REGISTER_MEMBER_PACKFLOAT(mSer_IndexMultiplier_Amplitude,"AmpMult",0.01f);
+	REGISTER_MEMBER_PACKDYNAMICFLOAT(mSer_IndexMultiplier_Frequence,"FreqMult",0.5f);
+	REGISTER_MEMBER_PACKDYNAMICFLOAT(mSer_IndexMultiplier_Amplitude,"AmpMult",0.01f);
 }
 
 void EquationSinus3D::Compute( float _OutgoingParameterTable[4] , const float _IncomingParameterTable[4] )

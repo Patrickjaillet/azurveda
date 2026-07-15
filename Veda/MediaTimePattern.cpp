@@ -347,12 +347,12 @@ void MediaTimePattern::ProcessPreview_DrawTracks(double _frameDate,VirtualMachin
 				date += pPart->GetTimeInSecond();
 				float endDate=date;
 
-				float startY = -0.5f + (startDate/m_MediaTimeLength);
-				float endY = -0.5f + (endDate/m_MediaTimeLength);
+				float startY = (float)(-0.5f + (startDate/m_MediaTimeLength));
+				float endY = (float)(-0.5f + (endDate/m_MediaTimeLength));
 				if(startY!= endY)
 				{
 					float	trackCenterY = (startY+endY) * 0.5f;
-					float	trackScaleY = (endDate-startDate)/m_MediaTimeLength;
+					float	trackScaleY = (float)((endDate-startDate)/m_MediaTimeLength);
 					if(pSubMedia)
 
 						m_pPreviewSquareObject->SetColor(rgba_Part[0],rgba_Part[1],rgba_Part[2],rgba_Part[3]);
@@ -374,7 +374,7 @@ void MediaTimePattern::ProcessPreview_DrawTracks(double _frameDate,VirtualMachin
 	}
 
 	m_pPreviewSquareObject->SetColor(rgba_TimeLine[0],rgba_TimeLine[1],rgba_TimeLine[2],rgba_TimeLine[3]);
-	float timeline = -0.5f + (_frameDate/m_MediaTimeLength);
+	float timeline = (float)(-0.5f + (_frameDate/m_MediaTimeLength));
 	_pPreviewViewPort->Matrix_Translate(0.0f,timeline,0.0f);
 	_pPreviewViewPort->Matrix_Scale( 1.0f,1.0f/128.0f,1.0f);
 	_pPreviewViewPort->RenderMesh(m_pPreviewSquareObject );

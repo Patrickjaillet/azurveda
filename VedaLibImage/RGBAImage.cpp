@@ -48,9 +48,9 @@ bool RGBAImage::CreateInternal(void)
 
 	while(pcell)
 	{
-		unsigned int			rr,nr,alpha;
+		unsigned int			rr,nr,alpha=0;
 			int	zz;
-		unsigned char	*pSourceImageBuffer=0L,*pSourceImageLineBuffer,*pSourcePixel;
+		unsigned char	*pSourceImageBuffer=0L,*pSourceImageLineBuffer,*pSourcePixel=0L;
 		ImageLayer *pLayer = (ImageLayer *)pcell->GetManagedObject();
 		unsigned int flag				=	pLayer->mSer_LayerFlag.Get() ;
 		VirtualImage	*pSourceImage		=	(VirtualImage *)pLayer->mSerRef_ComponentImage.GetObjectPointer();
@@ -92,7 +92,7 @@ bool RGBAImage::CreateInternal(void)
 				if( yy>255) yy=255;
 				if( yy<0) yy=0;
 			}
-			tCurveMatrix[xx] = yy;
+			tCurveMatrix[xx] = (unsigned char)yy;
 			vv[0] += PackFloat::m_1Div255 ;
 			vv[3] = vv[0];
 		}
@@ -136,7 +136,7 @@ bool RGBAImage::CreateInternal(void)
 								else rr += nr;
 
 						if( rr>255 ) rr=255;
-						pbuffer[zz] = rr;
+						pbuffer[zz] = (unsigned char)rr;
 					}
 				}
 
@@ -225,8 +225,8 @@ int     ii,f,p,q,x;
                 }
         }
 
-        *(R++)= rr;
-        *(R++)= gg;
-        *(R++)= bb;
+        *(R++)= (unsigned char)rr;
+        *(R++)= (unsigned char)gg;
+        *(R++)= (unsigned char)bb;
 
 }

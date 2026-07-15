@@ -32,7 +32,7 @@ bool Equ_XYZD_ParticleCubes::SetFrameDate( float _date, unsigned int _iTermIndex
 	m_yc = pParticle->m_xyzd[1];
 	m_zc = pParticle->m_xyzd[2];
 
-	const float	ray =m_rayspace*1.125;
+	const float	ray =m_rayspace*1.125f;
 	_pbound[0] = m_xc-ray ;
 	_pbound[1] = m_xc+ray ;
 	_pbound[2] = m_yc-ray ;
@@ -48,8 +48,8 @@ bool Equ_XYZD_ParticleCubes::SetYZConstant( float _y,float _z)
 
 	_y -= m_yc;
 	_z -= m_zc;
-	_y = fabs(_y);
-	_z = fabs(_z);
+	_y = fabsf(_y);
+	_z = fabsf(_z);
 	const float	mray = m_raySpaceHalf;
 	_y -= mray ;
 	_z -= mray ;
@@ -57,7 +57,7 @@ bool Equ_XYZD_ParticleCubes::SetYZConstant( float _y,float _z)
 	if(_z<0.0f) _z=0.0f;
 
 	m_zz = (_z*_z + _y*_y)*16.0f;
-	m_zz += (sin(_y*8.0f)*cos(_z*8.0f)*0.2f);
+	m_zz += (sinf(_y*8.0f)*cosf(_z*8.0f)*0.2f);
 	if(m_zz>1.0f) return false;
 
 	return true;
@@ -66,7 +66,7 @@ bool Equ_XYZD_ParticleCubes::SetYZConstant( float _y,float _z)
 float Equ_XYZD_ParticleCubes::ComputeByX( float _x)
 {
 	_x -= m_xc ;
-	_x = fabs(_x);
+	_x = fabsf(_x);
 	_x -=m_raySpaceHalf;
 	if(_x<0.0f) _x=0.0f;
 	_x = _x * _x;

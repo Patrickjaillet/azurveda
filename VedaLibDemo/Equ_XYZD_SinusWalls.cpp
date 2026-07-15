@@ -89,9 +89,9 @@ bool Equ_XYZD_SinusWalls::SetYZConstant( float _y,float _z)
 	if(base_y>1.0f) base_y = 1.0f;
 
 	m_y = base_y;
-	m_zz = _z+ sin(_y)*famplitude;
-	_y += sin(_z+ sin(_y)+m_zc)*famplitude;
-	m_yc = sin(_y)*cos(_z)*famplitude;
+	m_zz = _z+ sinf(_y)*famplitude;
+	_y += sinf(_z+ sinf(_y)+m_zc)*famplitude;
+	m_yc = sinf(_y)*cosf(_z)*famplitude;
 
 	if((m_y-famplitude)>=1.0f) return false;
 	return true;
@@ -102,7 +102,7 @@ float Equ_XYZD_SinusWalls::ComputeByX( float _x)
 
 	float	val;
 	_x *=8.0f;
-	val =  m_y + sin(_x+m_zz)*m_yc;
+	val =  m_y + sinf(_x+m_zz)*m_yc;
 
 		if(val>1.0f) val=1.0f;
 	return val;

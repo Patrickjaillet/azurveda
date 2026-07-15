@@ -142,7 +142,7 @@ bool    MarchinCubeSpace::PreGenerateTriangleTables( void )
             edgeconv+=4;
         }
 
-        *(PreTable1) = nbv;
+        *(PreTable1) = (unsigned char)nbv;
         PreTable1+= ((12*2)+1);
     }
 
@@ -159,7 +159,7 @@ bool    MarchinCubeSpace::PreGenerateTriangleTables( void )
 		for( nbv=0 ; nbv <vv ; nbv++ )
         {
 
-            *(ptv++) = nextsearch ;
+            *(ptv++) = (unsigned char)nextsearch ;
 
             acc = PreTable1 +1;
             for(ii=0 ; ii<vv ; ii++)
@@ -176,7 +176,7 @@ bool    MarchinCubeSpace::PreGenerateTriangleTables( void )
                 acc+=2;
             }
 
-            *(ptv++) = nextsearch ;
+            *(ptv++) = (unsigned char)nextsearch ;
 
             if( nextsearch == premier )
             {
@@ -216,7 +216,7 @@ bool    MarchinCubeSpace::PreGenerateTriangleTables( void )
 
             while( PreTable2[3] != premier )
             {
-				*(acc++) = premier ;
+				*(acc++) = (unsigned char)premier ;
 				*(acc++) = PreTable2[2] ;
 				*(acc++) = PreTable2[3] ;
 
@@ -230,7 +230,7 @@ bool    MarchinCubeSpace::PreGenerateTriangleTables( void )
 
         }
 
-        *(ptv)=ii;
+        *(ptv)=(unsigned char)ii;
         ptv+=16;
     }
 

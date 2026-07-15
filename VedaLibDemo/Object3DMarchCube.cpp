@@ -484,12 +484,12 @@ while( pCell)
 			int index_yz= (zz*m_nxtnyt) + (bisy*nxt) + bisx ;
 			for(signed char yy=bisy ; yy<=biny ; yy++ )
 			{
-				unsigned char	kk;
+				unsigned char	kk=0;
 				const float			*pmc_value = &pmc_value_s[ index_yz ] ;
 				const unsigned char	*pmc_flags = &pmc_flags_s[ index_yz ];
 				unsigned int	*pmc_checkDate = &pmc_checkDate_s[ index_yz ];
 MarchinCubeSpace::MarchCubeIndex	*pmc_Index = &pmc_Index_s[ index_yz ];
-				const unsigned char	*pmc_fl2;
+				const unsigned char	*pmc_fl2=0L;
 
 				const bool checkPolygon = ( (zz>bisz) && (yy>bisy) && (zz != nz) && (yy != ny) );
 				if( checkPolygon )

@@ -35,7 +35,7 @@ void EquationXMEvent::Compute( float _OutgoingParameterTable[4] , const float _I
 			mSer_InstrumentNumber.Get(),
 			mSer_SampleNumber.Get(),realvolume);
 		float dateDelta = _IncomingParameterTable[3]-m_LastDateComputed ;
-		dateDelta = fabs(dateDelta);
+		dateDelta = fabsf(dateDelta);
 		if(realvolume>m_LastValueFound)
 			dateDelta*=12.0f;
 		else

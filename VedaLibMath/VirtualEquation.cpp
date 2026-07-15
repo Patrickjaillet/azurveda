@@ -189,19 +189,19 @@ void VirtualEquation::ProcessPreview_DrawEquation(double _frameDate,VirtualMachi
 
 	m_pGridLine->SetColor(0.8f,0.4f,0.8f,0.75f);
 			pVert = m_pGridLine->GetFirstVertex();
-			pVert->m_x = _frameDate-xwidth*0.5f;
+			pVert->m_x = (float)(_frameDate-xwidth*0.5f);
 			pVert->m_y = yds2;
 			pVert->m_z = 0.0f;
 			pVert++;
-			pVert->m_x = _frameDate+xwidth*0.5f;
+			pVert->m_x = (float)(_frameDate+xwidth*0.5f);
 			pVert->m_y = yds2;
 			pVert->m_z = 0.0f;
 			pVert++;
-			pVert->m_x = _frameDate-xwidth*0.5f;
+			pVert->m_x = (float)(_frameDate-xwidth*0.5f);
 			pVert->m_y = yds1;
 			pVert->m_z = 0.0f;
 			pVert++;
-			pVert->m_x = _frameDate+xwidth*0.5f;
+			pVert->m_x = (float)(_frameDate+xwidth*0.5f);
 			pVert->m_y = yds1;
 			pVert->m_z = 0.0f;
 	_pPreviewViewPort->RenderMesh(m_pGridLine);

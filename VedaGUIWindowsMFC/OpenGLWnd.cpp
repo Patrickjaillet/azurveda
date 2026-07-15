@@ -300,7 +300,7 @@ void COpenGLWnd::OnUpdate(CView* , LPARAM , CObject* )
 	{
 		if( m_LastDateDrawn != pdoc->GetPreviewCurrentTime() )
 		{
-			m_LastDateDrawn = pdoc->GetPreviewCurrentTime();
+			m_LastDateDrawn = (float)pdoc->GetPreviewCurrentTime();
 			OnDraw(NULL);
 			return;
 		}

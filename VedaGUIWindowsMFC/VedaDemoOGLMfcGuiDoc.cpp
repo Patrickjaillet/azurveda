@@ -302,7 +302,7 @@ void	CVedaDemoOGLMfcGuiDoc::SetPreviewSelectedBaseObject(BaseObject	*pObject,uns
 		GetPreviewSelectedBaseObject(_RenderViewIndex,&pInterfacePreviewConfiguration);
 		if(pInterfacePreviewConfiguration)
 		{
-			pInterfacePreviewConfiguration->SetPreviewCurrentTime(GetPreviewCurrentTime(_RenderViewIndex));
+			pInterfacePreviewConfiguration->SetPreviewCurrentTime((float)GetPreviewCurrentTime(_RenderViewIndex));
 		}
 
 	}
@@ -415,7 +415,7 @@ void	CVedaDemoOGLMfcGuiDoc::SetPreviewPlayState(bool _play,unsigned int _RenderV
 		double dnow = ((double)now)/ CLOCKS_PER_SEC ;
 		dnow *= playspeed ;
 		m_TotalTimeBeforeLastStop += dnow;
-		pInterfacePreviewConfiguration->SetPreviewCurrentTime(m_TotalTimeBeforeLastStop);
+		pInterfacePreviewConfiguration->SetPreviewCurrentTime((float)m_TotalTimeBeforeLastStop);
 	} else
 	{
 		m_LastStartPlaySystemDate =  clock();

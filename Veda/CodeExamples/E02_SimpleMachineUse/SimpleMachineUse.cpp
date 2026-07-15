@@ -20,7 +20,7 @@ class miniSoundGenerator : public VirtualMachine::SoundInterface
 
 		float freq = _SoundBufferToAddYourSignal.m_PlayFrequency ;
 		float speed1 =  440.0f*4.0f/freq;
-		float speed2 =  293.3*4.0f/freq;
+		float speed2 =  293.3f*4.0f/freq;
 
 		unsigned int ii;
 		float fp1 = m_sinusPostion1;
@@ -30,10 +30,10 @@ class miniSoundGenerator : public VirtualMachine::SoundInterface
 
 		for(ii=0 ; ii<lengthToRender ; ii++)
 		{
-			*(pSoundBuffer++) += sin( fp1 ) *leftVolume ;
-			*(pSoundBuffer++) += sin( fp2 ) *rightVolume;
-			fp1 +=(speed1 + sin(fp2*0.0018f)*0.004f);
-			fp2 += speed2+ sin(fp1*0.002f)*0.004f;
+			*(pSoundBuffer++) += sinf( fp1 ) *leftVolume ;
+			*(pSoundBuffer++) += sinf( fp2 ) *rightVolume;
+			fp1 +=(speed1 + sinf(fp2*0.0018f)*0.004f);
+			fp2 += speed2+ sinf(fp1*0.002f)*0.004f;
 		}
 
 		m_sinusPostion1 = fp1;

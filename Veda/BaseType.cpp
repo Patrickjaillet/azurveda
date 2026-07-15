@@ -59,11 +59,12 @@ unsigned int BaseType::WriteFile(const char * _pFileName)
 			Serialize_Out( pserializedForm );
 		fwrite( pserializedForm, 1, serializedFormSize , ff );
 		fclose( ff );
-	}
-	ptrdiff_t vtest = pserializedFormAfter - pserializedForm;
-	if( static_cast<size_t>(vtest) != serializedFormSize )
-	{
-		vtest++;
+
+		ptrdiff_t vtest = pserializedFormAfter - pserializedForm;
+		if( static_cast<size_t>(vtest) != serializedFormSize )
+		{
+			vtest++;
+		}
 	}
 	delete [] pserializedForm ;
 	if( ff == 0L ) return(3);
