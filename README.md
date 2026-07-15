@@ -9,6 +9,11 @@ This edition of the workspace is **Windows 10/11 only**, targets 2026-era toolin
 code to a modern build chain. See [roadmap.md](roadmap.md) for the full conversion
 plan and its progress.
 
+![VedaGUIWindowsMFC editor](docs/screenshot.png)
+
+_Update this screenshot whenever a change notably alters the editor's appearance
+(see roadmap, Phase 6)._
+
 ## Modules
 
 | Module | Role | License |
@@ -97,13 +102,6 @@ changes.
 On release, the `[Unreleased]` section is renamed with the version number and
 date (`## [MAJOR.MINOR.PATCH] - YYYY-MM-DD`), and a new empty `[Unreleased]`
 section is created above it.
-
-## Screenshot
-
-![VedaGUIWindowsMFC editor](docs/screenshot.png)
-
-_Update this screenshot whenever a change notably alters the editor's appearance
-(see roadmap, Phase 6)._
 
 ## License
 
