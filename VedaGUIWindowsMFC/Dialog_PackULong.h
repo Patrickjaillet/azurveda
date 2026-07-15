@@ -1,0 +1,44 @@
+#pragma once
+
+#include "Dialog_AbstractPackSerializable.h"
+#include "afxwin.h"
+#include "afxcmn.h"
+// Boîte de dialogue CDialog_PackULong
+
+class CDialog_PackULong : public CDialog_AbstractPackSerializable
+{
+	DECLARE_DYNAMIC(CDialog_PackULong)
+
+public:
+	CDialog_PackULong(CWnd* pParent = NULL);   // constructeur standard
+	virtual ~CDialog_PackULong();
+
+// Données de boîte de dialogue
+	enum { IDD = IDD_PACKULONG };
+
+	static const char *GetManagedClassName(){ return("PackULong");   };
+	static CDialog_AbstractPackSerializable *NewInstance(CWnd* pParent);
+
+	virtual void Create(CWnd* pParent = NULL);
+	virtual	void SetPackSerializable(	BaseType *_objToManage,
+										CVedaDemoOGLMfcGuiDoc *_pDoc,
+										CView				  *_pView
+										);
+	virtual	void	Update(void);
+protected:
+	virtual void DoDataExchange(CDataExchange* pDX);    // Prise en charge DDX/DDV
+
+	DECLARE_MESSAGE_MAP()
+	virtual void OnOK();
+	virtual void OnCancel();
+public:
+	CEdit m_editCtrl;
+	CSpinButtonCtrl m_Spin;
+	afx_msg void OnDeltaposSpin1(NMHDR *pNMHDR, LRESULT *pResult);
+	virtual BOOL OnInitDialog();
+	afx_msg void OnEnKillfocusEdit1();
+};
+
+
+
+

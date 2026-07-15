@@ -1,0 +1,9 @@
+# Project: VedaLibSoundBAOOM
+# 
+
+RES  = 
+OBJREP = VedaLibSoundBAOOM
+SRCREP = ../VedaLibSoundBAOOM
+BIN  = $(OBJREP)/VedaLibSoundBAOOM.a
+include	../VedaLibSoundBAOOM/Makefile.i
+include MakefileModel.i

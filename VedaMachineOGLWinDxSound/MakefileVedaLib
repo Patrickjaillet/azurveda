@@ -1,0 +1,9 @@
+# Project: VedaLib
+# 
+
+RES  = 
+OBJREP = VedaLib
+SRCREP = ../Veda
+BIN  = lib/VedaLib.a
+include	../Veda/Makefile.i
+include MakefileModel.i

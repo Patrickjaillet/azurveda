@@ -1,0 +1,7 @@
+ The AzurVeda Workspace directory is a distribution made
+of different packages present in its subdirectories. 
+ For a given release, the packages in the workspace may vary. 
+Each packages has its own license, described in a 'COPYING'
+file, at the base of each directory.
+As a consequence, each AzurVeda Workspace release applies
+de-facto all the present package licenses respectively.

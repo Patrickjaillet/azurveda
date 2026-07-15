@@ -1,0 +1,11 @@
+# Project: VedaLibSoundMP3
+# 
+
+RES  = 
+OBJREP = VedaLibSoundMP3
+SRCREP = ../VedaLibSoundMP3
+BIN  = lib/VedaLibSoundMP3.a
+include	../VedaLibSoundMP3/Makefile.i
+# add special processor words:
+INCDEP += -DHAVE_CONFIG_H -DFPM_64BIT 
+include MakefileModel.i

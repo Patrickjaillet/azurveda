@@ -1,0 +1,9 @@
+# Project: VedaLibMath
+# 
+
+RES  = 
+OBJREP = VedaLibMath
+SRCREP = ../VedaLibMath
+BIN  = lib/VedaLibMath.a
+include	../VedaLibMath/Makefile.i
+include MakefileModel.i

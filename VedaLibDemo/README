@@ -1,0 +1,5 @@
+AzurVeda VedaLib3DDemo
+This library extends VedaLib, VedaLib3DEngine, and a lots of other packages
+to extend classes for experimental visuals and sounds. 
+author: victorien ferry & www.m4nkind.com
+This Library applies the GNU LESSER GENERAL PUBLIC LICENSE Version 2.1 , read file COPYING.

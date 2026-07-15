@@ -1,0 +1,10 @@
+AzurVeda VedaLibImageJPEG
+Image Library extending VedaLib and VedaLibImage.
+Please read the documentation in the headers.
+author: victorien ferry & www.m4nkind.com, and the Independent JPEG Group.
+ This library provide a JPEG Image class for AzurVeda contexts.
+ It uses some part of the original jpeg-6b package (the jpg reading), and the error handling
+ code was modified to forbid the use of setjmp(). As stated in the original 'Readme' file
+ provided with jpeg-6b, this code can be re-used and even modified if it is clearly shown.
+ The original README from jpeg-6b can be found in the Readme_libjpeg file.
+This Library applies the GNU LESSER GENERAL PUBLIC LICENSE Version 2.1 , read file COPYING.

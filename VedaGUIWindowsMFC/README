@@ -1,0 +1,276 @@
+AzurVeda UVeda MFC GUI Release 0.8, 24/02/2007
+
+This application is released under the GNU GENERAL PUBLIC LICENSE Version 2, June 1991 
+Read file COPYING. You must read the licenses to understand the following.
+  The whole application sources can be found from the website:
+http://sourceforge.net/projects/azurvedalib/
+
+This application allows to create and edit AzurVeda contextes with the following class packages :
+VedaLib					Which is under the LGPL license and is project native .
+VedaLibMath				Which is under the LGPL license and is project native .
+VedaLibImage			Which is under the LGPL license and is project native .
+VedaLibImageJPEG		Which is under the LGPL license, is project native and is based on lib jpeg-6b, by the independant jpeg group.
+VedaLib3DEngine			Which is under the LGPL license and is project native .
+VedaLibDemo				Which is under the LGPL license and is project native .
+VedaLibSoundMP3			Which is under the GPL license, and based over LibMad http://www.underbit.com/products/mad/
+
+This application is released with 2 executable builders addons, in directories ExeBuilderWindows and
+ExeBuilderDreamcast, which both includes elements from the GPL compiler Mingw (a GCC derivate)
+ which sources and license terms can be found at:
+http://sourceforge.net/projects/mingw/
+DreamcastBuilder itself includes elements from KallistiOS, from Cryptic Allusion, 
+ which sources can be found at:
+http://sourceforge.net/projects/cadcdev/
+
+This is a beta version, but it should be stable. Some functions may have been disabled
+or are not finished.
+
+1. What to do with this ?
+
+This is a general context editor. It means You manipulate contextes. 
+You can have more than one context at a time, yes that's what is called 
+multicontext applications.
+A Context is a set of Objects, which are all created from a class 
+known by the context. Classes define "kinds" of object. Yes, that's what 
+is called Object Programming.
+ For example, a Drawing application would know a class "Image", then you
+could create many images objects. It could also knows some pencil classes,
+ from which you could create pencil objects to draw on the image.
+ All applcations are built on this scheme.
+ This release was built with classes that allows to create nice visual 
+ and sounds. It has 3D object classes, some texture classes to be used,
+  a camera viewing class to render the whole thing, end even a MP3 music 
+  player class.
+
+ For a first use, we recommand that you familiarize yourself with bass veda
+ by throwing the executable, and then use the open icon to load some .avb 
+ (avb for AzurVeda Binaries) in the examples directory. 
+ As soon as loaded, some objects will automatically be opened in the preview screen.
+ You can then try to change values and manipulate objects in the editor.
+ The files which names beging with "Demo" are already configured to generate 
+ executables: Use Menu item "File/Export Context as Media Executable",
+ It will throw a batch script, press a key when the script ends to return to UVeda.
+ Executables files should be created in directory Output\ , for each supported
+ platforms.
+
+2. How to manipulate the GUI
+
+2A. The context tree class & object browsing:
+
+ When you launch UVeda.exe, a new context is automatically opened.
+Note you got one window per context. If you open another context file, 
+the old one will still exist under the last context open.
+ Each Context window has a tree on the left to browse the classes, 
+ which have a Rectangle Icon. Put your mouse upon a class in the tree: 
+ A message will explicit the role of each class.
+ For example, scroll down to the "Image grey bubble" class, and
+ use the right mouse button menu on it: It will propose a "New Object"
+ an empty circle item will appear in the tree: it's an object created 
+ from the class. It has a default name: BubbleImg0. As it was created, 
+ on the upper left of the context window the object definition can be edited: 
+ Each objects is defined by a set of members, starting with its name.
+  You can modify its members, but you will not see the result yet.
+  First, let's preview the object:
+  You can do that either by clicking the preview button in the editor, or use
+  the "object menu". Pop up the Object menu with the right button 
+  on the object circle icon, or in the object edition window.
+  this menu has 7 entries: 
+    -Preview
+    -Preview Previous
+    -Edit Preview
+    -Edit Previous
+    -Clone Object
+    -Destroy Object
+    -Destroy Independants
+ So, just set BubbleImg0 as the previewed object with "Preview"...
+ On the lower right part of the context window, you will notice a strange image;
+ This is what the "Image grey bubble" does; mathematic image generation.
+ Modify the "randomSeed" member of the object definition: the image will change.
+ You can notice another thing: the circle item in the tree for object BubbleImg0
+ is now blue: It means the object is currently built. Note it does not inform
+ if the object is previewed, it inform on its construction state. The previewed object name
+ appear near the VCR-Like interface, upon the preview.
+ What happened ?
+ AzurVeda knows when to construct or unconstruct the objects. if you modify an object
+ which is not previewed, nothing will ask the building of the object, and the circle
+ will stay empty. Basically, with this application, objects are constructed when previewed.
+
+2B. The Preview screen and the Video Preview Interface
+
+ The Video Preview Interface is there to manipulate the preview of the objects.
+ You can use a lots of different classes to create your objects, and most offer a preview
+ of what they do. There are 4 red icons in the Preview Interface you can enable
+ by clicking them, and then use them by clicking into the preview screen.
+  Each icons can be used or not by a class preview.
+ The first, the red cross arrows allows to scroll the preview. You can do that with images
+ and 3D objects.
+ with the middle mouse button you can change depth in 3D preview.
+ the second icon is for rotating the preview, and is only used in 3D object preview or in texture preview.
+ the third icon change the scale of the display; its behaviour is not finished.
+ basically, you scroll the scale of the preview screen with it with the first button,
+ and zoom in/out with the middle button. It is useful for equation preview.
+  Sometimes, it is possible to trash the preview screen with scale changing, so 
+ the fourth icon just reset the position, rotation and scale of the preview (the 3 first icons)
+ to their default states.
+  
+ Some classes define dynamic changes in times, like 3D views or sounds.
+ that's why there is a time slider there, and a play/pause/playspeed interface.
+ By default, the time slider is between 0 second and 360 seconds, but it
+ is possible to change this time scale.( There is currently an interface bug:
+ you can only change the values when paused,not in play mode,
+  and you got to change the focus with the mouse to validate the time start and end values.
+   Don't use return, it does validates the times change there.)
+
+ If you create many objects and preview them, you will notice each ones keeps its
+ preview preference: all the red icons stuff and the time management will be kept,
+ even after saving, quitting the application, re-throwing it, and reloading.
+ You can also come back to previously edited or previewed object with the object
+  special menu we've seen. (preview previous, edit previous). 
+  Notice all these features are managed by one of the object of the context: 
+  the "interface prefs" object. All the preview and time informations for all
+   objects are managed and saved by it.
+ You can simply destroy it at any time, it will reset the GUI for this context.
+ Like any other object, you can use the object menu and do "Destroy Object".
+ a new IPref will be of course created as you use the interface.
+
+ 2C. Some things to know when editing objects
+ 
+  This is some kind of strange application, interfaces are built automatically
+ from object's description, it can explain some strange interface:
+ Some classes, like "Media Time Pattern" use lists. Media Time Pattern 
+ is a "Media" that mixes other media, 3D views or sounds. It has a first list
+ called "Track list", which lists tracks that will be played at the same moment.
+ Set the object to preview, and Use icon "+" to add 2 entries.
+ To column will be displayed on the left. Now double click one of the list lines,
+ and scroll down: another list has appeared ! ( for each lists, double click 
+ a line and scroll down to edit the line)
+  The second recursive list stands for the media that will be played consecutively
+ on this track. add 2 or tree entries to the second list:
+ you see that its elements got a time length in seconds, a reference
+ to another media to play, and some offset and time speed to edit.
+ Double click one of it, and scroll down: you now reach a classic veda
+ member edition. the member "Media To Play" offers a "Combo", it is
+ a reference combo, and there are a lots of this in other classes.
+ a Reference combo describe a reference from an object to another object.
+ it is always preset with no reference, but proposes 2 kinds of entries:
+ if another objects in the context can be refered, you'll see all their
+ names in the combo. After the objects names, some entries begins by "New",
+ it is a "New Object" equivalent, for each class types that fits this reference.
+ you can perfectly create a new MP3 object from there. Once the reference combo
+ is filled, you can choose to edit the refered object with "Go", or only
+ set it to preview with "Preview", next to the combo. This allows quick browsing
+ between objects. Other strange controls are the tree controls 
+ (used by 3D Object Scene for example), that reacts more or less like lists,
+ except that when you create a new element with icon "+", it will be created
+ under the element that is currently selected.
+  An important object member control to know about is the file resource control,
+  which you can find in classes "Sound Music MP3 File", "Image File JPEG",
+  or "3D Object LWO File". It has a file open icon to search a file, but
+  be carefull, for exporting executables, the file path should be relative
+  to the executable that will be generated. If you don't like extrenal files,
+  you can decide to link the file within the context binary, by ticking "Link In"
+  When this tick is set On, the file is loaded once for all and saved with the .avb,
+  in that case the filepath is useless. When it is set Off, the disk based file
+  is used. 
+ Last thing: there are Undo/Redo icons up there in the toolbar. this should work, but
+ for the moment, when you destroy a list element or an object, the whole undo
+ action stack is flushed, just so you know.
+ Be carefull also with the "Flush Name" icon: it empties all object names to zero,
+ and undoes will be hardly able to bring names back. This function was made
+ to optimize context size before creating executables.
+
+4. Nice File features
+
+ Things you can do with present classes are building 3D objects,
+ texts drawn with 3D objects, link objects in 3D scenes,
+ make some shape or color shades on the objects with class Object 3D Scene,
+ link 3D objects to 3D textures which defines rendering types, images
+ to the textures, use Image RGBA Mixer to make more complex images,
+ controling camera movements rendering a 3D scene with Media 3D View,
+ and save the whole context at any time as a .avb binary.
+ 
+ There comes another aspect of the UVeda Application and of the
+ AzurVedaLib API: you can merge any other context file and add their objects
+ to your current context using the Open icon with a red cross.
+ you can melt 2 contextes this way. So imagine you got an old demo, and
+ only want to recover one image, script or anywhat from that demo:
+  you simply merge the whole old demo and refers the image from it.
+ But, there, you will have a lots of unused objects. 
+ How to get rid of them ? 
+ We have seen objects can have references to other objects.
+ This implies a hierarchy in the objects: a texture will depends on the images
+ it refers, and have nothing to do with other images in the context.
+ Implicitly, your main media script depends on all the objects it does
+ really use, directly or indirectly, by the game of the references.
+ So, to flush all unused objects your script doesn't need, use the object
+ menu on the script object item, and throw the "Destroy Independant" function.
+ All unused objects will be destroyed. (the interface pref object too) 
+  This work with any classes of course, you can extract the exact dependant
+  object set as a context. Of course you can also clone contextes binaries 
+  with "Save As". Using these features makes it very easy to merge the work
+  of many people, or recover details of older works.
+ 
+4. How do I create an executable ?
+
+You got a "Export executable" entry in the file menu !
+But to make it work, you got to know the following: the executable
+created will just play a "media" object. So your context must declare
+which is the media that will be the main entry for the executable.
+This is done by creating an object with class "Media Access". You should just
+have one Media Access object per context to make executables from them.
+Note all media objects have an implicit time length that will be used.
+ You got to fill the "MainMedia" entry of the access, but you can also fill
+ the facultative "bootMedia", which will stand for a little script played
+ by the executbale (a progress bar is a good idea) when the main media
+ will be created. This bootmedia should length 10 seconds, and the 10 seonds
+ will be played during main media time creation.
+ We advise that you also give the executable name with "Export Name", this
+ name could also be used by the executable code, (for a window title by example)
+ 
+ note the current available media classes are:
+  - "Media 3D View"			it allows any 3D rendering.
+  - "Sound Music MP3 File"  it plays a MP3 music
+  - "Media Time Pattern"   allows the mixing of any media objects.
+  
+  ... So you can mix 3D rendering and music with a "Media Time Pattern",
+  and declare this object as the main entry with a media class object.
+  Then, create an executable with the menu.
+  
+  NOTE: the menu entry "Export Context as Media Executable"
+   actually does the following:
+  It saves a "demo.cpp" file as would do the "export .c file" entry,
+  but then throws create.bat, which is a script that uses compilers
+  to actually compile demo.cpp and use a linker to generate executables
+  of any type, for any platform. So you may edit create.bat for your own use.
+
+  Note about windows executable generation:
+	you can change the icon by changing the file ExeBuilderWindows/Veda.ico 
+	the executable compresser UPX is used after compilation because it is GPL,
+	 you can change the compressor yourself in create.bat
+	 
+ 
+  Note about Dreamcast executable generation: 
+	known problems: some transparency behaviours may not be correct in some minor cases,
+	when a texture has a nowrite-depth buffer mode.
+	try to sort your layers so that they are drawn in a depth order, it should be OK.
+    The external file resources loads has not been validated, so
+    all files resources for a dreamcast demo should be "linked in" the binary
+    with the "link in" tick before generation.
+    It currently generates a .elf file and a "unscrambled binary" (ubin)
+    file. Dreamcast user will understand that you can upload this files
+    with a serial cable and dc-tool on the pc and DCLoad on the dreamcast,
+    or use SBI builder, or bootdreams to create bootable CD images...
+    (Note create.bat could be patched to do that.)
+	When you view a dreamcast demo, reboot with start, or use the 
+    analogic pad to manipulate time.
+ 
+ 5. That's all folks.
+
+ Note if this application depends on the base package and the MFC, it is not the case
+ of the independant base package. Other Editor applications will follow using 
+ other GUI APIs, as well as any kind of tools using compatible .avb files.
+ 
+  author: Victorien Ferry, a.k.a. krabob/mkd
+  http://sourceforge.net/projects/azurvedalib/
+  http://www.m4nkind.com
+  

@@ -1,0 +1,9 @@
+# Project: VedaLib3DEngine
+# 
+
+RES  = 
+OBJREP = VedaLib3DEngine
+SRCREP = ../VedaLib3DEngine
+BIN  = lib/VedaLib3DEngine.a
+include	../VedaLib3DEngine/Makefile.i
+include MakefileModel.i

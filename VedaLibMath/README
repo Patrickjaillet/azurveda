@@ -1,0 +1,6 @@
+AzurVeda VedaLibMath
+This library extends VedaLib 's BaseObject to provide classes for AzurVeda contexts.
+It's an equation management Library .
+Please read the documentation in the headers.
+author: victorien ferry & www.m4nkind.com
+This Library applies the GNU LESSER GENERAL PUBLIC LICENSE Version 2.1 , read file COPYING.

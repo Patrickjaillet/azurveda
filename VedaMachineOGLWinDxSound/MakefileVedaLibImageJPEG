@@ -1,0 +1,10 @@
+# Project: VedaLibImageJPEG
+# 
+
+RES  = 
+OBJREP = VedaLibImageJPEG
+SRCREP = ../VedaLibImageJPEG
+BIN  = lib/VedaLibImageJPEG.a
+include	../VedaLibImageJPEG/Makefile.i
+INCDEP += -D_LIB
+include MakefileModel.i

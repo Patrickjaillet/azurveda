@@ -1,0 +1,5 @@
+AzurVeda VedaLibSoundXM
+This library extends VedaLib 's BaseObject to provide classes for AzurVeda contexts.
+Class XMSoundObject generates a sound signal that plays a XM music file, from a resource.
+ The code used behind for playing may vary.
+This Library applies the GNU LESSER GENERAL PUBLIC LICENSE Version 2.1 , read file COPYING.

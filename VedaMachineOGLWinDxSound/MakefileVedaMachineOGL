@@ -1,0 +1,9 @@
+# Project: VedaMachineOGL
+#
+
+RES  =
+SRCREP = ../VedaMachineOGL
+OBJREP = VedaMachineOGL
+BIN  = lib/VedaMachineOGL.a
+include	../VedaMachineOGL/Makefile.i
+include MakefileModel.i

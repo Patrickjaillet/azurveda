@@ -1,0 +1,79 @@
+# Project: VedaMachineDreamcast
+# 
+
+OBJREP = mingwinrelease
+
+CPP  = g++.exe
+CC   = gcc.exe
+
+WINDRES = windres.exe
+RES  = 
+OBJ  = \
+mingwinrelease/DemoRunBase.o \
+mingwinrelease/OGLMachineWinDxSound_Sound.o \
+mingwinrelease/OGLMachineWinDxSound.o 
+
+$(RES)
+LINKOBJ  = $(OBJ)
+LIBS =  -L"D:/code/Dev-Cpp/lib" -mwindows -lopengl32 "lib/VedaMachineOGL.a" "lib/VedaLibDemo.a"  "lib/VedaLib3DEngine.a"  "lib/VedaLibSoundXM.a"   "lib/VedaLibSoundMP3.a"  "lib/VedaLibImageJPEG.a"   "lib/VedaLibImage.a"   "lib/VedaLibMath.a"   "lib/VedaLib.a" -lopengl32 dsound.lib
+INCS =   -I"D:/code/Dev-Cpp/lib/gcc/mingw32/3.4.2/include" -I"D:/code/Dev-Cpp/include/c++/3.4.2/backward"  -I"D:/code/Dev-Cpp/include/c++/3.4.2/mingw32"  -I"D:/code/Dev-Cpp/include/c++/3.4.2"  -I"D:/code/Dev-Cpp/include"  -I"../Veda" -I"../VedaMachineOGL"
+CXXINCS =  $(INCS)
+BIN  = Windows.exe
+CXXFLAGS = $(CXXINCS)  -O1 -fno-rtti -fno-exceptions -fno-strict-aliasing -fno-common -fomit-frame-pointer
+CFLAGS = $(INCS)  -O1 -fno-rtti -fno-exceptions -fno-strict-aliasing -fno-common -fomit-frame-pointer
+RM = rm -f
+
+.PHONY: all all-before all-after clean clean-custom
+clean-custom:
+	make -f MakefileVedaLib clean
+	make -f MakefileVedaLibMath clean
+	make -f MakefileVedaLibImage clean
+	make -f MakefileVedaLibImageJPEG clean
+	make -f MakefileVedaLib3DEngine clean
+	make -f MakefileVedaLibDemo clean
+#	make -f MakefileVedaLibSoundBAOOM clean
+	make -f MakefileVedaLibSoundMP3 clean
+	make -f MakefileVedaLibSoundXM clean
+	make -f MakefileVedaMachineOGL clean
+	rm -f VedaMachineDreamcast\VedaMachineDreamcast.bin
+# all-before: romdisk.o
+all-before: 
+	make -f MakefileVedaLib
+	make -f MakefileVedaLibMath
+	make -f MakefileVedaLibImage
+	make -f MakefileVedaLibImageJPEG
+	make -f MakefileVedaLib3DEngine
+	make -f MakefileVedaLibDemo
+#	make -f MakefileVedaLibSoundBAOOM
+	make -f MakefileVedaLibSoundMP3
+	make -f MakefileVedaLibSoundXM
+	make -f MakefileVedaMachineOGL
+
+all: $(OBJREP) all-before $(BIN) all-after
+
+
+clean: clean-custom
+	${RM} $(OBJ) $(BIN)
+
+$(OBJREP):
+	@echo " mkdir" $(OBJREP)
+	@echo ""
+	@mkdir $(OBJREP)
+
+$(BIN): $(OBJ) mingwinrelease/demo.o
+	ar r lib/VedaMachineWindowsRun.a mingwinrelease/OGLMachineWinDxSound_Sound.o mingwinrelease/OGLMachineWinDxSound.o
+	ranlib lib/VedaMachineWindowsRun.a
+	$(CPP) -v -o $(BIN) $(LINKOBJ) mingwinrelease/demo.o $(LIBS)
+
+mingwinrelease/OGLMachineWinDxSound_Sound.o: OGLMachineWinDxSound_Sound.cpp
+	$(CPP) -c OGLMachineWinDxSound_Sound.cpp -o mingwinrelease/OGLMachineWinDxSound_Sound.o $(CXXFLAGS)
+
+mingwinrelease/OGLMachineWinDxSound.o: OGLMachineWinDxSound.cpp
+	$(CPP) -c OGLMachineWinDxSound.cpp -o mingwinrelease/OGLMachineWinDxSound.o $(CXXFLAGS)
+
+mingwinrelease/DemoRunBase.o: DemoRunBase.cpp
+	$(CPP) -c DemoRunBase.cpp -o mingwinrelease/DemoRunBase.o $(CXXFLAGS)
+
+mingwinrelease/demo.o: demo.cpp
+	$(CPP) -c demo.cpp -o mingwinrelease/demo.o $(CXXFLAGS)
+

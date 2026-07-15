@@ -1,0 +1,9 @@
+# Project: VedaLibSoundXM
+# 
+
+RES  = 
+OBJREP = VedaLibSoundXM
+SRCREP = ../VedaLibSoundXM
+BIN  = lib/VedaLibSoundXM.a
+include	../VedaLibSoundXM/Makefile.i
+include MakefileModel.i
