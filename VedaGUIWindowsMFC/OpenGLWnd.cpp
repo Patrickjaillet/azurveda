@@ -366,7 +366,7 @@ void COpenGLWnd::OnUpdate(CView* /*pSender*/, LPARAM /*lHint*/, CObject* /*pHint
 
 }
 
-void COpenGLWnd::OnTimer(UINT nIDEvent)
+void COpenGLWnd::OnTimer(UINT_PTR nIDEvent)
 {
 	// TODO : ajoutez ici le code de votre gestionnaire de messages et/ou les paramètres par défaut des appels
 

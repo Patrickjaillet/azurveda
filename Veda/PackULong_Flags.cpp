@@ -37,7 +37,7 @@ void PackULong_Flags::SetBitFieldInfo( const char *_meaning )
 */
 const char	*PackULong_Flags::ValueToString()
 {
-	char *pEmpty="";	// "" is actually global.
+	const char *pEmpty="";	// "" is actually global.
 	if( !m_Bitfield_Meaning_InfoString ) return(pEmpty);
 	if( !m_pValueString ) m_pValueString = new PackString;
 	if( m_pValueString )

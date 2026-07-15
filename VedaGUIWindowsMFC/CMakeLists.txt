@@ -33,6 +33,7 @@ add_executable(VedaGUIWindowsMFC WIN32
 )
 
 target_include_directories(VedaGUIWindowsMFC PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
+target_compile_definitions(VedaGUIWindowsMFC PRIVATE _AFXDLL)
 target_precompile_headers(VedaGUIWindowsMFC PRIVATE stdafx.h)
 
 target_link_libraries(VedaGUIWindowsMFC PRIVATE

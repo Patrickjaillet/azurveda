@@ -147,7 +147,7 @@ public:
 	afx_msg void OnStnClickedSpeed();
 	CProgressCtrl m_Progressbar;
 	afx_msg void OnStnClickedBplaypause();
-	afx_msg void OnTimer(UINT nIDEvent);
+	afx_msg void OnTimer(UINT_PTR nIDEvent);
 	afx_msg void OnStnClickedBreturnstop();
 
 	afx_msg void OnStnClickedBMove(); 

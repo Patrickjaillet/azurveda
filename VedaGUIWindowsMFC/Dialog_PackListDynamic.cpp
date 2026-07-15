@@ -179,7 +179,7 @@ void	CDialog_PackListDynamic::InitListShape( BaseType *_pObjectToShapeList  )
 	{	// if object is a PackStruct, "n" column:
 			lvc.cx = 24 ;			
 			lvc.mask = LVCF_TEXT | LVCF_WIDTH ;
-			lvc.pszText = _T("");	
+			lvc.pszText = (LPTSTR)_T("");
 			lvc.iSubItem = 0;
 			m_listctrl.InsertColumn( 0, &lvc );
 			lvc.mask = LVCF_TEXT | LVCF_SUBITEM | LVCF_WIDTH | LVCF_FMT ;
@@ -205,7 +205,7 @@ void	CDialog_PackListDynamic::InitListShape( BaseType *_pObjectToShapeList  )
 	{ // else it's a one object list:
 			lvc.cx = 24 ;			
 			lvc.mask = LVCF_TEXT | LVCF_WIDTH ;
-			lvc.pszText = _T("");	
+			lvc.pszText = (LPTSTR)_T("");
 			lvc.iSubItem = 0;
 			m_listctrl.InsertColumn( 0, &lvc );
 			lvc.mask = LVCF_TEXT | LVCF_SUBITEM | LVCF_WIDTH | LVCF_FMT ;

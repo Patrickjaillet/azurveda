@@ -34,7 +34,7 @@ void PackULong_Enums::SetEnumsInfo( const char *_meaning )
 */
 const char	*PackULong_Enums::ValueToString()
 {
-	char *pEmpty="";	// "" is actually global.
+	const char *pEmpty="";	// "" is actually global.
 	if( !m_Enums_Meaning_InfoString ) return(pEmpty);
 	if( !m_pValueString ) m_pValueString = new PackString;
 	if( m_pValueString )

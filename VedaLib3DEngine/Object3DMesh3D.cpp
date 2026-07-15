@@ -487,6 +487,7 @@ void Object3DMesh3D::ToolMethod_LoadLWO()
 	if(!pLayer) goto closeend;
 	//pLayer->
 
+	{
 	// get vertexes:
 	int ii;
 	sLwoVertex *pLWOVert = pLayer->LWO_Vertex;
@@ -547,6 +548,7 @@ void Object3DMesh3D::ToolMethod_LoadLWO()
 			}
 		}
 		pPolygonTable++;
+	}
 	}
 closeend:
 	// bye bye:

@@ -11,7 +11,6 @@
 #include <stdlib.h>
 #define STRICT
 #include <mmsystem.h>
-#include <dxerr8.h>
 #include <dsound.h>
 //#include "VirtualMedia.h"
 //#include "BaseContext.h"

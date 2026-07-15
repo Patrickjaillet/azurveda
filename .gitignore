@@ -32,3 +32,10 @@ vcpkg_installed/
 
 # Generated version header
 Version.h
+
+# Local dev tooling / harness state (not part of the project)
+.claude/
+
+# Runtime output of Veda/CodeExamples/E01_SimpleSerialization when run from the repo root
+/my1337File
+/serializedstruct

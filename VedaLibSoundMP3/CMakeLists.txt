@@ -16,7 +16,7 @@ add_library(VedaLibSoundMP3 STATIC
 target_include_directories(VedaLibSoundMP3 PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 target_link_libraries(VedaLibSoundMP3 PUBLIC Veda VedaLibMath VedaLibImage)
 target_compile_definitions(VedaLibSoundMP3 PRIVATE
-    FPM_INTEL
+    FPM_64BIT
     HAVE_CONFIG_H
     ASO_ZEROCHECK
     HAVE_ASSERT_H

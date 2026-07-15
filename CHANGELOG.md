@@ -36,7 +36,28 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/lang/fr/).
 
 ### Fixed
 
-- N/A
+- Bugs de compilation réels révélés en validant le build CMake sur une machine
+  Windows/MSVC réelle (VS Build Tools 2022 + MFC/ATL, en attendant VS2026) :
+  - Littéraux chaîne assignés à des pointeurs `char*`/`LPSTR` non-const, rejetés en
+    C++23 strict (`Veda/PackStruct.cpp`, `Veda/PackULong_Enums.cpp`,
+    `Veda/PackULong_Flags.cpp`, `VedaGUIWindowsMFC/Dialog_PackListDynamic.cpp`,
+    `VedaGUIWindowsMFC/LeftView.cpp`).
+  - Signature `OnTimer(UINT)` obsolète : le macro `ON_WM_TIMER()` de MFC exige
+    `OnTimer(UINT_PTR)` en 64-bit (`VedaGUIWindowsMFC/OpenGLWnd.cpp/.h`,
+    `VedaGUIWindowsMFC/PreviewManagerView.cpp/.h`).
+  - `goto` traversant une initialisation de variable dans le chargeur LWO
+    (`VedaLib3DEngine/Object3DMesh3D.cpp`).
+  - Assembleur inline x86 (`__asm`) du décodeur MP3, invalide sous MSVC x64 : le
+    chemin `FPM_INTEL` de libmad est remplacé par le chemin portable `FPM_64BIT`.
+  - En-tête DirectX legacy `dxerr8.h` (absent du SDK Windows moderne) retiré de
+    `VedaMachineOGLWinDxSound/OGLMachineWinDxSound_Sound.cpp` : non utilisé.
+  - `_AFXDLL` non défini automatiquement par `CMAKE_MFC_FLAG` sous le générateur
+    Ninja ; ajouté explicitement dans `VedaGUIWindowsMFC/CMakeLists.txt`.
+  - `WINVER`/`_WIN32_WINNT` jamais définis (ajoutés à `0x0A00`, ciblant
+    Windows 10/11 conformément aux conventions du projet).
+  - `cmake/GenerateVersion.cmake` : `CMAKE_CURRENT_LIST_DIR`, évalué dans le corps
+    d'une fonction, pointait vers le répertoire de l'appelant plutôt que `cmake/`,
+    faisant échouer la génération de `Version.h`.
 
 ### Removed
 

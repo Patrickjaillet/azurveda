@@ -580,7 +580,7 @@ BOOL CLeftView::OnNotify(WPARAM wParam, LPARAM lParam, LRESULT* pResult)
 	if(wParam == TVN_GETINFOTIP)
 	{
 		 LPNMTVGETINFOTIP lpGetInfoTip = (LPNMTVGETINFOTIP)lParam;
-		 lpGetInfoTip->pszText="azaz";
+		 lpGetInfoTip->pszText=(LPTSTR)_T("azaz");
 		 return TRUE;
 
 	}

@@ -34,7 +34,7 @@ typedef my_source_mgr * my_src_ptr;
 // nasty error management:
 struct my_error_mgr {
   struct jpeg_error_mgr pub;	/* "public" fields */
-  //unsigned int exitcode;	// !=0 means exit code.
+  unsigned int errorcode;	// !=0 means exit code.
  // jmp_buf setjmp_buffer;	/* for return to caller */
 };
 typedef struct my_error_mgr * my_error_ptr;
@@ -65,7 +65,7 @@ static int CreateInternal_C(const unsigned char *pFileChunk,unsigned int fileSiz
 	/* Initialize the JPEG decompression object with default error handling. */
 	cinfo.err = jpeg_std_error(&(jerr.pub));
 	jerr.pub.error_exit = my_error_exit;
-	cinfo.errorcode = 0;
+	jerr.errorcode = 0;
 	/* Establish the setjmp return context for my_error_exit to use. */
 /*	if (setjmp(jerr.setjmp_buffer)) {
 		if(initState==2) jpeg_finish_decompress(&cinfo);
@@ -88,7 +88,7 @@ static int CreateInternal_C(const unsigned char *pFileChunk,unsigned int fileSiz
 	// - --------------- -
 	/* Read file header, set default decompression parameters */
 	jpeg_read_header(&cinfo, TRUE);
-  if(cinfo.errorcode != 0)
+  if(jerr.errorcode != 0)
   {
 		if(initState==2) jpeg_finish_decompress(&cinfo);
 		if(initState<2)jpeg_destroy_decompress(&cinfo);
@@ -100,7 +100,7 @@ static int CreateInternal_C(const unsigned char *pFileChunk,unsigned int fileSiz
 
 	/* Step 5: Start decompressor */
 	jpeg_start_decompress(&cinfo);
-	if(cinfo.errorcode != 0)
+	if(jerr.errorcode != 0)
 	{
 		jpeg_finish_decompress(&cinfo);
 		jpeg_destroy_decompress(&cinfo);
@@ -144,7 +144,7 @@ static int CreateInternal_C(const unsigned char *pFileChunk,unsigned int fileSiz
 	while (cinfo.output_scanline < cinfo.output_height) 
 	{
 		jpeg_read_scanlines(&cinfo, (JSAMPARRAY) &plinebuffer, 1);
-		if(cinfo.errorcode != 0)
+		if(jerr.errorcode != 0)
 		{
 			jpeg_finish_decompress(&cinfo);
 			jpeg_destroy_decompress(&cinfo);
@@ -289,7 +289,7 @@ my_error_exit (j_common_ptr cinfo)
 // printf("my_error_exit\n");
   /* cinfo->err really points to a my_error_mgr struct, so coerce pointer */
   my_error_ptr myerr = (my_error_ptr) cinfo->err;
- cinfo->errorcode = cinfo->err->msg_code ;
+ myerr->errorcode = cinfo->err->msg_code ;
 
   /* Always display the message. */
   /* We could postpone this until after returning, if we chose. */

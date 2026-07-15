@@ -381,7 +381,7 @@ void CPreviewManagerView::OnStnClickedBplaypause()
 	UpdateFromPreferenceObject(ppref);
 }
 
-void CPreviewManagerView::OnTimer(UINT nIDEvent)
+void CPreviewManagerView::OnTimer(UINT_PTR nIDEvent)
 {
 	// TODO : ajoutez ici le code de votre gestionnaire de messages et/ou les paramètres par défaut des appels
 	

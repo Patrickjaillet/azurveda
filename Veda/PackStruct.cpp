@@ -274,7 +274,7 @@ void	PackStruct::SetObjectThatManagesThis(BaseObject *_pManager)
 */
 const char	*PackStruct::ValueToString()
 {
-	char *pEmpty="";	// "" is actually global.
+	const char *pEmpty="";	// "" is actually global.
 
 	if( !m_pValueString ) m_pValueString = new PackString;
 	if( !m_pValueString ) return(pEmpty);
