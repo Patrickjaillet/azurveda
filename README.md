@@ -9,10 +9,14 @@ This edition of the workspace is **Windows 10/11 only**, targets 2026-era toolin
 code to a modern build chain. See [roadmap.md](roadmap.md) for the full conversion
 plan and its progress.
 
-![VedaGUIWindowsMFC editor](docs/screenshot.png)
+<p align="center">
+  <img src="docs/screenshot.png" alt="VedaGUIWindowsMFC editor">
+</p>
 
-_Update this screenshot whenever a change notably alters the editor's appearance
-(see roadmap, Phase 6)._
+<p align="center">
+  <em>Update this screenshot whenever a change notably alters the editor's appearance
+  (see roadmap, Phase 6).</em>
+</p>
 
 ## Modules
 
