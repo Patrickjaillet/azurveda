@@ -6,16 +6,14 @@ Victorien Ferry ([m4nkind.com](https://www.m4nkind.com)).
 
 This edition of the workspace is **Windows 10/11 only**, targets 2026-era tooling
 (Visual Studio 2026, C++23), and progressively converts the historical (2003-2007)
-code to a modern build chain. See [roadmap.md](roadmap.md) for the full conversion
-plan and its progress.
+code to a modern build chain.
 
 <p align="center">
   <img src="docs/screenshot.png" alt="VedaGUIWindowsMFC editor">
 </p>
 
 <p align="center">
-  <em>Update this screenshot whenever a change notably alters the editor's appearance
-  (see roadmap, Phase 6).</em>
+  <em>Update this screenshot whenever a change notably alters the editor's appearance.</em>
 </p>
 
 ## Modules
@@ -48,10 +46,10 @@ plan and its progress.
 
 ## Build
 
-The build uses **CMake + vcpkg** (see [roadmap.md](roadmap.md), Phase 1). The old
-Visual Studio .NET 2003 solutions (`VedaWindowsLGPL.sln`, `VedaWindowsGPL.sln`,
-`.vcproj` files) are kept for reference until the CMake build has been validated on
-a real machine, and will then be removed.
+The build uses **CMake + vcpkg**. The old Visual Studio .NET 2003 solutions
+(`VedaWindowsLGPL.sln`, `VedaWindowsGPL.sln`, `.vcproj` files) are kept for
+reference until the CMake build has been validated on a real machine, and will
+then be removed.
 
 1. Clone the repository: `git clone https://github.com/Patrickjaillet/azurveda.git`
 2. Set the `VCPKG_ROOT` environment variable to point to a
@@ -99,9 +97,8 @@ The project follows [Semantic Versioning](https://semver.org/) (`MAJOR.MINOR.PAT
 [`CHANGELOG.md`](CHANGELOG.md) follows the [Keep a Changelog](https://keepachangelog.com/en/1.1.0/)
 format. **Any PR or commit that changes the software's observable behavior must
 add an entry to the `[Unreleased]` section** (`Added`, `Changed`, `Fixed`, or
-`Removed` category) before being merged. CI (roadmap Phase 1/7) will fail builds
-on `main` if `CHANGELOG.md` was not modified in a PR containing functional
-changes.
+`Removed` category) before being merged. CI will fail PR builds if
+`CHANGELOG.md` was not modified in a PR containing functional changes.
 
 On release, the `[Unreleased]` section is renamed with the version number and
 date (`## [MAJOR.MINOR.PATCH] - YYYY-MM-DD`), and a new empty `[Unreleased]`
@@ -110,5 +107,6 @@ section is created above it.
 ## License
 
 See [`COPYING`](COPYING) and each module's own `COPYING` file. The workspace
-combines LGPL 2.1 and GPL 2 components (see the table above and the "Legal
-caveats" section of [roadmap.md](roadmap.md)).
+combines LGPL 2.1 and GPL 2 components (see the table above): as soon as the
+build links `VedaLibSoundMP3` and/or `VedaGUIWindowsMFC`, the combined source
+falls under GPL 2.

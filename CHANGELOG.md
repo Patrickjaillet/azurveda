@@ -199,6 +199,12 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/lang/fr/).
   `uniminixm`) n'est pas modifié.
 - `dsound.lib`/`dxguid.lib` retirés de `VedaMachineOGLWinDxSound/CMakeLists.txt`
   (remplacement DirectSound → XAudio2), remplacés par `ole32`.
+- `roadmap.md` (demande utilisateur, 2026-07-15) : les 8 phases qu'il décrivait
+  sont désormais toutes terminées. Les liens `[roadmap.md](roadmap.md)` et
+  mentions de phase associés ont été retirés de `README.md` et
+  `.github/workflows/ci.yml` ; les mentions déjà présentes dans les entrées
+  historiques de ce fichier sont conservées telles quelles (`CHANGELOG.md`
+  documente l'état du projet au moment de chaque changement, pas l'état actuel).
 
 ### Known issues
 

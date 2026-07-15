@@ -41,7 +41,7 @@ jobs:
             if echo "$changed" | grep -qx 'docs/screenshot.png'; then
               echo "UI resource files changed and docs/screenshot.png was updated."
             else
-              echo "::error::This PR changes VedaGUIWindowsMFC .rc/.rc2 resources but does not update docs/screenshot.png. Update the screenshot referenced from README.md (see roadmap.md Phase 6/7)."
+              echo "::error::This PR changes VedaGUIWindowsMFC .rc/.rc2 resources but does not update docs/screenshot.png. Update the screenshot referenced from README.md."
               exit 1
             fi
           else
