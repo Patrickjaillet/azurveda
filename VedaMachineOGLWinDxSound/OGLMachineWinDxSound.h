@@ -9,6 +9,7 @@
 struct IXAudio2;
 struct IXAudio2MasteringVoice;
 struct IXAudio2SourceVoice;
+struct GLFWwindow;
 
 class OGLMachineWinDxSound : public OGLMachine
 {
@@ -75,8 +76,6 @@ protected:
 		volatile unsigned int	m_Width;
 
 		volatile unsigned int	m_Height;
-		DWORD       m_dwExStyle;
-		DWORD       m_dwStyle;
 
 		bool		m_IsFullScreen;
 
@@ -89,19 +88,11 @@ protected:
 
 	RenderScreen	*m_pCurrentScreen;
 
-		HWND		m_hWnd;
+		GLFWwindow	*m_pGLFWWindow;
 
-		HDC			m_DC;
-
-		HGLRC       m_hRC;
-
-	static bool	m_OGLClassIsRegistered;
-
-	static	OGLMachineWinDxSound	*m_LastInstance;
+	static bool	m_GLFWIsInitialized;
 
 	const char	*m_pMachineTitle;
-
-	HINSTANCE   m_hInstance;
 
 	bool		m_active;
 
@@ -112,7 +103,12 @@ protected:
 	int ActivateScreen(RenderScreen *_pToActivate);
 	void KillGLWindow();
 	BOOL CreateGLWindow();
-	static	LRESULT CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);
+
+	static void	KeyCallback(GLFWwindow *_pWindow,int _key,int _scancode,int _action,int _mods);
+	static void	MouseButtonCallback(GLFWwindow *_pWindow,int _button,int _action,int _mods);
+	static void	WindowCloseCallback(GLFWwindow *_pWindow);
+	static void	FramebufferSizeCallback(GLFWwindow *_pWindow,int _width,int _height);
+	static void	WindowFocusCallback(GLFWwindow *_pWindow,int _focused);
 
 	void	SoundInit( HWND _window );
 

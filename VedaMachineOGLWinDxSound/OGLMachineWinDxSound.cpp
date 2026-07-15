@@ -6,16 +6,15 @@
 #include <stdio.h>
 #include <gl\gl.h>
 
-OGLMachineWinDxSound	*OGLMachineWinDxSound::m_LastInstance=NULL;
+#define GLFW_EXPOSE_NATIVE_WIN32
+#include <GLFW/glfw3.h>
+#include <GLFW/glfw3native.h>
 
-LRESULT CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);
-
-bool	OGLMachineWinDxSound::m_OGLClassIsRegistered=false;
+bool	OGLMachineWinDxSound::m_GLFWIsInitialized=false;
 
 OGLMachineWinDxSound::OGLMachineWinDxSound() : OGLMachine()
 
 	,m_active(true)
-	,m_hInstance(NULL)
 	,m_Width(800)
 	,m_Height(600)
 	,m_SoundVolume(1.0f)
@@ -26,9 +25,7 @@ OGLMachineWinDxSound::OGLMachineWinDxSound() : OGLMachine()
 	,m_AskSwitchScreen(false)
 	,m_pMachineTitle(0L)
 	,m_pCurrentScreen(0L)
-	,m_DC(NULL)
-	,m_hRC(NULL)
-	,m_hWnd(NULL)
+	,m_pGLFWWindow(NULL)
 {
 	m_FullScreen.m_IsActive = false;
 	m_FullScreen.m_IsFullScreen = true;
@@ -36,8 +33,6 @@ OGLMachineWinDxSound::OGLMachineWinDxSound() : OGLMachine()
 	m_FullScreen.m_Y = 0;
 	m_FullScreen.m_Width = 800;
 	m_FullScreen.m_Height = 600;
-	m_FullScreen.m_dwExStyle = WS_EX_APPWINDOW;
-	m_FullScreen.m_dwStyle = WS_POPUP;
 
 	m_WindowScreen.m_IsActive = false;
 	m_WindowScreen.m_IsFullScreen = false;
@@ -45,10 +40,6 @@ OGLMachineWinDxSound::OGLMachineWinDxSound() : OGLMachine()
 	m_WindowScreen.m_Y = 128;
 	m_WindowScreen.m_Width = 640;
 	m_WindowScreen.m_Height = 480;
-	m_WindowScreen.m_dwExStyle =WS_EX_APPWINDOW | WS_EX_WINDOWEDGE;
-	m_WindowScreen.m_dwStyle =WS_OVERLAPPEDWINDOW;
-
-	m_LastInstance=this;
 
 #ifdef _ENGINE_EDITABLE_
 	m_MachineIsLockedForSoundManagement = true;
@@ -69,10 +60,10 @@ OGLMachineWinDxSound::~OGLMachineWinDxSound(void)
 	SoundExit();
 	KillGLWindow();
 
-	if(!(m_pFirstMachine->m_pNextMachine) && m_OGLClassIsRegistered )
+	if(!(m_pFirstMachine->m_pNextMachine) && m_GLFWIsInitialized )
 	{
-		UnregisterClass("OpenGL",m_hInstance);
-		m_OGLClassIsRegistered = false;
+		glfwTerminate();
+		m_GLFWIsInitialized = false;
 	}
 
 	OGLMachineWinDxSound **pn = &m_pFirstMachine;
@@ -101,30 +92,6 @@ VirtualMachine::eVMResult	OGLMachineWinDxSound::InitMachine()
 
 	InitLocalization();
 
-	m_hInstance = GetModuleHandle(NULL);
-	if(!m_OGLClassIsRegistered)
-	{
-		WNDCLASS	windowsClass;
-		windowsClass.style            = CS_HREDRAW | CS_VREDRAW | CS_OWNDC;
-		windowsClass.lpfnWndProc      = (WNDPROC) WndProc;
-		windowsClass.cbClsExtra       =
-		windowsClass.cbWndExtra       = 0;
-		windowsClass.hInstance        = m_hInstance;
-		windowsClass.hIcon            =
-			LoadIcon(m_hInstance,MAKEINTRESOURCE(101));
-
-		windowsClass.hCursor          = LoadCursor(NULL, IDC_ARROW);
-		windowsClass.hbrBackground    = NULL;
-		windowsClass.lpszMenuName     = NULL;
-		windowsClass.lpszClassName    = "OpenGL";
-		if (!RegisterClass(&windowsClass))
-		{
-			MessageBox(NULL,"Failed To Register The Window Class.","ERROR",MB_OK|MB_ICONEXCLAMATION);
-			return vmr_FAILED;
-		}
-		m_OGLClassIsRegistered = true;
-	}
-
 	if (!CreateGLWindow()) return vmr_FAILED;
 
 	ActivateScreen( &m_FullScreen );
@@ -135,7 +102,7 @@ VirtualMachine::eVMResult	OGLMachineWinDxSound::InitMachine()
 	pglDefVP->Clear();
 	pglDefVP->SwapBuffer();
 
-	SoundInit( m_hWnd );
+	SoundInit( glfwGetWin32Window(m_pGLFWWindow) );
 
 	if(!glActiveTextureARB)
 		glActiveTextureARB = (PFNGLACTIVETEXTUREARBPROC)
@@ -183,24 +150,19 @@ void	OGLMachineWinDxSound::InitLocalization()
 void	OGLMachineWinDxSound::SetMachineTitle(const char *_pMachineTitle)
 {
 	m_pMachineTitle = _pMachineTitle ;
-	if(m_hWnd) SetWindowText(m_hWnd,m_pMachineTitle);
+	if(m_pGLFWWindow) glfwSetWindowTitle(m_pGLFWWindow,m_pMachineTitle);
 }
 int OGLMachineWinDxSound::ActivateScreen(RenderScreen *_pToActivate)
 {
 
 	if( m_pCurrentScreen )
 	{
-		ShowCursor(TRUE);
-		ShowWindow(m_hWnd,SW_HIDE);
-		if (m_pCurrentScreen->m_IsFullScreen)
+		if (!m_pCurrentScreen->m_IsFullScreen)
 		{
-			ChangeDisplaySettings(NULL,0);
-		} else
-		{
-			RECT rec;
-			GetWindowRect( m_hWnd,&rec);
-			m_pCurrentScreen->m_X = rec.left;
-			m_pCurrentScreen->m_Y = rec.top;
+			int x,y;
+			glfwGetWindowPos(m_pGLFWWindow,&x,&y);
+			m_pCurrentScreen->m_X = (unsigned int)x;
+			m_pCurrentScreen->m_Y = (unsigned int)y;
 		}
 		m_pCurrentScreen->m_IsActive = false;
 		m_pCurrentScreen = 0L;
@@ -210,34 +172,20 @@ int OGLMachineWinDxSound::ActivateScreen(RenderScreen *_pToActivate)
 	{
 		if (_pToActivate->m_IsFullScreen)
 		{
-			DEVMODE dmScreenSettings;
-			memset(&dmScreenSettings,0,sizeof(dmScreenSettings));
-			dmScreenSettings.dmSize=sizeof(dmScreenSettings);
-			dmScreenSettings.dmPelsWidth    = _pToActivate->m_Width;
-			dmScreenSettings.dmPelsHeight   = _pToActivate->m_Height;
-			dmScreenSettings.dmBitsPerPel   = 32;
-			dmScreenSettings.dmFields=DM_BITSPERPEL|DM_PELSWIDTH|DM_PELSHEIGHT;
-
-			if (ChangeDisplaySettings(&dmScreenSettings,CDS_FULLSCREEN)!=DISP_CHANGE_SUCCESSFUL)
-			{
-
-					return 1;
-			}
-	        ShowCursor(FALSE);
+			GLFWmonitor *pMonitor = glfwGetPrimaryMonitor();
+			const GLFWvidmode *pMode = glfwGetVideoMode(pMonitor);
+			glfwSetWindowMonitor(m_pGLFWWindow,pMonitor,0,0,
+				(int)_pToActivate->m_Width,(int)_pToActivate->m_Height,pMode->refreshRate);
+			glfwSetInputMode(m_pGLFWWindow,GLFW_CURSOR,GLFW_CURSOR_HIDDEN);
 		} else
 		{
-			ShowCursor(TRUE);
+			glfwSetWindowMonitor(m_pGLFWWindow,NULL,(int)_pToActivate->m_X,(int)_pToActivate->m_Y,
+				(int)_pToActivate->m_Width,(int)_pToActivate->m_Height,0);
+			glfwSetInputMode(m_pGLFWWindow,GLFW_CURSOR,GLFW_CURSOR_NORMAL);
 		}
-		SetWindowLong(m_hWnd,GWL_STYLE,_pToActivate->m_dwStyle);
-		SetWindowLong(m_hWnd,GWL_EXSTYLE,_pToActivate->m_dwExStyle);
-
-		SetWindowPos(m_hWnd,HWND_TOP,_pToActivate->m_X,_pToActivate->m_Y,
-						_pToActivate->m_Width,_pToActivate->m_Height,
-						SWP_FRAMECHANGED);
-		SetWindowText(m_hWnd,m_pMachineTitle);
-		ShowWindow(m_hWnd,SW_SHOW);
-		SetForegroundWindow(m_hWnd);
-		SetFocus(m_hWnd);
+		glfwSetWindowTitle(m_pGLFWWindow,m_pMachineTitle ? m_pMachineTitle : " ");
+		glfwShowWindow(m_pGLFWWindow);
+		glfwFocusWindow(m_pGLFWWindow);
 		_pToActivate->m_IsActive = true;
 
 		((OGLMachine::OGLInternalViewPort *) m_pDefaultViewPort)
@@ -252,218 +200,108 @@ void OGLMachineWinDxSound::KillGLWindow()
 {
 	ActivateScreen(0L);
 
-    if (m_hRC)
-    {
-        if (!wglDeleteContext(m_hRC))
-        {
-            MessageBox(NULL,"Release Rendering Context Failed.","SHUTDOWN ERROR",MB_OK | MB_ICONINFORMATION);
-        }
-        m_hRC=NULL;
-    }
-
-    if (m_DC && !ReleaseDC(m_hWnd,m_DC))
-    {
-        MessageBox(NULL,"Release Device Context Failed.","SHUTDOWN ERROR",MB_OK | MB_ICONINFORMATION);
-        m_DC=NULL;
-    }
-
-    if (m_hWnd && !DestroyWindow(m_hWnd))
-    {
-        MessageBox(NULL,"Could Not Release hWnd.","SHUTDOWN ERROR",MB_OK | MB_ICONINFORMATION);
-        m_hWnd=NULL;
-    }
-
+	if(m_pGLFWWindow)
+	{
+		glfwDestroyWindow(m_pGLFWWindow);
+		m_pGLFWWindow=NULL;
+	}
 }
 
 BOOL OGLMachineWinDxSound::CreateGLWindow()
 {
-    GLuint      PixelFormat;
-
-	DEVMODE dmScreenSettings;
-	memset(&dmScreenSettings,0,sizeof(dmScreenSettings));
-	dmScreenSettings.dmSize=sizeof(dmScreenSettings);
-	dmScreenSettings.dmPelsWidth    = m_FullScreen.m_Width;
-	dmScreenSettings.dmPelsHeight   = m_FullScreen.m_Height;
-	dmScreenSettings.dmBitsPerPel   = 32;
-	dmScreenSettings.dmFields=DM_BITSPERPEL|DM_PELSWIDTH|DM_PELSHEIGHT;
-
-	if (ChangeDisplaySettings(&dmScreenSettings,CDS_FULLSCREEN)!=DISP_CHANGE_SUCCESSFUL)
+	if(!m_GLFWIsInitialized)
 	{
-
+		if(!glfwInit())
+		{
+			MessageBox(NULL,"Failed To Initialize GLFW.","ERROR",MB_OK|MB_ICONEXCLAMATION);
 			return FALSE;
+		}
+		m_GLFWIsInitialized = true;
 	}
-	ShowCursor(FALSE);
 
-	RECT        WindowRect;
-    WindowRect.left=(long)0;
-	WindowRect.right=(long)m_FullScreen.m_Width;
-    WindowRect.top=(long)0;
-	WindowRect.bottom=(long)m_FullScreen.m_Height;
-	AdjustWindowRectEx(&WindowRect, m_FullScreen.m_dwStyle, FALSE, m_FullScreen.m_dwExStyle);
+	glfwWindowHint(GLFW_CLIENT_API,GLFW_OPENGL_API);
+	glfwWindowHint(GLFW_DEPTH_BITS,16);
+	glfwWindowHint(GLFW_DOUBLEBUFFER,GLFW_TRUE);
+	glfwWindowHint(GLFW_VISIBLE,GLFW_FALSE);
 
-	if (!(m_hWnd =CreateWindowEx( m_FullScreen.m_dwExStyle ,
-                                "OpenGL",
-                                " ",
-                                m_FullScreen.m_dwStyle |
-                                WS_CLIPSIBLINGS |
-                                WS_CLIPCHILDREN,
-                                0, 0,
-                                WindowRect.right-WindowRect.left,
-                                WindowRect.bottom-WindowRect.top,
-                                NULL,
-                                NULL,
-                                m_hInstance,
-                                NULL)))
-    {
-        MessageBox(NULL,"Window Creation Error.","ERROR",MB_OK|MB_ICONEXCLAMATION);
-        return FALSE;
-    }
+	m_pGLFWWindow = glfwCreateWindow(
+		(int)m_FullScreen.m_Width,(int)m_FullScreen.m_Height,
+		m_pMachineTitle ? m_pMachineTitle : " ",
+		NULL,NULL);
+	if(!m_pGLFWWindow)
+	{
+		MessageBox(NULL,"Window Creation Error.","ERROR",MB_OK|MB_ICONEXCLAMATION);
+		return FALSE;
+	}
 
-    static const PIXELFORMATDESCRIPTOR pfd=
-    {
-        sizeof(PIXELFORMATDESCRIPTOR),
-        1,
-        PFD_DRAW_TO_WINDOW |
-        PFD_SUPPORT_OPENGL |
-        PFD_DOUBLEBUFFER,
-        PFD_TYPE_RGBA,
-        32,
-        0, 0, 0, 0, 0, 0,
-        0,
-        0,
-        0,
-        0, 0, 0, 0,
-        16,
-        0,
-        0,
-        PFD_MAIN_PLANE,
-        0,
-        0, 0, 0
-    };
+	glfwSetWindowUserPointer(m_pGLFWWindow,this);
+	glfwMakeContextCurrent(m_pGLFWWindow);
 
-    if (!(m_DC=GetDC(m_hWnd)))
-    {
-        MessageBox(NULL,"Can't Create A GL Device Context.","ERROR",MB_OK|MB_ICONEXCLAMATION);
-        return FALSE;
-    }
+	glfwSetKeyCallback(m_pGLFWWindow,KeyCallback);
+	glfwSetMouseButtonCallback(m_pGLFWWindow,MouseButtonCallback);
+	glfwSetWindowCloseCallback(m_pGLFWWindow,WindowCloseCallback);
+	glfwSetFramebufferSizeCallback(m_pGLFWWindow,FramebufferSizeCallback);
+	glfwSetWindowFocusCallback(m_pGLFWWindow,WindowFocusCallback);
 
-    if (!(PixelFormat=ChoosePixelFormat(m_DC,&pfd)))
-    {
-        MessageBox(NULL,"Can't Find A Suitable PixelFormat.","ERROR",MB_OK|MB_ICONEXCLAMATION);
-        return FALSE;
-    }
-
-    if(!SetPixelFormat(m_DC,PixelFormat,&pfd))
-    {
-        MessageBox(NULL,"Can't Set The PixelFormat.","ERROR",MB_OK|MB_ICONEXCLAMATION);
-        return FALSE;
-    }
-
-    if (!(m_hRC=wglCreateContext(m_DC)))
-    {
-        MessageBox(NULL,"Can't Create A GL Rendering Context.","ERROR",MB_OK|MB_ICONEXCLAMATION);
-        return FALSE;
-    }
-	wglMakeCurrent(m_DC,m_hRC);
     return TRUE;
 }
 
-LRESULT CALLBACK OGLMachineWinDxSound::WndProc(   HWND    hWnd,
-                            UINT    uMsg,
-                            WPARAM  wParam,
-                            LPARAM  lParam)
+void	OGLMachineWinDxSound::KeyCallback(GLFWwindow *_pWindow,int _key,int ,int _action,int )
 {
-	switch (uMsg)
-    {
+	OGLMachineWinDxSound *pMachine = (OGLMachineWinDxSound *)glfwGetWindowUserPointer(_pWindow);
+	if(_action == GLFW_RELEASE) return;
+	if(_key == GLFW_KEY_ESCAPE) pMachine->m_QuitMessage = true;
+	if(_key == GLFW_KEY_SPACE || _key == GLFW_KEY_ENTER) pMachine->m_AskSwitchScreen = true;
+}
 
-        case WM_ACTIVATE:
-        {
-            if (!HIWORD(wParam))
-            {
-                m_LastInstance->m_active=true;
-            }
-            else
-            {
-                m_LastInstance->m_active=false;
-            }
+void	OGLMachineWinDxSound::MouseButtonCallback(GLFWwindow *_pWindow,int _button,int _action,int )
+{
+	OGLMachineWinDxSound *pMachine = (OGLMachineWinDxSound *)glfwGetWindowUserPointer(_pWindow);
+	if( _button == GLFW_MOUSE_BUTTON_LEFT && _action == GLFW_PRESS &&
+		pMachine->m_pCurrentScreen == &(pMachine->m_FullScreen) )
+		pMachine->m_QuitMessage = true;
+}
 
-            return 0;
-        }
+void	OGLMachineWinDxSound::WindowCloseCallback(GLFWwindow *_pWindow)
+{
+	OGLMachineWinDxSound *pMachine = (OGLMachineWinDxSound *)glfwGetWindowUserPointer(_pWindow);
+	pMachine->m_QuitMessage = true;
+}
 
-        case WM_SYSCOMMAND:
-        {
-            switch (wParam)
-            {
-                case SC_SCREENSAVE:
-                case SC_MONITORPOWER:
-                return 0;
-            }
-            break;
-        }
-		case WM_LBUTTONDOWN:
-		{
-			if( m_LastInstance->m_pCurrentScreen == &(m_LastInstance->m_FullScreen) ) m_LastInstance->m_QuitMessage = true;
-            return 0;
-		}
-		case WM_CLOSE:
-        {
-			m_LastInstance->m_QuitMessage = true;
-            return 0;
-        }
-
-        case WM_KEYDOWN:
-        {
-			if( wParam == VK_ESCAPE ) m_LastInstance->m_QuitMessage = true;
-			if( wParam == VK_SPACE ||
-				wParam == VK_RETURN )
-				m_LastInstance->m_AskSwitchScreen = true;
-
-         } break;
-
-        case WM_SIZE:
-        {
-
-			m_LastInstance->m_Width = LOWORD(lParam);
-			m_LastInstance->m_Height = HIWORD(lParam);
-			if(m_LastInstance->m_pCurrentScreen)
-			{
-				m_LastInstance->m_pCurrentScreen->m_Width = LOWORD(lParam);
-				m_LastInstance->m_pCurrentScreen->m_Height = HIWORD(lParam);
-
-			}
-			((OGLInternalViewPort *)(m_LastInstance->m_pDefaultViewPort))->ResetRootPixelSize(m_LastInstance->m_Width,m_LastInstance->m_Height);
-
-            return 0;
-        }
+void	OGLMachineWinDxSound::FramebufferSizeCallback(GLFWwindow *_pWindow,int _width,int _height)
+{
+	OGLMachineWinDxSound *pMachine = (OGLMachineWinDxSound *)glfwGetWindowUserPointer(_pWindow);
+	pMachine->m_Width = (unsigned int)_width;
+	pMachine->m_Height = (unsigned int)_height;
+	if(pMachine->m_pCurrentScreen)
+	{
+		pMachine->m_pCurrentScreen->m_Width = (unsigned int)_width;
+		pMachine->m_pCurrentScreen->m_Height = (unsigned int)_height;
 	}
+	((OGLInternalViewPort *)(pMachine->m_pDefaultViewPort))->ResetRootPixelSize(pMachine->m_Width,pMachine->m_Height);
+}
 
-    return DefWindowProc(hWnd,uMsg,wParam,lParam);
+void	OGLMachineWinDxSound::WindowFocusCallback(GLFWwindow *_pWindow,int _focused)
+{
+	OGLMachineWinDxSound *pMachine = (OGLMachineWinDxSound *)glfwGetWindowUserPointer(_pWindow);
+	pMachine->m_active = (_focused != 0);
 }
 
 void	OGLMachineWinDxSound::SwapMainScreenBuffer()
 {
 	if( m_pCurrentScreen )
 	{
-		SwapBuffers( m_DC );
+		glfwSwapBuffers( m_pGLFWWindow );
 		m_pDefaultViewPort->Clear();
 	}
 }
 
 void	OGLMachineWinDxSound::ProcessInterface()
 {
-    MSG     msg;
-	if (PeekMessage(&msg,NULL,0,0,PM_REMOVE))
-	{
-		if (msg.message==WM_QUIT)
-		{
-			m_QuitMessage = true;
-		}
-		else
-		{
-			TranslateMessage(&msg);
-			DispatchMessage(&msg);
-		}
-	}
+	glfwPollEvents();
+
+	if(m_pGLFWWindow && glfwWindowShouldClose(m_pGLFWWindow))
+		m_QuitMessage = true;
 
 	if(m_AskSwitchScreen)
 	{
@@ -484,7 +322,7 @@ bool	OGLMachineWinDxSound::FileRequester(const char *,char *_pResultFileName, un
 
 	ZeroMemory(&ofn, sizeof(ofn));
 	ofn.lStructSize = sizeof(ofn);
-	ofn.hwndOwner = m_hWnd;
+	ofn.hwndOwner = m_pGLFWWindow ? glfwGetWin32Window(m_pGLFWWindow) : NULL;
 	ofn.lpstrFile = _pResultFileName;
 
 	ofn.lpstrFile[0] = '\0';

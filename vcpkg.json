@@ -5,6 +5,7 @@
   "homepage": "https://www.m4nkind.com",
   "builtin-baseline": "8e8dfb4ba483886936ded5ca201b500b8d8b0096",
   "dependencies": [
-    "libjpeg-turbo"
+    "libjpeg-turbo",
+    "glfw3"
   ]
 }

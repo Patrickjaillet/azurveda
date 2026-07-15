@@ -21,7 +21,7 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/lang/fr/).
   `VedaLibSoundXM`, `VedaMachineOGL`, `VedaMachineOGLWinDxSound`, `VedaLib3DEngine`,
   `VedaLibDemo`, `VedaGUIWindowsMFC`, `Veda/CodeExamples`) plus un `CMakeLists.txt`
   racine et `CMakePresets.json` (`windows-x64`, `windows-x64-lgpl`, `ci-windows-x64`).
-- `vcpkg.json` (manifest mode) : dépendance `libjpeg-turbo`.
+- `vcpkg.json` (manifest mode) : dépendances `libjpeg-turbo`, `glfw3`.
 - Options CMake `AZURVEDA_BUILD_GPL_MODULES`, `AZURVEDA_BUILD_MFC_EDITOR`,
   `AZURVEDA_BUILD_EXAMPLES`.
 - CI GitHub Actions (`.github/workflows/ci.yml`) : build MSVC x64 + vcpkg, exécution de
@@ -61,6 +61,19 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/lang/fr/).
   que sur `GetCurrentPosition()`. Les décodeurs (MP3, XM) et toute l'interface
   publique de `VirtualMachine` liée au son sont strictement inchangés — seule la
   couche de sortie change, conformément à `roadmap.md` Phase 4.
+- `VedaMachineOGLWinDxSound` : remplacement de la création de fenêtre/contexte OpenGL
+  Win32 brute (`WNDCLASS`/`CreateWindowEx`/`ChoosePixelFormat`/`wglCreateContext`/
+  boucle `PeekMessage`) par **GLFW** dans `OGLMachineWinDxSound.cpp` (utilisé par
+  `DefaultMachine`, donc par `Example01/02/03`). La bascule plein écran ↔ fenêtré
+  passe désormais par `glfwSetWindowMonitor()` plutôt que par
+  `ChangeDisplaySettings()` + recréation manuelle du style de fenêtre. Le pipeline de
+  rendu OpenGL fixe lui-même n'est pas modifié (toujours `GL/gl.h`, pas de contexte
+  core profile). Le second chemin de création de contexte du projet,
+  `VedaGUIWindowsMFC/OpenGLWnd.cpp` (contexte WGL sur une fenêtre enfant embarquée
+  dans la vue scindée de l'éditeur MFC), reste inchangé — GLFW ne prend pas en
+  charge nativement le rendu sur une HWND déjà embarquée dans une hiérarchie MFC ;
+  voir `roadmap.md` Phase 5 pour la justification détaillée de cette limite de
+  périmètre.
 
 ### Fixed
 
@@ -151,5 +164,10 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/lang/fr/).
   **n'a pas été validé à l'oreille** (pas de test audio audible possible dans cet
   environnement automatisé) ni testé sur Windows 11 (développé/testé uniquement
   sur Windows 10 Entreprise LTSC 10.0.17763). Voir `roadmap.md` Phase 4.
+- Le portage Win32 brut → GLFW (`VedaMachineOGLWinDxSound`) compile et s'exécute
+  sans crash (`Example02`/`Example03`/`VedaGUIWindowsMFC.exe` testés plusieurs
+  secondes sans erreur), mais **le rendu n'a pas pu être vérifié visuellement**
+  dans cet environnement automatisé (pas d'accès interactif à l'écran). Voir
+  `roadmap.md` Phase 5.
 
 [Unreleased]: https://github.com/OWNER/AzurVeda/compare/HEAD
