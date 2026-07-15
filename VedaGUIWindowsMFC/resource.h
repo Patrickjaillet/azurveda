@@ -160,6 +160,7 @@
 #define IDC_MEMBERNAME                  1044
 #define IDC_SCROLLBAR2                  1046
 #define IDC_EDITDLG1                    1050
+#define IDC_ABOUT_VERSION               1051
 #define ID_CREATE_DESTROY               32771
 #define ID_BASEOBJECT_CLONE             32772
 #define ID_BASEOBJECT_DESTROY           32773
@@ -199,7 +200,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        145
 #define _APS_NEXT_COMMAND_VALUE         32821
-#define _APS_NEXT_CONTROL_VALUE         1051
+#define _APS_NEXT_CONTROL_VALUE         1052
 #define _APS_NEXT_SYMED_VALUE           105
 #endif
 #endif

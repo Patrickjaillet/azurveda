@@ -255,7 +255,7 @@ STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION |
 CAPTION "About UVeda GUI MFC"
 FONT 8, "MS Shell Dlg", 0, 0, 0x1
 BEGIN
-    LTEXT           "UVeda MFC GUI Version 0.8   02/2007",IDC_STATIC,23,7,
+    LTEXT           "UVeda MFC GUI",IDC_ABOUT_VERSION,23,7,
                     153,11,SS_NOPREFIX
     LTEXT           "Copyright (C) victorien ferry (krabob) and M4NKIND 2005-2007\n http://azurvedalib.sourceforge.net\n http://www.m4nkind.com",
                     IDC_STATIC,20,79,208,28

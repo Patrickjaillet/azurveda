@@ -62,6 +62,9 @@ if(AZURVEDA_BUILD_GPL_MODULES)
     add_subdirectory(VedaLibDemo)
     if(AZURVEDA_BUILD_MFC_EDITOR)
         add_subdirectory(VedaGUIWindowsMFC)
+        # Reuses Veda's Version.h regeneration target rather than creating a second
+        # one: Ninja rejects two custom targets producing the same BYPRODUCTS file.
+        add_dependencies(VedaGUIWindowsMFC Veda_UpdateVersionHeader)
     endif()
 endif()
 

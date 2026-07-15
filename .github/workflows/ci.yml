@@ -32,6 +32,21 @@ jobs:
             exit 1
           fi
 
+      - name: Verify docs/screenshot.png was updated alongside VedaGUIWindowsMFC UI changes
+        run: |
+          git fetch origin "${{ github.base_ref }}" --depth=1
+          changed=$(git diff --name-only "origin/${{ github.base_ref }}"...HEAD)
+          if echo "$changed" | grep -qE '^VedaGUIWindowsMFC/.*\.rc2?$'; then
+            if echo "$changed" | grep -qx 'docs/screenshot.png'; then
+              echo "UI resource files changed and docs/screenshot.png was updated."
+            else
+              echo "::error::This PR changes VedaGUIWindowsMFC .rc/.rc2 resources but does not update docs/screenshot.png. Update the screenshot referenced from README.md (see roadmap.md Phase 6/7)."
+              exit 1
+            fi
+          else
+            echo "No VedaGUIWindowsMFC .rc/.rc2 changes in this PR; screenshot check skipped."
+          fi
+
   build:
     name: Build (MSVC, x64) + run examples
     runs-on: windows-latest

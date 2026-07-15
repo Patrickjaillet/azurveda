@@ -45,6 +45,7 @@ target_link_options(VedaGUIWindowsMFC PRIVATE
 )
 
 target_link_libraries(VedaGUIWindowsMFC PRIVATE
+    AzurVedaVersion
     Veda
     VedaLibMath
     VedaLibImage

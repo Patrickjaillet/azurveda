@@ -4,6 +4,7 @@
 #include "OGLMachineWinDxSound.h"
 #include "MainFrm.h"
 #include ".\mainfrm.h"
+#include "Version.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -37,6 +38,13 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 {
 	if (CMDIFrameWnd::OnCreate(lpCreateStruct) == -1)
 		return -1;
+
+	// m_strTitle (set by CFrameWnd::OnCreate from the IDR_MAINFRAME string
+	// resource, just above) is the cached "app title" MFC recombines with the
+	// active document's title on every OnUpdateFrameTitle call. Appending the
+	// version here, once, keeps it present without re-appending on every
+	// document create/activate (which OnUpdateFrameTitle triggers repeatedly).
+	m_strTitle += _T(" v") _T(AZURVEDA_VERSION_STRING);
 
 	if (!m_wndToolBar.CreateEx(this) ||
 		!m_wndToolBar.LoadToolBar(IDR_MAINFRAME))

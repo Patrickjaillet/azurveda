@@ -36,6 +36,13 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/lang/fr/).
   qualité.
 - `docs/screenshot.png` : capture d'écran de `VedaGUIWindowsMFC` référencée dans
   `README.md`, prise sur la machine de développement réelle.
+- Numéro de version affiché dans `VedaGUIWindowsMFC` : barre de titre
+  (`"UVeda vX.Y.Z - [DocTitre]"`, via `CMainFrame::OnCreate`) et boîte "À propos"
+  (`"UVeda MFC GUI vX.Y.Z (hash-git)"`, remplace un texte statique codé en dur
+  `"UVeda MFC GUI Version 0.8   02/2007"` datant de 2007).
+- Étape CI (`.github/workflows/ci.yml`, job `changelog-check`) : si une PR modifie
+  des ressources `VedaGUIWindowsMFC/*.rc`/`*.rc2`, `docs/screenshot.png` doit être
+  mis à jour dans la même PR, sinon le build échoue.
 
 ### Changed
 
@@ -82,6 +89,13 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/lang/fr/).
 
 ### Fixed
 
+- `cmake/GenerateVersion.cmake` : `azurveda_add_version_header_target()` ne peut
+  être appelé qu'une fois par binaire de sortie — l'appeler à la fois pour `Veda`
+  et pour `VedaGUIWindowsMFC` avec le même fichier `generated/Version.h` fait
+  échouer Ninja (`multiple rules generate generated/Version.h`, deux cibles
+  personnalisées ne peuvent pas déclarer le même `BYPRODUCTS`). `VedaGUIWindowsMFC`
+  dépend maintenant directement de la cible `Veda_UpdateVersionHeader` existante
+  via `add_dependencies()` plutôt que d'en créer une seconde.
 - Bugs de compilation réels révélés en validant le build CMake sur une machine
   Windows/MSVC réelle (VS Build Tools 2022 + MFC/ATL, en attendant VS2026) :
   - Littéraux chaîne assignés à des pointeurs `char*`/`LPSTR` non-const, rejetés en

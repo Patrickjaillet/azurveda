@@ -6,6 +6,7 @@
 #include "ChildFrm.h"
 #include "VedaDemoOGLMfcGuiDoc.h"
 #include "LeftView.h"
+#include "Version.h"
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
@@ -86,6 +87,7 @@ public:
 
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);
+	virtual BOOL OnInitDialog();
 
 protected:
 	DECLARE_MESSAGE_MAP()
@@ -100,6 +102,18 @@ CAboutDlg::CAboutDlg() : CDialog(CAboutDlg::IDD)
 void CAboutDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
+}
+
+BOOL CAboutDlg::OnInitDialog()
+{
+	CDialog::OnInitDialog();
+
+	CString versionText;
+	versionText.Format(_T("UVeda MFC GUI v%s (%s)"),
+		_T(AZURVEDA_VERSION_STRING), _T(AZURVEDA_VERSION_GIT_HASH));
+	SetDlgItemText(IDC_ABOUT_VERSION, versionText);
+
+	return TRUE;
 }
 
 BEGIN_MESSAGE_MAP(CAboutDlg, CDialog)
