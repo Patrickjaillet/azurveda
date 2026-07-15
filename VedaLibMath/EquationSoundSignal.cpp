@@ -32,7 +32,7 @@ void EquationSoundSignal::Compute( float _OutgoingParameterTable[4] , const floa
 	unsigned int bufferlength=0;
 	GetMachine()->GetCurrentSoundBufferImage( &pSoundBuffer , &bufferlength );
 
-	if(bufferlength !=m_ilastbufferlengthfloatversion)
+	if((int)bufferlength !=m_ilastbufferlengthfloatversion)
 	{
 		m_flastbufferlengthfloatversion = (float)(bufferlength);
 		m_LeftAmplitude		= mSer_LeftScale.Get(1) - mSer_LeftScale.Get(0);

@@ -1145,7 +1145,8 @@ lwo2_error Read_VMAD_LWO2(sLwoObject *lwo,
 {
 
     int startofs = offset ;
-    unsigned int     id2,iiv,iip,ii,ofs,mm,jj,numvv;
+    unsigned int     id2,iiv,iip,ii,ofs,mm;
+    int     jj,numvv;
     sLwoPolyToVertex     *nextlink;
     float   tuu,tvv;
     id2 = readInt( lwo, offset );
@@ -1194,7 +1195,7 @@ lwo2_error Read_VMAD_LWO2(sLwoObject *lwo,
 
                     curlayer->LWO_Polygon[ iip ].V[mm].V
                     ==
-                    iiv
+                    (int)iiv
                    )
                 {
 
@@ -1318,7 +1319,8 @@ lwo2_error Read_SURF_LWO2( sLwoObject *lwo,
                     int endoffset
                     )
 {
-	unsigned int     ii,jj,kk;
+	unsigned int     ii;
+	int     jj,kk;
 	char  *name,*father;
 	struct LwTexture  *buildme,*srfather;
 
@@ -1487,7 +1489,7 @@ const sLwoLayer *LwoGetLayer(const sLwoObject *_pLwoObject, const unsigned int _
 {
 	unsigned int ii;
 	for(ii=0 ; ii<_pLwoObject->m_NumberOfLayers ; ii++)
-		if( _pLwoObject->m_LWO_Layer[ii].m_LayerNumber == _layerIndex ) return
+		if( _pLwoObject->m_LWO_Layer[ii].m_LayerNumber == (int)_layerIndex ) return
 				&(_pLwoObject->m_LWO_Layer[ii]);
 
 	return 0L;

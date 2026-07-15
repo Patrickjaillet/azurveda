@@ -50,7 +50,7 @@ void	TextLocalized::SynchronizeTextToMachineLanguage()
 	while(pCell)
 	{
 		LocalText *pLocalText = (LocalText *) pCell->GetManagedObject();
-		if( pLocalText->mSer_LocalizationEnum.Get() == currentLanguage )
+		if( (int)pLocalText->mSer_LocalizationEnum.Get() == currentLanguage )
 		{
 			m_pCurrentText = &(pLocalText->mSer_BaseText);
 			return;

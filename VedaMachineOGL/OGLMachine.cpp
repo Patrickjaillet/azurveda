@@ -827,7 +827,7 @@ void	OGLMachine::OGLInternalObject3DBuffer::SetColor(float _red,float _green,flo
 	m_Color[3] = _alpha;
 }
 OGLMachine::OGLInternalTexture::OGLInternalTexture(void)
-: m_flags(-1)
+: m_flags(~0u)
 ,m_ActiveLayerFlag(0L)
 ,m_frameBuffer(0L)
 ,m_depthRenderBuffer(0L)

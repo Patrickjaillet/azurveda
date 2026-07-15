@@ -34,7 +34,7 @@ bool Image2DEffectFire::CreateInternal(void)
 	m_pBitmap1Alloc = new float[bitmapsize<<1];
 	if(!m_pBitmap1Alloc) return false;
 	float *pf=m_pBitmap1Alloc;
-	for(int ii=0; ii<bitmapsize ; ii++)
+	for(unsigned int ii=0; ii<bitmapsize ; ii++)
 	{
 		*pf++ = 0.0f;
 		*pf++ = 0.0f;

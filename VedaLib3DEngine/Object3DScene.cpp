@@ -129,7 +129,7 @@ void	Object3DScene::ProcessObject( PackTreeCell* _pCell,VirtualMachine::Internal
 		{
 
 			Object3DReference *pSubObRef = (Object3DReference *)_pSubCell->GetObject();
-			if( recurseIndex>=pSubObRef->mSer_BeginAtNumber.Get() )
+			if( recurseIndex>=(unsigned int)pSubObRef->mSer_BeginAtNumber.Get() )
 			{
 				ProcessObject(_pSubCell,_pVp,rgba,_frameDate);
 			}

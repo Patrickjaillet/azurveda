@@ -539,13 +539,13 @@ void	MP3SoundObject::SeekStream(int _milliseconds)
 		int indexBefore=m_LastFrameIndex-2;
 		int indexafter=m_LastFrameIndex+2;
 		if(indexBefore<0 )indexBefore=0;
-		if(indexafter>m_NumberOfFrame )indexafter=m_NumberOfFrame;
+		if(indexafter>(int)m_NumberOfFrame )indexafter=(int)m_NumberOfFrame;
 		int	lastFrameTime = (int) (m_pFrameReferenceTable[indexBefore].m_TimeStart)-300;
 		int	nextFrameTime = (int) (m_pFrameReferenceTable[indexafter].m_TimeStart)+300;
 		if(_milliseconds>=lastFrameTime && _milliseconds<nextFrameTime ) return;
 	}
 
-	if( _milliseconds<0 || _milliseconds>= m_pFrameReferenceTable[m_NumberOfFrame].m_TimeStart )
+	if( _milliseconds<0 || _milliseconds>= (int)m_pFrameReferenceTable[m_NumberOfFrame].m_TimeStart )
 	{
 		m_LastFrameIndex = m_NumberOfFrame;
 		return;
@@ -560,7 +560,7 @@ void	MP3SoundObject::SeekStream(int _milliseconds)
 
 		unsigned int t_m = m_pFrameReferenceTable[middle].m_TimeStart ;
 
-		if(_milliseconds<t_m)
+		if(_milliseconds<(int)t_m)
 			indexb=middle;
 		 else
 			indexa=middle;

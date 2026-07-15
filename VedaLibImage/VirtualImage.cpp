@@ -94,7 +94,7 @@ void VirtualImage::ProcessPreview(double _frameDate,VirtualMachine::InternalView
 					*(pp++) = cc;
 					*(pp++) = 255;
 					decalx2++;
-					if(decalx2>=nbx)decalx2=0;
+					if(decalx2>=(unsigned int)nbx)decalx2=0;
 				}
 				decaly++;
 				if(decaly>=nby)decaly=0;
@@ -137,7 +137,7 @@ void VirtualImage::ProcessPreview(double _frameDate,VirtualMachine::InternalView
 
 					*(pp++) = 255;
 					decalx2++;
-					if(decalx2>=nbx)decalx2=0;
+					if(decalx2>=(unsigned int)nbx)decalx2=0;
 				}
 				decaly++;
 				if(decaly>=nby)decaly=0;

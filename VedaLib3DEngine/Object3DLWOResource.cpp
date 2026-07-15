@@ -89,7 +89,7 @@ bool Object3DLWOResource::CreateInternal(void)
 		VirtualMachine::InternalVertex *pVert =	p3DBuffer->GetFirstVertex();
 		const sLwoVertex *pVertLWO =	pLayer->LWO_Vertex;
 		int jj;
-		for( jj=0 ; jj<pLayer->MaxNbVertex ; jj++ )
+		for( jj=0 ; jj<(int)pLayer->MaxNbVertex ; jj++ )
 		{
 			pVert->m_x = pVertLWO->XI;
 			pVert->m_y = -pVertLWO->YI;
@@ -128,7 +128,7 @@ bool Object3DLWOResource::CreateInternal(void)
 			lw_CleanAlloc(sizeof(struct LwoSortedTriangleSurface)*pLayer->m_NumberOfSurfaceUsed);
 		if(pwr==0L) return false;
 		prd=pLayer->m_pSurfaceSortedTriangleListIndex;
-		for(jj=0;jj<pLayer->m_NumberOfSurfaceUsed;jj++)
+		for(jj=0;jj<(int)pLayer->m_NumberOfSurfaceUsed;jj++)
 		{
 			pwr->LwoFileSurfaceIndex = prd->LwoFileSurfaceIndex;
 			pwr->FirstTriangle = prd->FirstTriangle;
@@ -149,7 +149,7 @@ bool Object3DLWOResource::CreateInternal(void)
 void	Object3DLWOResource::CloseInternal(void)
 {
 	if(m_pLayerObjects)
-	{	int ii;
+	{	unsigned int ii;
 		LayerObject *pLayerToBuild = m_pLayerObjects;
 		for(ii=0 ; ii<m_Lwo.m_NumberOfLayers ; ii++)
 		{

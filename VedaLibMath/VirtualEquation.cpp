@@ -30,7 +30,7 @@ void VirtualEquation::ProcessPreview_CreateLine(VirtualMachine::InternalObject3D
 									(_nbPoint)*2,
 									(_nbPoint-1)*2,0);
 	if( !(*_ppVertexAndPolygonBufferOut)) return;
-	int ii;
+	unsigned int ii;
 	VirtualMachine::InternalTriangle *pTriangle = (*_ppVertexAndPolygonBufferOut)->GetFirstTriangle();
 
 	for(ii=0 ; ii<(_nbPoint-1) ; ii++)

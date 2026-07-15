@@ -266,7 +266,7 @@ void Object3DMesh3D::CreateShape(float , unsigned int  )
 
 	if(fNormalSplit == 0.0f)
 	{
-		int ii;
+		unsigned int ii;
 		for(ii=0; ii<nbBaseVertex ; ii++)
 		{
 			float nnx = pVert->m_nx;
@@ -288,7 +288,7 @@ void Object3DMesh3D::CreateShape(float , unsigned int  )
 		}
 	} else
 	{
-		int ii;
+		unsigned int ii;
 		pVert = pVert+(nbBaseVertex);
 		const float rest = 1.0f - fNormalSplit;
 		for(ii=nbBaseVertex; ii<m_pObject3DBufferTable->m_ActiveNumberOfVertex ; ii++)
@@ -428,7 +428,7 @@ void Object3DMesh3D::ToolMethod_LoadLWO()
 
 	{
 
-	int ii;
+	unsigned int ii;
 	sLwoVertex *pLWOVert = pLayer->LWO_Vertex;
 
 	float divX = pLayer->m_boundMax[0]-pLayer->m_boundMin[0];

@@ -790,7 +790,7 @@ void	Object3DMarchCube::Pass4_Diffuse(float _framedate)
 	const PackList::Cell *pKeepFirst=pLinearCell;
 	while(pLinearCell)
 	{
-		int ii;
+		unsigned int ii;
 		LightModel::LinearLight *pLinearLight =  (LightModel::LinearLight *)pLinearCell->GetManagedObject();
 
 		float	lightcolor[4];
@@ -845,7 +845,7 @@ void	Object3DMarchCube::Pass4_Diffuse(float _framedate)
 	pLightModel->mSer_AmbientColor.Compute(AmbientColor,inparam);
 	VirtualMachine::InternalVertex *pVertex = pObject3DVirtualBuffer->GetFirstVertex();
 	pvlight = m_pVertexLightTerm;
-	int ii;
+	unsigned int ii;
 	if( ! mSer_Flags.TestFlags(OB3DFlag_OneColor) )
 	for(ii=0 ;ii<m_NbVertexCreated ; ii++)
 	{

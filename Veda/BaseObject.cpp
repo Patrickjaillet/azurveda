@@ -394,7 +394,7 @@ unsigned int BaseObject::GetNextToolMethod( unsigned int _PreviousMethodID,unsig
 	while(pCell )
 	{
 		if(_PreviousMethodID == 0) break;
-		int previousid = pCell->m_ToolMethodID ;
+		unsigned int previousid = pCell->m_ToolMethodID ;
 		pCell = pCell->m_pNextCell ;
 		if(previousid == _PreviousMethodID) break;
 	}
